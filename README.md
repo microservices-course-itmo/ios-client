@@ -8,6 +8,6 @@ WineUp iOS application. WineUp is wine retailers aggregator with both **user2sys
 |----------|------|
 | [BobCatC](https://github.com/BobCatC)  | TL   |
 | [dimonker](https://github.com/dimonker) | Dev  |
-|          | Dev  |
+| [nsolonenko](https://github.com/nsolonenko)  | Dev  |
 |          | Dev  |
 |          | Dev  |
