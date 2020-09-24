@@ -10,10 +10,6 @@ import SwiftUI
 struct CatalogView: View {
     @ObservedObject private var viewModel = CatalogViewModel()
 
-    init(viewModel: CatalogViewModel) {
-        self.viewModel = viewModel
-    }
-
     var body: some View {
         VStack {
             CatalogFilterView()

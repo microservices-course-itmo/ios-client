@@ -12,7 +12,7 @@ struct CatalogRootView: View {
 
     var body: some View {
         NavigationView {
-            CatalogView(viewModel: CatalogViewModel())
+            CatalogView()
                 .navigationBarHidden(false)
                 .navigationTitle("Catalog")
                 .navigationBarTitleDisplayMode(.inline)
