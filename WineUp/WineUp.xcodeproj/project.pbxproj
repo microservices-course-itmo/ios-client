@@ -8,11 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		1F4FEE02251A8D65007725EE /* WineUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE01251A8D65007725EE /* WineUpApp.swift */; };
-		1F4FEE04251A8D65007725EE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE03251A8D65007725EE /* ContentView.swift */; };
+		1F4FEE04251A8D65007725EE /* ApplicationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE03251A8D65007725EE /* ApplicationRootView.swift */; };
 		1F4FEE06251A8D66007725EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F4FEE05251A8D66007725EE /* Assets.xcassets */; };
 		1F4FEE09251A8D66007725EE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F4FEE08251A8D66007725EE /* Preview Assets.xcassets */; };
 		1F4FEE14251A8D66007725EE /* WineUpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE13251A8D66007725EE /* WineUpTests.swift */; };
 		1F4FEE1F251A8D66007725EE /* WineUpUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE1E251A8D66007725EE /* WineUpUITests.swift */; };
+		1F4FEE3F251A9703007725EE /* ApplicationRootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE3E251A9703007725EE /* ApplicationRootViewModel.swift */; };
+		1F4FEE45251BB278007725EE /* ApplicationMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE44251BB278007725EE /* ApplicationMenuView.swift */; };
+		1F4FEE51251BB334007725EE /* CatalogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE50251BB334007725EE /* CatalogView.swift */; };
+		1F4FEE5A251C6E60007725EE /* CatalogRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE59251C6E60007725EE /* CatalogRootView.swift */; };
+		1F4FEE63251C7D9A007725EE /* CatalogItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE62251C7D9A007725EE /* CatalogItemModel.swift */; };
+		1F4FEE68251C7DB6007725EE /* CatalogRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE67251C7DB6007725EE /* CatalogRowView.swift */; };
+		1FC547C3251C87E200DB6BBC /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC547C2251C87E200DB6BBC /* CatalogViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +42,7 @@
 /* Begin PBXFileReference section */
 		1F4FEDFE251A8D65007725EE /* WineUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WineUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F4FEE01251A8D65007725EE /* WineUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WineUpApp.swift; sourceTree = "<group>"; };
-		1F4FEE03251A8D65007725EE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1F4FEE03251A8D65007725EE /* ApplicationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRootView.swift; sourceTree = "<group>"; };
 		1F4FEE05251A8D66007725EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F4FEE08251A8D66007725EE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1F4FEE0A251A8D66007725EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,6 +52,13 @@
 		1F4FEE1A251A8D66007725EE /* WineUpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WineUpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F4FEE1E251A8D66007725EE /* WineUpUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WineUpUITests.swift; sourceTree = "<group>"; };
 		1F4FEE20251A8D66007725EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1F4FEE3E251A9703007725EE /* ApplicationRootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRootViewModel.swift; sourceTree = "<group>"; };
+		1F4FEE44251BB278007725EE /* ApplicationMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationMenuView.swift; sourceTree = "<group>"; };
+		1F4FEE50251BB334007725EE /* CatalogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogView.swift; sourceTree = "<group>"; };
+		1F4FEE59251C6E60007725EE /* CatalogRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRootView.swift; sourceTree = "<group>"; };
+		1F4FEE62251C7D9A007725EE /* CatalogItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogItemModel.swift; sourceTree = "<group>"; };
+		1F4FEE67251C7DB6007725EE /* CatalogRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRowView.swift; sourceTree = "<group>"; };
+		1FC547C2251C87E200DB6BBC /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,11 +109,13 @@
 		1F4FEE00251A8D65007725EE /* WineUp */ = {
 			isa = PBXGroup;
 			children = (
+				1F4FEE30251A922F007725EE /* Modules */,
+				1F4FEE31251A9237007725EE /* Services */,
+				1F4FEE33251A9245007725EE /* Extensions */,
+				1F4FEE32251A923C007725EE /* Utils */,
+				1F4FEE2F251A921A007725EE /* Resources */,
 				1F4FEE01251A8D65007725EE /* WineUpApp.swift */,
-				1F4FEE03251A8D65007725EE /* ContentView.swift */,
-				1F4FEE05251A8D66007725EE /* Assets.xcassets */,
 				1F4FEE0A251A8D66007725EE /* Info.plist */,
-				1F4FEE07251A8D66007725EE /* Preview Content */,
 			);
 			path = WineUp;
 			sourceTree = "<group>";
@@ -128,6 +144,91 @@
 				1F4FEE20251A8D66007725EE /* Info.plist */,
 			);
 			path = WineUpUITests;
+			sourceTree = "<group>";
+		};
+		1F4FEE2F251A921A007725EE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1F4FEE07251A8D66007725EE /* Preview Content */,
+				1F4FEE05251A8D66007725EE /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1F4FEE30251A922F007725EE /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				1F4FEE4C251BB30D007725EE /* Catalog */,
+				1F4FEE43251BB26B007725EE /* ApplicationMenu */,
+				1F4FEE34251A927E007725EE /* ApplicationRoot */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		1F4FEE31251A9237007725EE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1F4FEE32251A923C007725EE /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		1F4FEE33251A9245007725EE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1F4FEE34251A927E007725EE /* ApplicationRoot */ = {
+			isa = PBXGroup;
+			children = (
+				1F4FEE03251A8D65007725EE /* ApplicationRootView.swift */,
+				1F4FEE3E251A9703007725EE /* ApplicationRootViewModel.swift */,
+			);
+			path = ApplicationRoot;
+			sourceTree = "<group>";
+		};
+		1F4FEE43251BB26B007725EE /* ApplicationMenu */ = {
+			isa = PBXGroup;
+			children = (
+				1F4FEE44251BB278007725EE /* ApplicationMenuView.swift */,
+			);
+			path = ApplicationMenu;
+			sourceTree = "<group>";
+		};
+		1F4FEE4C251BB30D007725EE /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				1F4FEE58251C6E4F007725EE /* CatalogRoot */,
+				1F4FEE61251C7D88007725EE /* Catalog */,
+			);
+			path = Catalog;
+			sourceTree = "<group>";
+		};
+		1F4FEE58251C6E4F007725EE /* CatalogRoot */ = {
+			isa = PBXGroup;
+			children = (
+				1F4FEE59251C6E60007725EE /* CatalogRootView.swift */,
+			);
+			path = CatalogRoot;
+			sourceTree = "<group>";
+		};
+		1F4FEE61251C7D88007725EE /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				1F4FEE50251BB334007725EE /* CatalogView.swift */,
+				1FC547C2251C87E200DB6BBC /* CatalogViewModel.swift */,
+				1F4FEE62251C7D9A007725EE /* CatalogItemModel.swift */,
+				1F4FEE67251C7DB6007725EE /* CatalogRowView.swift */,
+			);
+			path = Catalog;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,8 +360,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F4FEE04251A8D65007725EE /* ContentView.swift in Sources */,
+				1F4FEE63251C7D9A007725EE /* CatalogItemModel.swift in Sources */,
+				1F4FEE5A251C6E60007725EE /* CatalogRootView.swift in Sources */,
+				1F4FEE45251BB278007725EE /* ApplicationMenuView.swift in Sources */,
+				1F4FEE04251A8D65007725EE /* ApplicationRootView.swift in Sources */,
 				1F4FEE02251A8D65007725EE /* WineUpApp.swift in Sources */,
+				1F4FEE68251C7DB6007725EE /* CatalogRowView.swift in Sources */,
+				1F4FEE3F251A9703007725EE /* ApplicationRootViewModel.swift in Sources */,
+				1F4FEE51251BB334007725EE /* CatalogView.swift in Sources */,
+				1FC547C3251C87E200DB6BBC /* CatalogViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,7 +526,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"WineUp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"WineUp/Resources/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = WineUp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -439,7 +547,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"WineUp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"WineUp/Resources/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = WineUp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
