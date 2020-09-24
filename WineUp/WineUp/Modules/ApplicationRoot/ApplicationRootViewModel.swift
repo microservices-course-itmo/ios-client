@@ -7,6 +7,6 @@
 
 import Foundation
 
-class ApplicationRootViewModel {
+final class ApplicationRootViewModel: ObservableObject {
     
 }

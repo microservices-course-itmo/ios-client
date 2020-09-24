@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ApplicationMenuView: View {
+    @ObservedObject private var viewModel = ApplicationMenuViewModel()
+
     var body: some View {
         TabView {
             CatalogRootView()

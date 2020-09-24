@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct CatalogRootView: View {
-    private static let testItems: [CatalogItemModel] = [
-        CatalogItemModel(title: "1"),
-        CatalogItemModel(title: "2")
-    ]
+    @ObservedObject private var viewModel = CatalogRootViewModel()
 
     var body: some View {
         NavigationView {
-            CatalogView(viewModel: CatalogViewModel(items: CatalogRootView.testItems))
+            CatalogView(viewModel: CatalogViewModel())
                 .navigationBarHidden(false)
                 .navigationTitle("Catalog")
         }

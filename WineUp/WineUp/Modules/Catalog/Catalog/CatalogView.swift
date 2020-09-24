@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CatalogView: View {
-    @ObservedObject private var viewModel: CatalogViewModel
+    @ObservedObject private var viewModel = CatalogViewModel()
 
     init(viewModel: CatalogViewModel) {
         self.viewModel = viewModel

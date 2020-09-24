@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ApplicationRootView: View {
-    private let viewModel = ApplicationRootViewModel()
+    @ObservedObject private var viewModel = ApplicationRootViewModel()
 
     var body: some View {
         ApplicationMenuView()
