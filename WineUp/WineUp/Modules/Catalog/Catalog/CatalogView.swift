@@ -15,8 +15,11 @@ struct CatalogView: View {
     }
 
     var body: some View {
-        List(viewModel.items) { item in
-            CatalogRowView(item: item)
+        VStack {
+            CatalogFilterView()
+            List(viewModel.items) { item in
+                CatalogRowView(item: item)
+            }
         }
     }
 }

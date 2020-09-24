@@ -21,6 +21,7 @@
 		1F4FEE68251C7DB6007725EE /* CatalogRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FEE67251C7DB6007725EE /* CatalogRowView.swift */; };
 		1F6B3484251C9B9A008B249B /* ApplicationMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6B3483251C9B9A008B249B /* ApplicationMenuViewModel.swift */; };
 		1F6B3489251C9BC5008B249B /* CatalogRootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6B3488251C9BC5008B249B /* CatalogRootViewModel.swift */; };
+		1F6B348F251C9F64008B249B /* CatalogFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6B348E251C9F64008B249B /* CatalogFilterView.swift */; };
 		1FC547C3251C87E200DB6BBC /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC547C2251C87E200DB6BBC /* CatalogViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		1F4FEE67251C7DB6007725EE /* CatalogRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRowView.swift; sourceTree = "<group>"; };
 		1F6B3483251C9B9A008B249B /* ApplicationMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationMenuViewModel.swift; sourceTree = "<group>"; };
 		1F6B3488251C9BC5008B249B /* CatalogRootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRootViewModel.swift; sourceTree = "<group>"; };
+		1F6B348E251C9F64008B249B /* CatalogFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogFilterView.swift; sourceTree = "<group>"; };
 		1FC547C2251C87E200DB6BBC /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -229,12 +231,21 @@
 		1F4FEE61251C7D88007725EE /* Catalog */ = {
 			isa = PBXGroup;
 			children = (
+				1F6B348D251C9F5B008B249B /* Filter */,
 				1F4FEE50251BB334007725EE /* CatalogView.swift */,
 				1FC547C2251C87E200DB6BBC /* CatalogViewModel.swift */,
 				1F4FEE62251C7D9A007725EE /* CatalogItemModel.swift */,
 				1F4FEE67251C7DB6007725EE /* CatalogRowView.swift */,
 			);
 			path = Catalog;
+			sourceTree = "<group>";
+		};
+		1F6B348D251C9F5B008B249B /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				1F6B348E251C9F64008B249B /* CatalogFilterView.swift */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -372,6 +383,7 @@
 				1F4FEE04251A8D65007725EE /* ApplicationRootView.swift in Sources */,
 				1F6B3484251C9B9A008B249B /* ApplicationMenuViewModel.swift in Sources */,
 				1F6B3489251C9BC5008B249B /* CatalogRootViewModel.swift in Sources */,
+				1F6B348F251C9F64008B249B /* CatalogFilterView.swift in Sources */,
 				1F4FEE02251A8D65007725EE /* WineUpApp.swift in Sources */,
 				1F4FEE68251C7DB6007725EE /* CatalogRowView.swift in Sources */,
 				1F4FEE3F251A9703007725EE /* ApplicationRootViewModel.swift in Sources */,

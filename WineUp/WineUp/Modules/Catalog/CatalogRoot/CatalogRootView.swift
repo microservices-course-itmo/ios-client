@@ -15,6 +15,7 @@ struct CatalogRootView: View {
             CatalogView(viewModel: CatalogViewModel())
                 .navigationBarHidden(false)
                 .navigationTitle("Catalog")
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
