@@ -22,7 +22,18 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
     var originalPriceRub: Float
     var discountPercents: Float
 
-    init(title: String, country: String, color: WineColor, wineAstringency: WineAstringency, quantityLiters: Float, isLiked: Bool, chemistry: Float, titleImage: UIImage, retailerImage: UIImage, rating: Float, originalPriceRub: Float, discountPercents: Float) {
+    init(title: String,
+         country: String,
+         color: WineColor,
+         wineAstringency: WineAstringency,
+         quantityLiters: Float,
+         isLiked: Bool,
+         chemistry: Float,
+         titleImage: UIImage,
+         retailerImage: UIImage,
+         rating: Float,
+         originalPriceRub: Float,
+         discountPercents: Float) {
         self.id = UUID()
         self.title = title
         self.country = country
@@ -38,8 +49,20 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
         self.discountPercents = discountPercents
     }
 
+    // TODO: Must be removed after test data is imported into project
     convenience init(title: String) {
-        self.init(title: title, country: "", color: .red, wineAstringency: .dry, quantityLiters: 0, isLiked: false, chemistry: 0, titleImage: UIImage(), retailerImage: UIImage(), rating: 0, originalPriceRub: 0, discountPercents: 0)
+        self.init(title: title,
+                  country: "",
+                  color: .red,
+                  wineAstringency: .dry,
+                  quantityLiters: 0,
+                  isLiked: false,
+                  chemistry: 0,
+                  titleImage: UIImage(),
+                  retailerImage: UIImage(),
+                  rating: 0,
+                  originalPriceRub: 0,
+                  discountPercents: 0)
     }
 
     var description: String {

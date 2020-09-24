@@ -15,7 +15,7 @@ struct ApplicationRootView: View {
     }
 }
 
-struct ApplicationRootView_Previews: PreviewProvider {
+struct ApplicationRootViewPreviews: PreviewProvider {
     static var previews: some View {
         ApplicationRootView()
     }
