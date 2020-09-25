@@ -24,9 +24,9 @@ struct CatalogRowRating: View {
     var body: some View {
         VStack {
             Color.init(.clear)
-            
             Text("Оценка экспертов:")
-                .font(.system(size: 14))
+                .font(.system(size: 11))
+                .fontWeight(.bold)
                 .padding(.top, 10)
             
             Spacer()

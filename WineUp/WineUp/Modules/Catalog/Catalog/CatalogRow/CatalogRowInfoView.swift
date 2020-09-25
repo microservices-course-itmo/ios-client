@@ -23,26 +23,26 @@ struct CatalogRowInfoView: View {
     
     var body: some View {
         VStack {
-            
             HStack {
                 Text(item.title)
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .padding(.leading, 10)
+                    .font(.system(size: 20))
+                    .fontWeight(.black)
+                    .lineLimit(2)
                 
                 Spacer()
                 
                 Image(systemName: "suit.heart.fill")
                     .foregroundColor(getHeartColor())
-                    .font(.system(size: 20))
-                    .padding(.trailing, 10)
+                    .font(.system(size: 25))
             }
+            
+            Spacer()
             
             HStack {
                 Text(item.wineDescription)
-                    .font(.callout)
+                    .font(.system(size: 12))
                     .multilineTextAlignment(.leading)
-                    .padding(.leading, 10)
+                    .lineLimit(2)
                 
                 Spacer()
             }
@@ -55,7 +55,7 @@ struct CatalogRowInfoView: View {
                 // TODO: Add percent to CatalogItemModel
                 
                 Text("Подходит вам на 75%")
-                    .font(.callout)
+                    .font(.system(size: 11))
             }
             
             Spacer()
@@ -66,12 +66,12 @@ struct CatalogRowInfoView: View {
                 
                 Spacer()
                 CatalogRowDiscountView(item: item)
-                
             }
-
         }
     }
 }
+
+// MARK: - View Methods
 
 extension CatalogRowInfoView {
     

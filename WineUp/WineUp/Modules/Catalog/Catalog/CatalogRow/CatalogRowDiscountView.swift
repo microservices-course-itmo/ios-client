@@ -25,20 +25,20 @@ struct CatalogRowDiscountView: View {
         VStack {
             HStack {
                 Text("\(Int(item.priceWithDiscount))₽")
-                    .font(.subheadline)
+                    .font(.system(size: 12))
                     .strikethrough()
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                 
                 Text("-\(Int(item.discountPercents))%")
-                    .font(.subheadline)
+                    .font(.system(size: 11))
                     .foregroundColor(.red)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
             }
          
             HStack {
                 Text("\(Int(item.originalPriceRub))₽")
-                    .font(.title)
-                    .bold()
+                    .font(.system(size: 24))
+                    .fontWeight(.bold)
             }
             
         }
