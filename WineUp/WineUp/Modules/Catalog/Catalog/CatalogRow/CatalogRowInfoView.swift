@@ -1,0 +1,93 @@
+//
+//  CatalogRowInfoView.swift
+//  WineUp
+//
+//  Created by George on 25.09.2020.
+//
+
+import SwiftUI
+
+struct CatalogRowInfoView: View {
+    
+    // MARK: - Private Properties
+    
+    let item: CatalogItemModel
+
+    // MARK: - Lifecycle
+    
+    init(item: CatalogItemModel) {
+        self.item = item
+    }
+    
+    // MAR: - View
+    
+    var body: some View {
+        VStack {
+            
+            HStack {
+                Text(item.title)
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .padding(.leading, 10)
+                
+                Spacer()
+                
+                Image(systemName: "suit.heart.fill")
+                    .foregroundColor(getHeartColor())
+                    .font(.system(size: 20))
+                    .padding(.trailing, 10)
+            }
+            
+            HStack {
+                Text(item.wineDescription)
+                    .font(.callout)
+                    .multilineTextAlignment(.leading)
+                    .padding(.leading, 10)
+                
+                Spacer()
+            }
+            
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                // TODO: Add percent to CatalogItemModel
+                
+                Text("Подходит вам на 75%")
+                    .font(.callout)
+            }
+            
+            Spacer()
+            
+            HStack {
+                Image(uiImage: item.retailerImage)
+                    .frame(height: 40)
+                
+                Spacer()
+                CatalogRowDiscountView(item: item)
+                
+            }
+
+        }
+    }
+}
+
+extension CatalogRowInfoView {
+    
+    func getHeartColor() -> Color {
+        return item.isLiked ? .black : .white
+    }
+    
+}
+
+// MARK: - Preview Settings
+
+#if DEBUG
+struct CatalogRowInfoView_Previews: PreviewProvider {
+    static var previews: some View {
+        CatalogRowInfoView(item: CatalogItemModel(title: "ASD"))
+            .previewLayout(.fixed(width: 274, height: 130))
+    }
+}
+#endif
