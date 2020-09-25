@@ -1,10 +1,5 @@
 ## General
 .DS_Store
 
-## Xcode
-
-# User settings
-xcuserdata/
-
-# Gcc Patch
-/*.gcno
+## xcodeproj file can be excluded because of XcodeGen usage
+**/*.xcodeproj/
