@@ -54,7 +54,6 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.wineup
         TARGETED_DEVICE_FAMILY: 1
         XCODEGEN_STATE: YES
-        CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
     scheme:
       testTargets:
         - WineUpTests
