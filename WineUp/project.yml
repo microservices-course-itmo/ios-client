@@ -1,0 +1,103 @@
+name: WineUp
+configs:
+  Production: release
+  Staging: release
+  Debug: debug
+options:
+  minimumXcodeGenVersion: 2.17.0
+  deploymentTarget:
+    iOS: 14.0
+  bundleIdPrefix: com.wineup
+  usesTabs: false
+  indentWidth: 4
+  tabWidth: 4
+  defaultConfig: Production
+  groupSortPosition: top
+  developmentLanguage: en
+
+settings:
+  base:
+    SWIFT_VERSION: 5.3
+    TARGETED_DEVICE_FAMILY: 1
+    CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+  configs:
+    Production:
+      ENABLE_TESTABILITY: NO
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      VALIDATE_PRODUCT: YES
+    Staging:
+      ENABLE_TESTABILITY: NO
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: STAGING
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      VALIDATE_PRODUCT: YES
+    Debug:
+      ENABLE_TESTABILITY: YES
+      SWIFT_COMPILATION_MODE: singlefile
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      VALIDATE_PRODUCT: NO
+
+targets:
+  WineUp:
+    type: application
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: WineUp
+    settings:
+      base:
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
+        CODE_SIGN_IDENTITY: Apple Development
+        DEFINES_MODULE: NO
+        INFOPLIST_FILE: WineUp/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.wineup
+        TARGETED_DEVICE_FAMILY: 1
+        XCODEGEN_STATE: YES
+        CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+    scheme:
+      testTargets:
+        - WineUpTests
+        - WineUpUITests
+      gatherCoverageData: false
+      environmentVariables:
+        DYLD_PRINT_STATISTICS: 1
+    postCompileScripts:
+      - name: SwiftLint
+        script: |
+                if which swiftlint >/dev/null; then
+                  swiftlint --no-cache
+                else
+                    echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+                fi
+
+  WineUpTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: WineUpTests
+    dependencies:
+      - target: WineUp
+
+  WineUpUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: WineUpUITests
+    dependencies:
+      - target: WineUp
+
+schemes:
+  WineUp:
+    build:
+      targets:
+        WineUp: all
+    run:
+      simulateLocation:
+        allow: true
+        defaultLocation: Moscow, Russia
+    test:
+      gatherCoverageData: true
+      targets:
+        - WineUpUITests
+        - name: WineUpTests
+          parallelizable: true
