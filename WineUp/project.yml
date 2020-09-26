@@ -15,6 +15,11 @@ options:
   groupSortPosition: top
   developmentLanguage: en
 
+packages:
+  Rswift:
+    from: 5.2.0
+    url: https://github.com/mac-cain13/R.swift.Library
+
 settings:
   base:
     SWIFT_VERSION: 5.3
@@ -45,6 +50,8 @@ targets:
     deploymentTarget: 14.0
     sources:
       - path: WineUp
+    dependencies:
+      - package: Rswift
     settings:
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
