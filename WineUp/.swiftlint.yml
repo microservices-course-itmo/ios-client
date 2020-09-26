@@ -90,10 +90,6 @@ file_length:
 
 line_length: 128
 
-excluded:
-  - Carthage
-  - Pods
-
 function_parameter_count:
   - 6 # warning
   - 10 # error
