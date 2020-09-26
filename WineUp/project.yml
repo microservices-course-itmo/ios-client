@@ -75,6 +75,7 @@ targets:
                   rswift generate "$SRCROOT/WineUp/Resources/R.generated.swift"
                 else
                     echo "warning: Rswift not installed, run `brew install rswift`"
+                    exit 1
                 fi
         inputFiles:
           - $(TEMP_DIR)/rswift-lastrun
@@ -87,6 +88,7 @@ targets:
                   swiftlint --no-cache
                 else
                     echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+                    exit 1
                 fi
 
   WineUpTests:
