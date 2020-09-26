@@ -61,6 +61,18 @@ targets:
       gatherCoverageData: false
       environmentVariables:
         DYLD_PRINT_STATISTICS: 1
+    preBuildScripts:
+      - name: Rswift
+        script: |
+                if which rswift >/dev/null; then
+                  rswift generate "$SRCROOT/WineUp/Resources/R.generated.swift"
+                else
+                    echo "warning: Rswift not installed, run `brew install rswift`"
+                fi
+        inputFiles:
+          - $(TEMP_DIR)/rswift-lastrun
+        outputFiles:
+          - $(SRCROOT)/WineUp/Resources/R.generated.swift
     postCompileScripts:
       - name: SwiftLint
         script: |
