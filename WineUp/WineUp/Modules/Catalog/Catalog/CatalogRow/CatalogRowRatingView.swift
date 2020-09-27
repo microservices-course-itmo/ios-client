@@ -22,28 +22,33 @@ struct CatalogRowRating: View {
     // MARK: - View
     
     var body: some View {
-        VStack {
-            Color.init(.clear)
-            Text("Оценка экспертов:")
-                .font(.system(size: 11))
-                .fontWeight(.bold)
-                .padding(.top, 10)
-            
-            Spacer()
-            
-            HStack {
-                Image(systemName: "star.fill")
-                    .foregroundColor(self.getColorFor(index: 1))
-                Image(systemName: "star.fill")
-                    .foregroundColor(self.getColorFor(index: 2))
-                Image(systemName: "star.fill")
-                    .foregroundColor(self.getColorFor(index: 3))
-                Image(systemName: "star.fill")
-                    .foregroundColor(self.getColorFor(index: 4))
-                Image(systemName: "star.fill")
-                    .foregroundColor(self.getColorFor(index: 5))
+        ZStack {
+            Color.init(.sRGB, white: 1, opacity: 0.6).ignoresSafeArea()
+            VStack {
+                Text("Оценка экспертов:")
+                    .font(.system(size: 11))
+                    .fontWeight(.semibold)
+                    .padding(.top, 10)
+                Spacer()
+                HStack {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 13))
+                        .foregroundColor(self.getColorFor(index: 1))
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 13))
+                        .foregroundColor(self.getColorFor(index: 2))
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 13))
+                        .foregroundColor(self.getColorFor(index: 3))
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 13))
+                        .foregroundColor(self.getColorFor(index: 4))
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 13))
+                        .foregroundColor(self.getColorFor(index: 5))
+                }
+                .padding(.bottom, 10)
             }
-            .padding(.bottom, 10)
         }
     }
 }

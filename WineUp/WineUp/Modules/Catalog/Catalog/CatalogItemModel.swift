@@ -69,8 +69,8 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
                   quantityLiters: 2,
                   isLiked: false,
                   chemistry: 3,
-                  titleImage: UIImage(),
-                  retailerImage: UIImage(),
+                  titleImage: UIImage(named: "Red_and_white_wine_12-2015")!,
+                  retailerImage: UIImage(named: "image 4")!,
                   rating: 3,
                   originalPriceRub: 1400,
                   discountPercents: 20)

@@ -23,26 +23,17 @@ struct CatalogRowView: View {
     
     var body: some View {
         ZStack {
-            Color.init(.systemGray4)
             HStack {
                 CatalogRowPreviewImageView(item: item)
                     .frame(
-                        width: 146,
-                        height: 138,
+                        width: 110,
+                        height: 130,
                         alignment: .center
                     )
-                    .padding(.leading, 6)
-                
                 CatalogRowInfoView(item: item)
-                    .frame(alignment: .center)
-                    .padding(.top, 16)
-                    .padding(.bottom, 16)
-                    .padding(.leading, 11)
-                    .padding(.trailing, 10)
             }
         }
     }
-    
 }
 
 #if DEBUG

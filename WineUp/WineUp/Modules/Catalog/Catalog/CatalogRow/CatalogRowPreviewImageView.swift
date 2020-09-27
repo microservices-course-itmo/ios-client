@@ -23,9 +23,15 @@ struct CatalogRowPreviewImageView: View {
     
     var body: some View {
         ZStack {
-            Color.init(.white)
             Image(uiImage: item.titleImage)
-            CatalogRowRating(item: item)
+                .resizable()
+                .frame(width: 110, height: 130, alignment: .center)
+                .aspectRatio(contentMode: .fit)
+            VStack {
+                Spacer()
+                CatalogRowRating(item: item)
+                    .frame(width: 110, height: 50, alignment: .bottom)
+            }
         }
     }
 }

@@ -11,8 +11,10 @@ final class CatalogViewModel: ObservableObject {
     @Published var items: [CatalogItemModel]
 
     private static let testItems: [CatalogItemModel] = [
-        CatalogItemModel(title: "1"),
-        CatalogItemModel(title: "2")
+        CatalogItemModel(title: "Placeholder test"),
+        CatalogItemModel(title: "test test test test"),
+        CatalogItemModel(title: "test test test test"),
+        CatalogItemModel(title: "test test test test")
     ]
 
     init() {

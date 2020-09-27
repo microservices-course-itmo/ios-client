@@ -19,51 +19,42 @@ struct CatalogRowInfoView: View {
         self.item = item
     }
     
-    // MAR: - View
+    // MARK: - View
     
     var body: some View {
         VStack {
             HStack {
                 Text(item.title)
-                    .font(.system(size: 20))
-                    .fontWeight(.black)
-                    .lineLimit(2)
-                
+                    .font(.system(size: 16))
+                    .fontWeight(.medium)
+                    .lineLimit(4)
                 Spacer()
-                
                 Image(systemName: "suit.heart.fill")
                     .foregroundColor(getHeartColor())
                     .font(.system(size: 25))
             }
-            
             Spacer()
-            
             HStack {
                 Text(item.wineDescription)
-                    .font(.system(size: 12))
+                    .font(.system(size: 13))
                     .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-                
+                    .lineLimit(4)
                 Spacer()
             }
-            
             Spacer()
-            
             HStack {
                 Spacer()
-                
                 // TODO: Add percent to CatalogItemModel
-                
                 Text("Подходит вам на 75%")
                     .font(.system(size: 11))
             }
-            
             Spacer()
-            
             HStack {
                 Image(uiImage: item.retailerImage)
-                    .frame(height: 40)
-                
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 80)
+                    .padding(.leading, 8)
                 Spacer()
                 CatalogRowDiscountView(item: item)
             }
@@ -76,7 +67,7 @@ struct CatalogRowInfoView: View {
 extension CatalogRowInfoView {
     
     func getHeartColor() -> Color {
-        return item.isLiked ? .black : .white
+        return item.isLiked ? .red : .gray
     }
     
 }

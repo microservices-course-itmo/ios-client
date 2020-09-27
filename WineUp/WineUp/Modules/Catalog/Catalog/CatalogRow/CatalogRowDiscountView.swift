@@ -34,13 +34,11 @@ struct CatalogRowDiscountView: View {
                     .foregroundColor(.red)
                     .fontWeight(.bold)
             }
-         
             HStack {
                 Text("\(Int(item.originalPriceRub))₽")
                     .font(.system(size: 24))
                     .fontWeight(.bold)
             }
-            
         }
     }
 }

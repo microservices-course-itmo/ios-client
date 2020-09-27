@@ -19,3 +19,13 @@ struct CatalogView: View {
         }
     }
 }
+
+struct CatalogView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            CatalogView()
+                .previewDevice("iPhone 11 Pro")
+            CatalogView()
+        }
+    }
+}
