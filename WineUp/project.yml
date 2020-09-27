@@ -15,6 +15,11 @@ options:
   groupSortPosition: top
   developmentLanguage: en
 
+packages:
+  Rswift:
+    from: 5.2.0
+    url: https://github.com/mac-cain13/R.swift.Library
+
 settings:
   base:
     SWIFT_VERSION: 5.3
@@ -45,6 +50,8 @@ targets:
     deploymentTarget: 14.0
     sources:
       - path: WineUp
+    dependencies:
+      - package: Rswift
     settings:
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
@@ -61,6 +68,19 @@ targets:
       gatherCoverageData: false
       environmentVariables:
         DYLD_PRINT_STATISTICS: 1
+    preBuildScripts:
+      - name: Rswift
+        script: |
+                if which rswift >/dev/null; then
+                  rswift generate "$SRCROOT/WineUp/Resources/R.generated.swift"
+                else
+                    echo "warning: Rswift not installed, run `brew install rswift`"
+                    exit 1
+                fi
+        inputFiles:
+          - $(TEMP_DIR)/rswift-lastrun
+        outputFiles:
+          - $(SRCROOT)/WineUp/Resources/R.generated.swift
     postCompileScripts:
       - name: SwiftLint
         script: |
@@ -68,6 +88,7 @@ targets:
                   swiftlint --no-cache
                 else
                     echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+                    exit 1
                 fi
 
   WineUpTests:
