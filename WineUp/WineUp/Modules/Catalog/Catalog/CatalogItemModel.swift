@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Rswift
 
 final class CatalogItemModel: Identifiable, CustomStringConvertible {
     var id: UUID
@@ -49,20 +50,31 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
         self.discountPercents = discountPercents
     }
 
+    // TODO: Rewrite this method with buissnes logic aspects
+
+    var priceWithDiscount: Float {
+        let result = self.originalPriceRub * ((100 - self.discountPercents) / 100)
+        return Float(result)
+    }
+
+    var wineDescription: String {
+        return "\(country), \(color.name), \(wineAstringency.name), \(quantityLiters) л"
+    }
+
     // TODO: Must be removed after test data is imported into project
     convenience init(title: String) {
         self.init(title: title,
-                  country: "",
+                  country: "Украина",
                   color: .red,
                   wineAstringency: .dry,
-                  quantityLiters: 0,
+                  quantityLiters: 2,
                   isLiked: false,
-                  chemistry: 0,
-                  titleImage: UIImage(),
-                  retailerImage: UIImage(),
-                  rating: 0,
-                  originalPriceRub: 0,
-                  discountPercents: 0)
+                  chemistry: 3,
+                  titleImage: UIImage(named: "Red_and_white_wine_12-2015")!,
+                  retailerImage: UIImage(named: "image 4")!,
+                  rating: 3,
+                  originalPriceRub: 1_400,
+                  discountPercents: 20)
     }
 
     var description: String {
@@ -72,8 +84,36 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
 
 enum WineColor {
     case red, white, rose
+
+    // TODO: Create localize file with localization, can use Rswift for accessing it
+
+    var name: String {
+        switch self {
+        case .red:
+            return "Красное"
+        case .white:
+            return "Белое"
+        case .rose:
+            return "Розовое"
+        }
+    }
 }
 
 enum WineAstringency {
     case dry, semiDry, semiSweet, sweet
+
+    // TODO: Create localize file with localization, can use Rswift for accessing it
+
+    var name: String {
+        switch self {
+        case .dry:
+            return "Сухое"
+        case .semiDry:
+            return "Полусухое"
+        case .semiSweet:
+            return "Полусладкое"
+        case .sweet:
+            return "Сладкое"
+        }
+    }
 }
