@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Rswift
 
 final class CatalogItemModel: Identifiable, CustomStringConvertible {
     var id: UUID
@@ -48,14 +49,14 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
         self.originalPriceRub = originalPriceRub
         self.discountPercents = discountPercents
     }
-    
+
     // TODO: Rewrite this method with buissnes logic aspects
-    
+
     var priceWithDiscount: Float {
         let result = self.originalPriceRub * ((100 - self.discountPercents) / 100)
         return Float(result)
     }
-    
+
     var wineDescription: String {
         return "\(country), \(color.name), \(wineAstringency.name), \(quantityLiters) л"
     }
@@ -72,7 +73,7 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
                   titleImage: UIImage(named: "Red_and_white_wine_12-2015")!,
                   retailerImage: UIImage(named: "image 4")!,
                   rating: 3,
-                  originalPriceRub: 1400,
+                  originalPriceRub: 1_400,
                   discountPercents: 20)
     }
 
@@ -83,9 +84,9 @@ final class CatalogItemModel: Identifiable, CustomStringConvertible {
 
 enum WineColor {
     case red, white, rose
-    
+
     // TODO: Create localize file with localization, can use Rswift for accessing it
-    
+
     var name: String {
         switch self {
         case .red:
@@ -100,9 +101,9 @@ enum WineColor {
 
 enum WineAstringency {
     case dry, semiDry, semiSweet, sweet
-    
+
     // TODO: Create localize file with localization, can use Rswift for accessing it
-    
+
     var name: String {
         switch self {
         case .dry:

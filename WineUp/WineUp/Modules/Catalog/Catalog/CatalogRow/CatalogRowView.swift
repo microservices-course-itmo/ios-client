@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct CatalogRowView: View {
-    
+
     // MARK: - Private Properties
-    
+
     private let item: CatalogItemModel
 
     // MARK: - Lifecycle
-    
+
     init(item: CatalogItemModel) {
         self.item = item
     }
-    
+
     // MARK: - View
-    
+
     var body: some View {
         ZStack {
             HStack {

@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct CatalogRowInfoView: View {
-    
+
     // MARK: - Private Properties
-    
+
     let item: CatalogItemModel
 
     // MARK: - Lifecycle
-    
+
     init(item: CatalogItemModel) {
         self.item = item
     }
-    
+
     // MARK: - View
-    
+
     var body: some View {
         VStack {
             HStack {
@@ -65,11 +65,9 @@ struct CatalogRowInfoView: View {
 // MARK: - View Methods
 
 extension CatalogRowInfoView {
-    
     func getHeartColor() -> Color {
         return item.isLiked ? .red : .gray
     }
-    
 }
 
 // MARK: - Preview Settings

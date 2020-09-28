@@ -7,23 +7,23 @@
 
 import SwiftUI
 
-struct CatalogRowRating: View {
-    
+struct CatalogRowRatingView: View {
+
     // MARK: - Private Properties
-    
+
     let item: CatalogItemModel
 
     // MARK: - Lifecycle
-    
+
     init(item: CatalogItemModel) {
         self.item = item
     }
-    
+
     // MARK: - View
-    
+
     var body: some View {
         ZStack {
-            Color.init(.sRGB, white: 1, opacity: 0.6).ignoresSafeArea()
+            Color(.sRGB, white: 1, opacity: 0.6).ignoresSafeArea()
             VStack {
                 Text("Оценка экспертов:")
                     .font(.system(size: 11))
@@ -46,12 +46,12 @@ struct CatalogRowRating: View {
 
 // MARK: - View Methods
 
-extension CatalogRowRating {
-    
+extension CatalogRowRatingView {
+
     func getColorFor(index: Float) -> Color {
         return index <= item.rating ? .black : .gray
     }
-    
+
 }
 
 // MARK: - Preview Settings
@@ -60,7 +60,7 @@ extension CatalogRowRating {
 struct CatalogRowRating_Previews: PreviewProvider {
     static var previews: some View {
         let item = CatalogItemModel(title: "ASD")
-        return CatalogRowRating(item: item)
+        return CatalogRowRatingView(item: item)
             .previewLayout(.fixed(width: 120, height: 50))
     }
 }

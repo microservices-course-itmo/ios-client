@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct CatalogRowPreviewImageView: View {
-    
+
     // MARK: - Private Properties
-    
+
     let item: CatalogItemModel
 
     // MARK: - Lifecycle
-    
+
     init(item: CatalogItemModel) {
         self.item = item
     }
-    
+
     // MARK: - View
-    
+
     var body: some View {
         ZStack {
             Image(uiImage: item.titleImage)
@@ -29,7 +29,7 @@ struct CatalogRowPreviewImageView: View {
                 .aspectRatio(contentMode: .fit)
             VStack {
                 Spacer()
-                CatalogRowRating(item: item)
+                CatalogRowRatingView(item: item)
                     .frame(width: 110, height: 50, alignment: .bottom)
             }
         }

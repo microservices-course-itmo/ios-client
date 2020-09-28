@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct CatalogRowDiscountView: View {
-    
+
     // MARK: - Private Properties
-    
+
     let item: CatalogItemModel
 
     // MARK: - Lifecycle
-    
+
     init(item: CatalogItemModel) {
         self.item = item
     }
-    
+
     // MARK: - View
-    
+
     var body: some View {
         VStack {
             HStack {
@@ -28,7 +28,6 @@ struct CatalogRowDiscountView: View {
                     .font(.system(size: 12))
                     .strikethrough()
                     .fontWeight(.bold)
-                
                 Text("-\(Int(item.discountPercents))%")
                     .font(.system(size: 11))
                     .foregroundColor(.red)
