@@ -31,21 +31,12 @@ struct CatalogRowRating: View {
                     .padding(.top, 10)
                 Spacer()
                 HStack {
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 13))
-                        .foregroundColor(self.getColorFor(index: 1))
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 13))
-                        .foregroundColor(self.getColorFor(index: 2))
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 13))
-                        .foregroundColor(self.getColorFor(index: 3))
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 13))
-                        .foregroundColor(self.getColorFor(index: 4))
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 13))
-                        .foregroundColor(self.getColorFor(index: 5))
+                    ForEach(1..<6) { index in
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 13))
+                            .foregroundColor(self.getColorFor(index: Float(index)))
+                    }
+
                 }
                 .padding(.bottom, 10)
             }

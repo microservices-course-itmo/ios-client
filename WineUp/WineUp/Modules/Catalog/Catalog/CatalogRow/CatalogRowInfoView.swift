@@ -45,7 +45,7 @@ struct CatalogRowInfoView: View {
             HStack {
                 Spacer()
                 // TODO: Add percent to CatalogItemModel
-                Text("Подходит вам на 75%")
+                Text("Подходит вам на \(Int(item.chemistry))%")
                     .font(.system(size: 11))
             }
             Spacer()

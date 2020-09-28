@@ -19,7 +19,7 @@ struct CatalogRowPreviewImageView: View {
         self.item = item
     }
     
-    // MAR: - View
+    // MARK: - View
     
     var body: some View {
         ZStack {
