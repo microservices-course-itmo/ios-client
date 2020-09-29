@@ -10,6 +10,7 @@ import UIKit.UIImage
 
 final class CatalogViewModel: ObservableObject {
     @Published var items: [CatalogItemModel]
+    @Published var filtersBarItems: [CatalogFiltersBarItemModel]
 
     private static let testItems: [CatalogItemModel] = [
         CatalogItemModel(title: "Sarget du Gruaud Larose, AOC Saint-Julien", country: "France", color: .red, wineAstringency: .dry, quantityLiters: 0.75, isLiked: true, chemistry: 25, titleImage: UIImage(imageLiteralResourceName: "testWine 04"), retailerImage: UIImage(imageLiteralResourceName: "image 2"), rating: 3, originalPriceRub: 5_999, discountPercents: 0),
@@ -19,5 +20,16 @@ final class CatalogViewModel: ObservableObject {
 
     init() {
         self.items = CatalogViewModel.testItems
+        self.filtersBarItems = [
+            CatalogFiltersBarItemModel(title: "Рекомендованные"),
+            CatalogFiltersBarItemModel(title: "Цена"),
+            CatalogFiltersBarItemModel(title: "Страна"),
+            CatalogFiltersBarItemModel(title: "Цвет"),
+            CatalogFiltersBarItemModel(title: "Сахар")
+        ]
+    }
+
+    func filterItemDidTap(_ item: CatalogFiltersBarItemModel) {
+
     }
 }

@@ -12,10 +12,7 @@ struct CatalogRootView: View {
 
     var body: some View {
         NavigationView {
-            CatalogView()
-                .navigationBarHidden(false)
-                .navigationTitle("Catalog")
-                .navigationBarTitleDisplayMode(.inline)
+            CatalogView(searchText: "")
         }
     }
 }
