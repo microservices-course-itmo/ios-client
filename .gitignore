@@ -1,0 +1,8 @@
+## General
+.DS_Store
+
+## xcodeproj file can be excluded because of XcodeGen usage
+**/*.xcodeproj/
+
+## R.swift generated file
+**/R.generated.swift
