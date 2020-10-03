@@ -35,7 +35,6 @@ struct PriceFilterItemView: View {
 }
 
 #if DEBUG
-
 struct PriceFilterItemViewPreview: PreviewProvider {
     private static let item = PriceFilterItemModel(title: "Test value")
     static var previews: some View {
@@ -43,5 +42,4 @@ struct PriceFilterItemViewPreview: PreviewProvider {
             .previewLayout(.fixed(width: 414, height: 250))
     }
 }
-
 #endif

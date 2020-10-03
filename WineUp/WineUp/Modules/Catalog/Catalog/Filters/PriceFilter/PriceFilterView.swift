@@ -10,7 +10,7 @@ import SwiftUI
 struct PriceFilterView: View {
 
     // MARK: - State
-    
+
     @State private var fromPrice: String = ""
     @State private var toPrice: String = ""
     @State private var toggleSwitch = false
@@ -61,7 +61,6 @@ struct PriceFilterView: View {
 }
 
 #if DEBUG
-
 struct PriceFilterViewPreviews: PreviewProvider {
     private static let items = [
         PriceFilterItemModel(title: "До 1500"),
@@ -75,5 +74,4 @@ struct PriceFilterViewPreviews: PreviewProvider {
             .previewLayout(.fixed(width: 414, height: 250))
     }
 }
-
 #endif
