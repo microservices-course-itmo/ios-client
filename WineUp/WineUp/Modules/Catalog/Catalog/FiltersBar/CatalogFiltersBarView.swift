@@ -11,8 +11,8 @@ struct CatalogFiltersBarView: View {
 
     // MARK: - State
 
-    var items: [CatalogFiltersBarItemModel]
-    var onItemTap: OnItemTap?
+    let items: [CatalogFiltersBarItemModel]
+    let onItemTap: OnItemTap?
 
     // MARK: - View
 

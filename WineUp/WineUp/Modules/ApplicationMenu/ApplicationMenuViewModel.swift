@@ -7,6 +7,10 @@
 
 import Foundation
 
-final class ApplicationMenuViewModel: ObservableObject {
-
+extension ApplicationMenuView {
+    class ViewModel: ObservableObject {
+        var catalogRootViewModel: CatalogRootView.ViewModel {
+            return .init()
+        }
+    }
 }

@@ -43,6 +43,7 @@ struct CatalogRowDiscountView: View {
 }
 
 // MARK: - Preview Settings
+
 #if DEBUG
 struct CatalogRowDiscountView_Previews: PreviewProvider {
     static var previews: some View {

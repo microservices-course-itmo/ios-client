@@ -7,14 +7,19 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct CatalogView: View {
-    @ObservedObject private var viewModel = CatalogViewModel()
-    @State var searchText: String
+
+    // MARK: State
+
+    @ObservedObject private(set) var viewModel: ViewModel
+
+    // MARK: View
 
     var body: some View {
-        VStack(spacing: 0.0) {
-            SearchBarView(text: $searchText)
-            Text(searchText)
+        VStack(spacing: 0) {
+            SearchBarView(text: $viewModel.searchText)
             CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
                 self.viewModel.filterItemDidTap(item)
             }
@@ -22,18 +27,32 @@ struct CatalogView: View {
                 CatalogRowView(item: item)
             }
         }
-        .navigationBarHidden(false)
-        .navigationTitle("Catalog")
-        .navigationBarTitleDisplayMode(.inline)
+        .modifier(NavigationModifier())
     }
 }
 
-struct CatalogView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            CatalogView(searchText: "")
-                .previewDevice("iPhone 11 Pro")
-            CatalogView(searchText: "")
+// MARK: - Navigation
+
+extension CatalogView {
+    private struct NavigationModifier: ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .modifier(CatalogRootNavigationModifier())
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct CatalogView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            CatalogView(viewModel: .init())
+                .previewDevice("iPhone 11 Pro")
+            CatalogView(viewModel: .init())
+        }
+    }
+}
+#endif

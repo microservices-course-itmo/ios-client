@@ -8,26 +8,26 @@
 import SwiftUI
 
 struct ApplicationMenuView: View {
-    @ObservedObject private var viewModel = ApplicationMenuViewModel()
+    @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
         TabView {
-         CatalogRootView()
+            CatalogRootView(viewModel: viewModel.catalogRootViewModel)
                  .tabItem {
                      Image(systemName: "house.fill")
                      Text("Главное")
                  }
-         CatalogRootView()
+         CatalogRootView(viewModel: viewModel.catalogRootViewModel)
                  .tabItem {
                      Image(systemName: "book.fill")
                      Text("Каталог")
                  }
-         CatalogRootView()
+         CatalogRootView(viewModel: viewModel.catalogRootViewModel)
                  .tabItem {
                      Image(systemName: "star.fill")
                      Text("Избранное")
                  }
-         CatalogRootView()
+         CatalogRootView(viewModel: viewModel.catalogRootViewModel)
                  .tabItem {
                      Image(systemName: "person.fill")
                      Text("Профиль")
@@ -35,3 +35,11 @@ struct ApplicationMenuView: View {
         }
     }
 }
+
+#if DEBUG
+struct ApplicationMenuViewPreviews: PreviewProvider {
+    static var previews: some View {
+        ApplicationMenuView(viewModel: .init())
+    }
+}
+#endif

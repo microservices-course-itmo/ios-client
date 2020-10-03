@@ -7,6 +7,10 @@
 
 import Foundation
 
-final class CatalogRootViewModel: ObservableObject {
-
+extension CatalogRootView {
+    class ViewModel: ObservableObject {
+        var catalogViewModel: CatalogView.ViewModel {
+            return .init()
+        }
+    }
 }
