@@ -51,7 +51,7 @@ struct CatalogFilterViewPreviews: PreviewProvider {
     ]
 
     static var previews: some View {
-        VStack() {
+        VStack {
             CatalogFiltersBarView(items: items, onItemTap: nil)
         }
         .previewLayout(.fixed(width: 414, height: 120))
