@@ -11,24 +11,26 @@ import Combine
 
 extension CatalogView {
     final class ViewModel: ObservableObject {
-        @Published var items: [CatalogItemModel]
-        @Published var filtersBarItems: [CatalogFiltersBarItemModel]
-        @Published var searchText: String
+
+        // MARK: API
+
+        @Published var catalogItems: [CatalogItemModel] = []
+        @Published var filtersBarItems: [CatalogFiltersBarItemModel] = []
+        @Published var searchText: String = ""
 
         init() {
-            self.items = CatalogItemModel.mockedData
-            self.filtersBarItems = [
-                CatalogFiltersBarItemModel(title: "Рекомендованные"),
-                CatalogFiltersBarItemModel(title: "Цена"),
-                CatalogFiltersBarItemModel(title: "Страна"),
-                CatalogFiltersBarItemModel(title: "Цвет"),
-                CatalogFiltersBarItemModel(title: "Сахар")
-            ]
-            self.searchText = ""
+            initWithMockData()
         }
 
         func filterItemDidTap(_ item: CatalogFiltersBarItemModel) {
 
+        }
+
+        // MARK: Private
+
+        private func initWithMockData() {
+            self.catalogItems = CatalogItemModel.mockedData
+            self.filtersBarItems = CatalogFiltersBarItemModel.mockedData
         }
     }
 }
