@@ -7,13 +7,11 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct CatalogFiltersBarItemView: View {
 
-    // MARK: - State
-
     let item: CatalogFiltersBarItemModel
-
-    // MARK: - View
 
     var body: some View {
         Text(item.title)
@@ -21,3 +19,14 @@ struct CatalogFiltersBarItemView: View {
             .font(.system(size: 13))
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct CatalogFiltersBarItemViewPreviews: PreviewProvider {
+    static var previews: some View {
+        CatalogFiltersBarItemView(item: CatalogFiltersBarItemModel.mockedData[0])
+            .previewLayout(.fixed(width: 80, height: 60))
+    }
+}
+#endif

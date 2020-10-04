@@ -11,19 +11,17 @@ import SwiftUI
 
 struct CatalogView: View {
 
-    // MARK: State
-
     @ObservedObject private(set) var viewModel: ViewModel
-
-    // MARK: View
 
     var body: some View {
         VStack(spacing: 0) {
             SearchBarView(text: $viewModel.searchText)
+
             CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
                 self.viewModel.filterItemDidTap(item)
             }
-            List(viewModel.items) { item in
+
+            List(viewModel.catalogItems) { item in
                 CatalogRowView(item: item)
             }
         }

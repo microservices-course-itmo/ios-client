@@ -7,23 +7,15 @@
 
 import SwiftUI
 
-struct CatalogRowRatingView: View {
+// MARK: - View
 
-    // MARK: - Private Properties
+struct CatalogRowRatingView: View {
 
     let item: CatalogItemModel
 
-    // MARK: - Lifecycle
-
-    init(item: CatalogItemModel) {
-        self.item = item
-    }
-
-    // MARK: - View
-
     var body: some View {
         ZStack {
-            Color(.sRGB, white: 1, opacity: 0.6).ignoresSafeArea()
+            Color(white: 1, opacity: 0.6).ignoresSafeArea()
             VStack {
                 Text("Оценка экспертов:")
                     .font(.system(size: 11))
@@ -34,9 +26,8 @@ struct CatalogRowRatingView: View {
                     ForEach(1..<6) { index in
                         Image(systemName: "star.fill")
                             .font(.system(size: 13))
-                            .foregroundColor(self.getColorFor(index: Float(index)))
+                            .foregroundColor(color(forIndex: index))
                     }
-
                 }
                 .padding(.bottom, 10)
             }
@@ -44,17 +35,15 @@ struct CatalogRowRatingView: View {
     }
 }
 
-// MARK: - View Methods
+// MARK: - Helpers
 
-extension CatalogRowRatingView {
-
-    func getColorFor(index: Float) -> Color {
-        return index <= item.rating ? .black : .gray
+private extension CatalogRowRatingView {
+    func color(forIndex index: Int) -> Color {
+        return Float(index) <= item.rating ? .black : .gray
     }
-
 }
 
-// MARK: - Preview Settings
+// MARK: - Preview
 
 #if DEBUG
 struct CatalogRowRating_Previews: PreviewProvider {

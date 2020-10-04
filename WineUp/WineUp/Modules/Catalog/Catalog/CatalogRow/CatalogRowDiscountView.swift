@@ -9,36 +9,45 @@ import SwiftUI
 
 struct CatalogRowDiscountView: View {
 
-    // MARK: - Private Properties
-
     let item: CatalogItemModel
-
-    // MARK: - Lifecycle
-
-    init(item: CatalogItemModel) {
-        self.item = item
-    }
-
-    // MARK: - View
 
     var body: some View {
         VStack {
             HStack {
-                Text("\(Int(item.priceWithDiscount))₽")
+                Text(priceWithDiscountText)
                     .font(.system(size: 12))
                     .strikethrough()
                     .fontWeight(.bold)
-                Text("-\(Int(item.discountPercents))%")
+                Text(discountPercentsText)
                     .font(.system(size: 11))
                     .foregroundColor(.red)
                     .fontWeight(.bold)
             }
             HStack {
-                Text("\(Int(item.originalPriceRub))₽")
+                Text(originalPriceRubText)
                     .font(.system(size: 24))
                     .fontWeight(.bold)
             }
         }
+    }
+}
+
+// MARK: - Helpers
+
+private extension CatalogRowDiscountView {
+    var priceWithDiscountText: String {
+        let priceWithDiscount = Int(item.priceWithDiscount)
+        return "\(priceWithDiscount)₽"
+    }
+
+    var discountPercentsText: String {
+        let discountPercents = Int(item.discountPercents)
+        return "-\(discountPercents)₽"
+    }
+
+    var originalPriceRubText: String {
+        let originalPriceRun = Int(item.originalPriceRub)
+        return "\(originalPriceRun)₽"
     }
 }
 

@@ -7,22 +7,16 @@
 
 import SwiftUI
 
-struct CatalogRowInfoView: View {
+// MARK: - View
 
-    // MARK: - Private Properties
+struct CatalogRowInfoView: View {
 
     let item: CatalogItemModel
 
-    // MARK: - Lifecycle
-
-    init(item: CatalogItemModel) {
-        self.item = item
-    }
-
-    // MARK: - View
-
     var body: some View {
         VStack {
+
+            // Title and 'like' image
             HStack {
                 Text(item.title)
                     .font(.system(size: 16))
@@ -30,25 +24,33 @@ struct CatalogRowInfoView: View {
                     .lineLimit(4)
                 Spacer()
                 Image(systemName: "suit.heart.fill")
-                    .foregroundColor(getHeartColor())
+                    .foregroundColor(heartColor)
                     .font(.system(size: 25))
             }
+
             Spacer()
+
+            // Wine description
             HStack {
-                Text(item.wineDescription)
+                Text(wineDescriptionText)
                     .font(.system(size: 13))
                     .multilineTextAlignment(.leading)
                     .lineLimit(4)
                 Spacer()
             }
+
             Spacer()
+
+            // Compatibility
             HStack {
                 Spacer()
-                // TODO: Add percent to CatalogItemModel
-                Text("Подходит вам на \(Int(item.chemistry))%")
+                Text(compatibilityText)
                     .font(.system(size: 11))
             }
+
             Spacer()
+
+            // Price offer
             HStack {
                 Image(uiImage: item.retailerImage)
                     .resizable()
@@ -62,15 +64,23 @@ struct CatalogRowInfoView: View {
     }
 }
 
-// MARK: - View Methods
+// MARK: - Helpers
 
-extension CatalogRowInfoView {
-    func getHeartColor() -> Color {
+private extension CatalogRowInfoView {
+    var heartColor: Color {
         return item.isLiked ? .red : .gray
+    }
+
+    var compatibilityText: String {
+        return "Подходит вам на \(Int(item.chemistry))%"
+    }
+
+    var wineDescriptionText: String {
+        return item.wineDescription
     }
 }
 
-// MARK: - Preview Settings
+// MARK: - Preview
 
 #if DEBUG
 struct CatalogRowInfoView_Previews: PreviewProvider {

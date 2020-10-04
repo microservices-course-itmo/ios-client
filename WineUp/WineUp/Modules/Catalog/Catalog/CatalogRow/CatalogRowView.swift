@@ -7,34 +7,26 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct CatalogRowView: View {
 
-    // MARK: - Private Properties
-
-    private let item: CatalogItemModel
-
-    // MARK: - Lifecycle
-
-    init(item: CatalogItemModel) {
-        self.item = item
-    }
-
-    // MARK: - View
+    let item: CatalogItemModel
 
     var body: some View {
-        ZStack {
-            HStack {
-                CatalogRowPreviewImageView(item: item)
-                    .frame(
-                        width: 110,
-                        height: 130,
-                        alignment: .center
-                    )
-                CatalogRowInfoView(item: item)
-            }
+        HStack {
+            CatalogRowPreviewImageView(item: item)
+                .frame(
+                    width: 110,
+                    height: 130,
+                    alignment: .center
+                )
+            CatalogRowInfoView(item: item)
         }
     }
 }
+
+// MARK: - Preview
 
 #if DEBUG
 struct CatalogRowViewPreviews: PreviewProvider {

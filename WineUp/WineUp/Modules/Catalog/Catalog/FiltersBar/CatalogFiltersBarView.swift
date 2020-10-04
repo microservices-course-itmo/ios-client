@@ -11,33 +11,41 @@ import SwiftUI
 
 struct CatalogFiltersBarView: View {
 
-    // MARK: State
-
     let items: [CatalogFiltersBarItemModel]
-    let onItemTap: OnItemTap?
-
-    // MARK: View
+    let onItemTap: ((CatalogFiltersBarItemModel) -> Void)?
 
     var body: some View {
         VStack(spacing: 0.0) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10.0) {
-                    ForEach(items) { item in
-                        CatalogFiltersBarItemButton(item: item, action: { self.itemDidTap(item) })
-                            .frame(minWidth: 60, maxWidth: .infinity)
-                    }
-                }
-            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 60, maxHeight: 60, alignment: .center)
+            ScrollView(.horizontal, showsIndicators: false, content: itemsHStack)
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    minHeight: 60,
+                    maxHeight: 60,
+                    alignment: .center
+                )
             Divider()
         }
-
     }
+}
 
-    // MARK: Actions
+// MARK: - Displaying Items
 
-    typealias OnItemTap = (CatalogFiltersBarItemModel) -> Void
+private extension CatalogFiltersBarView {
+    func itemsHStack() -> some View {
+        HStack(spacing: 10.0) {
+            ForEach(items) { item in
+                CatalogFiltersBarItemButton(item: item, onTap: { self.itemDidTap(item) })
+                    .frame(minWidth: 60, maxWidth: .infinity)
+            }
+        }
+    }
+}
 
-    private func itemDidTap(_ item: CatalogFiltersBarItemModel) {
+// MARK: - Helpers
+
+private extension CatalogFiltersBarView {
+    func itemDidTap(_ item: CatalogFiltersBarItemModel) {
         onItemTap?(item)
     }
 }

@@ -7,13 +7,34 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct CatalogFiltersBarItemButton: View {
+
     let item: CatalogFiltersBarItemModel
-    let action: () -> Void
+    let onTap: (() -> Void)?
 
     var body: some View {
-        Button(action: action, label: {
+        Button(action: didTap, label: {
             CatalogFiltersBarItemView(item: item).padding()
         })
     }
 }
+
+// MARK: - Helpers
+
+private extension CatalogFiltersBarItemButton {
+    func didTap() {
+        onTap?()
+    }
+}
+
+// MARK: - Preview
+
+#if DEBUG
+struct CatalogFiltersBarItemButtonPreviews: PreviewProvider {
+    static var previews: some View {
+        CatalogFiltersBarItemButton(item: CatalogFiltersBarItemModel.mockedData[0], onTap: nil)
+    }
+}
+#endif
