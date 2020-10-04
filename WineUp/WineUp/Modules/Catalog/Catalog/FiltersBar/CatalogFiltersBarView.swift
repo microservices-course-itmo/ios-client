@@ -7,14 +7,16 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct CatalogFiltersBarView: View {
 
-    // MARK: - State
+    // MARK: State
 
     let items: [CatalogFiltersBarItemModel]
     let onItemTap: OnItemTap?
 
-    // MARK: - View
+    // MARK: View
 
     var body: some View {
         VStack(spacing: 0.0) {
@@ -31,7 +33,7 @@ struct CatalogFiltersBarView: View {
 
     }
 
-    // MARK: - Actions
+    // MARK: Actions
 
     typealias OnItemTap = (CatalogFiltersBarItemModel) -> Void
 
@@ -40,19 +42,13 @@ struct CatalogFiltersBarView: View {
     }
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct CatalogFilterViewPreviews: PreviewProvider {
-    private static let items = [
-        CatalogFiltersBarItemModel(title: "Рекомендованные"),
-        CatalogFiltersBarItemModel(title: "Цена"),
-        CatalogFiltersBarItemModel(title: "Страна"),
-        CatalogFiltersBarItemModel(title: "Цвет"),
-        CatalogFiltersBarItemModel(title: "Сахар")
-    ]
-
     static var previews: some View {
         VStack {
-            CatalogFiltersBarView(items: items, onItemTap: nil)
+            CatalogFiltersBarView(items: CatalogFiltersBarItemModel.mockedData, onItemTap: nil)
         }
         .previewLayout(.fixed(width: 414, height: 120))
         .background(Color.red)

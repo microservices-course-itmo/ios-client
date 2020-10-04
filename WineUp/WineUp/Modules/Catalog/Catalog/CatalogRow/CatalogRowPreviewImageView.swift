@@ -41,7 +41,7 @@ struct CatalogRowPreviewImageView: View {
 #if DEBUG
 struct CatalogRowPreviewImageView_Previews: PreviewProvider {
     static var previews: some View {
-        return CatalogRowPreviewImageView(item: CatalogItemModel(title: "ASD"))
+        return CatalogRowPreviewImageView(item: CatalogItemModel.mockedData[0])
             .previewLayout(.fixed(width: 130, height: 130))
     }
 }

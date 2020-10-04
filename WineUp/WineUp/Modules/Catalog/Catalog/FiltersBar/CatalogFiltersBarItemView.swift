@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-struct CatalogFiltersBarItemModel: Identifiable {
-    var id = UUID()
-    var title: String
-}
-
 struct CatalogFiltersBarItemView: View {
 
     // MARK: - State

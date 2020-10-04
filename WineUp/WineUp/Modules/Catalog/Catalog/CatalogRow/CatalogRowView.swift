@@ -39,7 +39,7 @@ struct CatalogRowView: View {
 #if DEBUG
 struct CatalogRowViewPreviews: PreviewProvider {
     static var previews: some View {
-        let item = CatalogItemModel(title: "Вино для хуесосов")
+        let item = CatalogItemModel.mockedData[0]
         return CatalogRowView(item: item)
             .previewLayout(.fixed(width: 414, height: 150))
     }

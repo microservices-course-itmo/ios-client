@@ -59,7 +59,7 @@ extension CatalogRowRatingView {
 #if DEBUG
 struct CatalogRowRating_Previews: PreviewProvider {
     static var previews: some View {
-        let item = CatalogItemModel(title: "ASD")
+        let item = CatalogItemModel.mockedData[0]
         return CatalogRowRatingView(item: item)
             .previewLayout(.fixed(width: 120, height: 50))
     }

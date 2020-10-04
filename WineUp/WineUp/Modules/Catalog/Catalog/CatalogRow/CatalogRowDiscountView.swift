@@ -47,7 +47,7 @@ struct CatalogRowDiscountView: View {
 #if DEBUG
 struct CatalogRowDiscountView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowDiscountView(item: CatalogItemModel(title: "ASD"))
+        CatalogRowDiscountView(item: CatalogItemModel.mockedData[0])
             .previewLayout(.fixed(width: 150, height: 50))
     }
 }

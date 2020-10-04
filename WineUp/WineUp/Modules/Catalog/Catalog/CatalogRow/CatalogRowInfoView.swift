@@ -75,7 +75,7 @@ extension CatalogRowInfoView {
 #if DEBUG
 struct CatalogRowInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowInfoView(item: CatalogItemModel(title: "ASD"))
+        CatalogRowInfoView(item: CatalogItemModel.mockedData[0])
             .previewLayout(.fixed(width: 274, height: 130))
     }
 }
