@@ -12,8 +12,6 @@ import SwiftUI
 /// Price filter view
 struct PriceFilterView: View {
 
-    // MARK: State
-
     @State private var fromPrice: String = ""
     @State private var toPrice: String = ""
     @State private var toggleSwitch = false
@@ -21,25 +19,10 @@ struct PriceFilterView: View {
     var items: [Item]
     var onItemTap: ((Item) -> Void)?
 
-    // MARK: View
-
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
 
-            // Fields for manual price interval setting
-            HStack(alignment: .center, spacing: 15) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("От").foregroundColor(.gray)
-                    TextField("0000", text: $fromPrice)
-                    Divider()
-                }
-
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("До").foregroundColor(.gray)
-                    TextField("0000", text: $toPrice)
-                    Divider()
-                }
-            }
+            MinMaxFields(fromPrice: $fromPrice, toPrice: $toPrice)
 
             // Discount offers switch
             Toggle(isOn: $toggleSwitch) {
@@ -50,7 +33,7 @@ struct PriceFilterView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0.0) {
                     ForEach(items) { item in
-                        PriceFilterItemButton(item: item, action: { self.itemDidTap(item) })
+                        ItemButton(item: item, action: { self.itemDidTap(item) })
                             .frame(minWidth: 60, maxWidth: .infinity)
                     }
                 }

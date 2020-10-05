@@ -36,7 +36,7 @@ private extension CatalogFiltersBarView {
     func itemsHStack() -> some View {
         HStack(spacing: 10.0) {
             ForEach(items) { item in
-                CatalogFiltersBarItemButton(item: item, onTap: { self.itemDidTap(item) })
+                ItemButton(item: item, onTap: { self.itemDidTap(item) })
                     .frame(minWidth: 60, maxWidth: .infinity)
             }
         }
@@ -54,7 +54,7 @@ private extension CatalogFiltersBarView {
 // MARK: - Preview
 
 #if DEBUG
-struct CatalogFilterView_Previews: PreviewProvider {
+struct CatalogFiltersBarView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             CatalogFiltersBarView(items: CatalogFiltersBarView.Item.mockedData, onItemTap: nil)

@@ -16,13 +16,13 @@ struct CatalogRowView: View {
 
     var body: some View {
         HStack {
-            CatalogRowPreviewImageView(item: item)
+            PreviewImageView(item: item)
                 .frame(
                     width: 110,
                     height: 130,
                     alignment: .center
                 )
-            CatalogRowInfoView(item: item)
+            InfoView(item: item)
         }
     }
 }
