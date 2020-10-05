@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Price filter view
 struct PriceFilterView: View {
 
     // MARK: State
@@ -70,8 +71,10 @@ struct PriceFilterView: View {
 // MARK: - Model
 
 extension PriceFilterView {
+    /// Predefined price interval like `500-1000`
     struct Item: Identifiable {
         var id = UUID()
+        /// Text representation like `500-1000`
         var title: String
     }
 }

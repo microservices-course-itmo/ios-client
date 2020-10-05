@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// `CatalogFiltersButtonItemView` wrapper with `onTap` callback
 struct CatalogFiltersBarItemButton: View {
 
     let item: CatalogFiltersBarView.Item

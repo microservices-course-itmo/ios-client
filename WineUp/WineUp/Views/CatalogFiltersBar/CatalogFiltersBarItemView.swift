@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Filter visual representation without interaction
 struct CatalogFiltersBarItemView: View {
 
     let item: CatalogFiltersBarView.Item

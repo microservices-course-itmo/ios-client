@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Catalog item rating view (stars row)
 struct CatalogRowRatingView: View {
 
     let item: CatalogView.Item

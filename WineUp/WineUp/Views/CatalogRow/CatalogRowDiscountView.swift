@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// MARK: - View
+
+/// Catalog item price offer view 
 struct CatalogRowDiscountView: View {
 
     let item: CatalogView.Item

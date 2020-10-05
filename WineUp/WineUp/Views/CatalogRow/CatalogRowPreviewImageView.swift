@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Catalog item title image and rating overlay view
 struct CatalogRowPreviewImageView: View {
 
     let item: CatalogView.Item

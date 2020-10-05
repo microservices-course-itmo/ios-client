@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+/// Navigation wrapper of CatalogView
 struct CatalogRootView: View {
+
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {

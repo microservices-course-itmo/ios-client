@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Catalog item info, price offer, compatibility and retailer view
 struct CatalogRowInfoView: View {
 
     let item: CatalogView.Item

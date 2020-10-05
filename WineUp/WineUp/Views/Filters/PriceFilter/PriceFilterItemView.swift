@@ -10,6 +10,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Predefined price interval non-interactive view
 struct PriceFilterItemView: View {
 
     let item: PriceFilterView.Item

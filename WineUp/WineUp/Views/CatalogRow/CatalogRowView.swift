@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Catalog item visual representation (like `UITableViewCell`)
 struct CatalogRowView: View {
 
     let item: CatalogView.Item

@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - View
 
+/// Horizontal scrollable list of filters with callback on tap on a filter
 struct CatalogFiltersBarView: View {
 
     let items: [Item]
@@ -34,6 +35,7 @@ struct CatalogFiltersBarView: View {
 extension CatalogFiltersBarView {
     struct Item: Identifiable {
         var id = UUID()
+        /// Filter name
         var title: String
     }
 }
