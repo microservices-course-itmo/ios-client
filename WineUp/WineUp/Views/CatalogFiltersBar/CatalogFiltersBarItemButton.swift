@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CatalogFiltersBarItemButton: View {
 
-    let item: CatalogFiltersBarItemModel
+    let item: CatalogFiltersBarView.Item
     let onTap: (() -> Void)?
 
     var body: some View {
@@ -34,7 +34,7 @@ private extension CatalogFiltersBarItemButton {
 #if DEBUG
 struct CatalogFiltersBarItemButton_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogFiltersBarItemButton(item: CatalogFiltersBarItemModel.mockedData[0], onTap: nil)
+        CatalogFiltersBarItemButton(item: CatalogFiltersBarView.Item.mockedData[0], onTap: nil)
     }
 }
 #endif

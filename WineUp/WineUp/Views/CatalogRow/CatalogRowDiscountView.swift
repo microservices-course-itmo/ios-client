@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CatalogRowDiscountView: View {
 
-    let item: CatalogItemModel
+    let item: CatalogView.Item
 
     var body: some View {
         VStack {
@@ -56,7 +56,7 @@ private extension CatalogRowDiscountView {
 #if DEBUG
 struct CatalogRowDiscountView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowDiscountView(item: CatalogItemModel.mockedData[0])
+        CatalogRowDiscountView(item: CatalogView.Item.mockedData[0])
             .previewLayout(.fixed(width: 150, height: 50))
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CatalogFiltersBarItemView: View {
 
-    let item: CatalogFiltersBarItemModel
+    let item: CatalogFiltersBarView.Item
 
     var body: some View {
         Text(item.title)
@@ -25,7 +25,7 @@ struct CatalogFiltersBarItemView: View {
 #if DEBUG
 struct CatalogFiltersBarItemView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogFiltersBarItemView(item: CatalogFiltersBarItemModel.mockedData[0])
+        CatalogFiltersBarItemView(item: CatalogFiltersBarView.Item.mockedData[0])
             .previewLayout(.fixed(width: 80, height: 60))
     }
 }

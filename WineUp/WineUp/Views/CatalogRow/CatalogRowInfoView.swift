@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CatalogRowInfoView: View {
 
-    let item: CatalogItemModel
+    let item: CatalogView.Item
 
     var body: some View {
         VStack {
@@ -76,7 +76,7 @@ private extension CatalogRowInfoView {
     }
 
     var wineDescriptionText: String {
-        return item.wineDescription
+        return "\(item.country), \(item.color.name), \(item.wineAstringency.name), \(item.quantityLiters) л"
     }
 }
 
@@ -85,7 +85,7 @@ private extension CatalogRowInfoView {
 #if DEBUG
 struct CatalogRowInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowInfoView(item: CatalogItemModel.mockedData[0])
+        CatalogRowInfoView(item: CatalogView.Item.mockedData[0])
             .previewLayout(.fixed(width: 274, height: 130))
     }
 }

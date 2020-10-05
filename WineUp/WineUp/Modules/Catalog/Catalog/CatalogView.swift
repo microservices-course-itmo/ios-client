@@ -31,6 +31,33 @@ struct CatalogView: View {
     }
 }
 
+// MARK: - Model
+
+extension CatalogView {
+    struct Item: Identifiable {
+        var id = UUID()
+        var title: String
+        var country: String
+        var color: WineColor
+        var wineAstringency: WineAstringency
+        var quantityLiters: Float
+        var isLiked: Bool
+        var chemistry: Float
+        var titleImage: UIImage
+        var retailerImage: UIImage
+        var rating: Float
+        var originalPriceRub: Float
+        var discountPercents: Float
+    }
+}
+
+extension CatalogView.Item {
+    var priceWithDiscount: Float {
+        let result = self.originalPriceRub * ((100 - self.discountPercents) / 100)
+        return Float(result)
+    }
+}
+
 // MARK: - Preview
 
 #if DEBUG

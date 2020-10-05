@@ -11,8 +11,8 @@ import SwiftUI
 
 struct CatalogFiltersBarView: View {
 
-    let items: [CatalogFiltersBarItemModel]
-    let onItemTap: ((CatalogFiltersBarItemModel) -> Void)?
+    let items: [Item]
+    let onItemTap: ((Item) -> Void)?
 
     var body: some View {
         VStack(spacing: 0.0) {
@@ -26,6 +26,15 @@ struct CatalogFiltersBarView: View {
                 )
             Divider()
         }
+    }
+}
+
+// MARK: - Model
+
+extension CatalogFiltersBarView {
+    struct Item: Identifiable {
+        var id = UUID()
+        var title: String
     }
 }
 
@@ -45,7 +54,7 @@ private extension CatalogFiltersBarView {
 // MARK: - Helpers
 
 private extension CatalogFiltersBarView {
-    func itemDidTap(_ item: CatalogFiltersBarItemModel) {
+    func itemDidTap(_ item: Item) {
         onItemTap?(item)
     }
 }
@@ -56,7 +65,7 @@ private extension CatalogFiltersBarView {
 struct CatalogFilterView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            CatalogFiltersBarView(items: CatalogFiltersBarItemModel.mockedData, onItemTap: nil)
+            CatalogFiltersBarView(items: CatalogFiltersBarView.Item.mockedData, onItemTap: nil)
         }
         .previewLayout(.fixed(width: 414, height: 120))
         .background(Color.red)

@@ -14,23 +14,23 @@ extension CatalogView {
 
         // MARK: API
 
-        @Published var catalogItems: [CatalogItemModel] = []
-        @Published var filtersBarItems: [CatalogFiltersBarItemModel] = []
+        @Published var catalogItems: [CatalogView.Item] = []
+        @Published var filtersBarItems: [CatalogFiltersBarView.Item] = []
         @Published var searchText: String = ""
 
         init() {
             initWithMockData()
         }
 
-        func filterItemDidTap(_ item: CatalogFiltersBarItemModel) {
+        func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
 
         }
 
         // MARK: Private
 
         private func initWithMockData() {
-            self.catalogItems = CatalogItemModel.mockedData
-            self.filtersBarItems = CatalogFiltersBarItemModel.mockedData
+            self.catalogItems = CatalogView.Item.mockedData
+            self.filtersBarItems = CatalogFiltersBarView.Item.mockedData
         }
     }
 }

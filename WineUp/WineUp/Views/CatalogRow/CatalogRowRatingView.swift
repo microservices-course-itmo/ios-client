@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CatalogRowRatingView: View {
 
-    let item: CatalogItemModel
+    let item: CatalogView.Item
 
     var body: some View {
         ZStack {
@@ -48,7 +48,7 @@ private extension CatalogRowRatingView {
 #if DEBUG
 struct CatalogRowRating_Previews: PreviewProvider {
     static var previews: some View {
-        let item = CatalogItemModel.mockedData[0]
+        let item = CatalogView.Item.mockedData[0]
         return CatalogRowRatingView(item: item)
             .previewLayout(.fixed(width: 120, height: 50))
     }

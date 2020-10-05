@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CatalogRowPreviewImageView: View {
 
-    let item: CatalogItemModel
+    let item: CatalogView.Item
 
     var body: some View {
         ZStack {
@@ -41,7 +41,7 @@ struct CatalogRowPreviewImageView: View {
 #if DEBUG
 struct CatalogRowPreviewImageView_Previews: PreviewProvider {
     static var previews: some View {
-        return CatalogRowPreviewImageView(item: CatalogItemModel.mockedData[0])
+        return CatalogRowPreviewImageView(item: CatalogView.Item.mockedData[0])
             .previewLayout(.fixed(width: 130, height: 130))
     }
 }
