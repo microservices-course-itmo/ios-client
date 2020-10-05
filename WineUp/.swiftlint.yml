@@ -75,7 +75,7 @@ opt_in_rules:
 
 disabled_rules:
   - todo
-  - file_name
+    #  - file_name
 
 identifier_name:
   excluded:

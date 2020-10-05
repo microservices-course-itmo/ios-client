@@ -1,5 +1,5 @@
 //
-//  CatalogRootViewModel.swift
+//  ApplicationMenuView+ViewModel.swift
 //  WineUp
 //
 //  Created by Александр Пахомов on 24.09.2020.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension CatalogRootView {
+extension ApplicationMenuView {
     class ViewModel: ObservableObject {
-        var catalogViewModel: CatalogView.ViewModel {
+        var catalogRootViewModel: CatalogRootView.ViewModel {
             return .init()
         }
     }
