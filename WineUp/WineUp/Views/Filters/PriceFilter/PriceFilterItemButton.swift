@@ -7,20 +7,27 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct PriceFilterItemButton: View {
-    let item: PriceFilterItemModel
+
+    let item: PriceFilterView.Item
     let action: () -> Void
 
     var body: some View {
-        Button(action: action, label: {
-            PriceFilterItemView(item: item).padding()
-        })
+        Button(action: action) {
+            PriceFilterItemView(item: item)
+                .padding()
+        }
     }
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct PriceFilterItemButtonPreview: PreviewProvider {
-    private static let item = PriceFilterItemModel(title: "Test value")
+    private static let item = PriceFilterView.Item(title: "Test value")
+
     static var previews: some View {
         return PriceFilterItemButton(item: item, action: {})
             .previewLayout(.fixed(width: 414, height: 250))

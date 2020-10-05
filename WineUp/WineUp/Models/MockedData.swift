@@ -30,3 +30,13 @@ extension CatalogFiltersBarItemModel {
         CatalogFiltersBarItemModel(title: "Сахар")
     ]
 }
+
+extension PriceFilterView.Item {
+    static let mockedData: [PriceFilterView.Item] = [
+        PriceFilterView.Item(title: "До 1500"),
+        PriceFilterView.Item(title: "1500-3000"),
+        PriceFilterView.Item(title: "3000-5000"),
+        PriceFilterView.Item(title: "5000-10000"),
+        PriceFilterView.Item(title: "Больше 1000")
+    ]
+}

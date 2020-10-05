@@ -8,18 +8,11 @@
 
 import SwiftUI
 
-struct PriceFilterItemModel: Identifiable {
-    var id = UUID()
-    var title: String
-}
+// MARK: - View
 
 struct PriceFilterItemView: View {
 
-    // MARK: - State
-
-    let item: PriceFilterItemModel
-
-    // MARK: - View
+    let item: PriceFilterView.Item
 
     var body: some View {
         Text(item.title)
@@ -34,9 +27,12 @@ struct PriceFilterItemView: View {
     }
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct PriceFilterItemViewPreview: PreviewProvider {
-    private static let item = PriceFilterItemModel(title: "Test value")
+    private static let item = PriceFilterView.Item(title: "Test value")
+
     static var previews: some View {
         return PriceFilterItemView(item: item)
             .previewLayout(.fixed(width: 414, height: 250))
