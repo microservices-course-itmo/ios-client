@@ -1,4 +1,3 @@
-//swiftlint:disable:this file_name
 //
 //  MockedData.swift
 //  WineUp
@@ -10,8 +9,6 @@ import UIKit.UIImage
 
 // TODO: Wrap all the code here into #if DEBUG #endif block in order to remote mocked data from release
 // Currently mocked data is used in 'release' due to lack of server
-
-//swiftlint:disable all
 
 extension CatalogView.Item {
     static let mockedData: [CatalogView.Item] = [
