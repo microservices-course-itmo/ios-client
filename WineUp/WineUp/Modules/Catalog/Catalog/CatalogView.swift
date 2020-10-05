@@ -25,19 +25,9 @@ struct CatalogView: View {
                 CatalogRowView(item: item)
             }
         }
-        .modifier(NavigationModifier())
-    }
-}
-
-// MARK: - Navigation
-
-extension CatalogView {
-    private struct NavigationModifier: ViewModifier {
-        func body(content: Content) -> some View {
-            content
-                .modifier(CatalogRootNavigationModifier())
-                .navigationBarTitleDisplayMode(.inline)
-        }
+        .navigationTitle("Catalog")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(false)
     }
 }
 
