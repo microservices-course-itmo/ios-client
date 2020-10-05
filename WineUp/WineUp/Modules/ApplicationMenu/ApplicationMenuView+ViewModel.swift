@@ -7,10 +7,18 @@
 
 import Foundation
 
+// MARK: - Variables & Init
+
 extension ApplicationMenuView {
     class ViewModel: ObservableObject {
-        var catalogRootViewModel: CatalogRootView.ViewModel {
-            return .init()
-        }
+
+    }
+}
+
+// MARK: - Public Methods
+
+extension ApplicationMenuView.ViewModel {
+    var catalogRootViewModel: CatalogRootView.ViewModel {
+        return .init()
     }
 }

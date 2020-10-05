@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 import Combine
 
+// MARK: - Variables & Init
+
 extension CatalogView {
     final class ViewModel: ObservableObject {
-
-        // MARK: API
 
         @Published var catalogItems: [CatalogView.Item] = []
         @Published var filtersBarItems: [CatalogFiltersBarView.Item] = []
@@ -21,16 +21,22 @@ extension CatalogView {
         init() {
             initWithMockData()
         }
+    }
+}
 
-        func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
+// MARK: - Public Methods
 
-        }
+extension CatalogView.ViewModel {
+    func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
 
-        // MARK: Private
+    }
+}
 
-        private func initWithMockData() {
-            self.catalogItems = CatalogView.Item.mockedData
-            self.filtersBarItems = CatalogFiltersBarView.Item.mockedData
-        }
+// MARK: - Helpers
+
+private extension CatalogView.ViewModel {
+    func initWithMockData() {
+        self.catalogItems = CatalogView.Item.mockedData
+        self.filtersBarItems = CatalogFiltersBarView.Item.mockedData
     }
 }
