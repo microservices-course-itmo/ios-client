@@ -10,6 +10,7 @@ import SwiftUI
 // MARK: - View
 
 struct ApplicationRootView: View {
+
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {

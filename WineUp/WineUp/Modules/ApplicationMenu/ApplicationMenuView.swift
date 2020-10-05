@@ -9,6 +9,7 @@ import SwiftUI
 
 /// TabView of application main modules like Catalog, Main, Favorites and Profile
 struct ApplicationMenuView: View {
+
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
