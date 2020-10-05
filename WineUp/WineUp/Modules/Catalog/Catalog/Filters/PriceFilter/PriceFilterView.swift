@@ -61,7 +61,7 @@ struct PriceFilterView: View {
 }
 
 #if DEBUG
-struct PriceFilterViewPreviews: PreviewProvider {
+struct PriceFilterView_Previews: PreviewProvider {
     private static let items = [
         PriceFilterItemModel(title: "До 1500"),
         PriceFilterItemModel(title: "1500-3000"),

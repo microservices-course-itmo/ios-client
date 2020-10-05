@@ -29,7 +29,7 @@ struct CatalogRowView: View {
 // MARK: - Preview
 
 #if DEBUG
-struct CatalogRowViewPreviews: PreviewProvider {
+struct CatalogRowView_Previews: PreviewProvider {
     static var previews: some View {
         let item = CatalogItemModel.mockedData[0]
         return CatalogRowView(item: item)

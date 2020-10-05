@@ -53,7 +53,7 @@ private extension CatalogFiltersBarView {
 // MARK: - Preview
 
 #if DEBUG
-struct CatalogFilterViewPreviews: PreviewProvider {
+struct CatalogFilterView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             CatalogFiltersBarView(items: CatalogFiltersBarItemModel.mockedData, onItemTap: nil)

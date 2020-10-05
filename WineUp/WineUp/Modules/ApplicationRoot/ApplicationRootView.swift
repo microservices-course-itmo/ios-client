@@ -20,7 +20,7 @@ struct ApplicationRootView: View {
 // MARK: - Preview
 
 #if DEBUG
-struct ApplicationRootViewPreviews: PreviewProvider {
+struct ApplicationRootView_Previews: PreviewProvider {
     static var previews: some View {
         ApplicationRootView(viewModel: .init())
     }

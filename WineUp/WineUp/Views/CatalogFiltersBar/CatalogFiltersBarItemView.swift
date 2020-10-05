@@ -23,7 +23,7 @@ struct CatalogFiltersBarItemView: View {
 // MARK: - Preview
 
 #if DEBUG
-struct CatalogFiltersBarItemViewPreviews: PreviewProvider {
+struct CatalogFiltersBarItemView_Previews: PreviewProvider {
     static var previews: some View {
         CatalogFiltersBarItemView(item: CatalogFiltersBarItemModel.mockedData[0])
             .previewLayout(.fixed(width: 80, height: 60))

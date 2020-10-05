@@ -32,7 +32,7 @@ private extension CatalogFiltersBarItemButton {
 // MARK: - Preview
 
 #if DEBUG
-struct CatalogFiltersBarItemButtonPreviews: PreviewProvider {
+struct CatalogFiltersBarItemButton_Previews: PreviewProvider {
     static var previews: some View {
         CatalogFiltersBarItemButton(item: CatalogFiltersBarItemModel.mockedData[0], onTap: nil)
     }

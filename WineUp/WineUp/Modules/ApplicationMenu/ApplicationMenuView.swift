@@ -37,7 +37,7 @@ struct ApplicationMenuView: View {
 }
 
 #if DEBUG
-struct ApplicationMenuViewPreviews: PreviewProvider {
+struct ApplicationMenuView_Previews: PreviewProvider {
     static var previews: some View {
         ApplicationMenuView(viewModel: .init())
     }
