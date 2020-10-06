@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension Font {
+    static let itemTitle: Font = .system(size: 13)
+}
+
+private extension Color {
+    static let itemTitle: Color = .primary
+    static let border = Color(.systemGray4)
+}
+
+private extension CGFloat {
+    static let borderWidth: CGFloat = 1
+    static let borderCornerRadius: CGFloat = 25
+    static let borderHPadding: CGFloat = -10
+    static let borderVPadding: CGFloat = -10
+}
+
 // MARK: - View
 
 extension PriceFilterView {
@@ -17,13 +35,13 @@ extension PriceFilterView {
 
         var body: some View {
             Text(item.title)
-                .foregroundColor(.primary)
-                .font(.system(size: 13))
+                .foregroundColor(.itemTitle)
+                .font(.itemTitle)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 25)
-                        .stroke(Color(.systemGray4), lineWidth: 1)
-                        .padding([.leading, .trailing], -10)
-                        .padding([.top, .bottom], -10)
+                    RoundedRectangle(cornerRadius: .borderCornerRadius)
+                        .stroke(Color.border, lineWidth: .borderWidth)
+                        .padding([.leading, .trailing], .borderHPadding)
+                        .padding([.top, .bottom], .borderVPadding)
                 )
         }
     }
@@ -33,7 +51,7 @@ extension PriceFilterView {
 
 #if DEBUG
 struct PriceFilterViewItemView_Previews: PreviewProvider {
-    private static let item = PriceFilterView.Item(title: "Test value")
+    private static let item = PriceFilterView.Item.mockedData[0]
 
     static var previews: some View {
         return PriceFilterView.ItemView(item: item)

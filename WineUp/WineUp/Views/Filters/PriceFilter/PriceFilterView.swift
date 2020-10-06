@@ -7,55 +7,54 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let rootVSpacing: CGFloat = 10
+    static let predefinedListItemsHSpacing: CGFloat = 0
+    static let predefinedItemMinWidth: CGFloat = 60
+    static let predefinedListHeight: CGFloat = 60
+}
+
+private extension LocalizedStringKey {
+    static let discountOffersSwitchTitle = LocalizedStringKey("Товар со скидкой")
+}
+
 // MARK: - View
 
 /// Price filter view
 struct PriceFilterView: View {
 
-    @State private var fromPrice: String = ""
-    @State private var toPrice: String = ""
-    @State private var toggleSwitch = false
-
-    var items: [Item]
-    var onItemTap: ((Item) -> Void)?
+    @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: .rootVSpacing) {
 
-            MinMaxFields(fromPrice: $fromPrice, toPrice: $toPrice)
+            MinMaxFields(fromPrice: $viewModel.minPriceString, toPrice: $viewModel.maxPriceString)
 
             // Discount offers switch
-            Toggle(isOn: $toggleSwitch) {
-                Text("Товар со скидкой")
+            Toggle(isOn: $viewModel.showDiscountOffers) {
+                Text(LocalizedStringKey.discountOffersSwitchTitle)
             }
 
             // Scrollable list of predefined prices intervals
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 0.0) {
-                    ForEach(items) { item in
-                        ItemButton(item: item, action: { self.itemDidTap(item) })
-                            .frame(minWidth: 60, maxWidth: .infinity)
+                HStack(spacing: .predefinedListItemsHSpacing) {
+                    ForEach(viewModel.predefinedPrices) { item in
+                        ItemButton(item: item, action: { self.viewModel.itemDidTap(item) })
+                            .frame(minWidth: .predefinedItemMinWidth, maxWidth: .infinity)
                     }
                 }
             }
             .frame(
                 minWidth: 0,
                 maxWidth: .infinity,
-                minHeight: 60,
-                maxHeight: 60,
+                minHeight: .predefinedListHeight,
+                maxHeight: .predefinedListHeight,
                 alignment: .center
             )
         }
-        .padding(.leading, 5)
-        .padding(.trailing, 10)
-    }
-}
-
-// MARK: - Helpers
-
-private extension PriceFilterView {
-    func itemDidTap(_ item: Item) {
-        onItemTap?(item)
+        .padding()
     }
 }
 
@@ -64,7 +63,7 @@ private extension PriceFilterView {
 #if DEBUG
 struct PriceFilterView_Previews: PreviewProvider {
     static var previews: some View {
-        return PriceFilterView(items: PriceFilterView.Item.mockedData, onItemTap: nil)
+        return PriceFilterView(viewModel: .init())
             .previewLayout(.fixed(width: 414, height: 250))
     }
 }

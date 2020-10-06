@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension Font {
+    static let itemTitle: Font = .system(size: 13)
+}
+
+private extension Color {
+    static let itemTitle: Color = .primary
+}
+
 // MARK: - View
 
 extension CatalogFiltersBarView {
@@ -16,8 +26,8 @@ extension CatalogFiltersBarView {
 
         var body: some View {
             Text(item.title)
-                .foregroundColor(.primary)
-                .font(.system(size: 13))
+                .foregroundColor(.itemTitle)
+                .font(.itemTitle)
         }
     }
 }

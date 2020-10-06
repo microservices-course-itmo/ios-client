@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let fieldsHSpacing: CGFloat = 15
+    static let fieldsVSpacing: CGFloat = 10
+}
+
+private extension Color {
+    static let fieldTitle: Color = .gray
+}
+
+private extension LocalizedStringKey {
+    static let fieldFromTitle = LocalizedStringKey("От")
+    static let fieldToTitle = LocalizedStringKey("До")
+    static let fieldFromPlaceholder = LocalizedStringKey("0000")
+    static let fieldToPlaceholder = LocalizedStringKey("0000")
+}
+
 // MARK: - View
 
 extension PriceFilterView {
@@ -17,16 +35,22 @@ extension PriceFilterView {
         @Binding var toPrice: String
 
         var body: some View {
-            HStack(alignment: .center, spacing: 15) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("От").foregroundColor(.gray)
-                    TextField("0000", text: $fromPrice)
+            HStack(alignment: .center, spacing: .fieldsHSpacing) {
+                VStack(alignment: .leading, spacing: .fieldsVSpacing) {
+                    Text(LocalizedStringKey.fieldFromTitle)
+                        .foregroundColor(.fieldTitle)
+
+                    TextField(LocalizedStringKey.fieldFromPlaceholder, text: $fromPrice)
+
                     Divider()
                 }
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("До").foregroundColor(.gray)
-                    TextField("0000", text: $toPrice)
+                VStack(alignment: .leading, spacing: .fieldsVSpacing) {
+                    Text(LocalizedStringKey.fieldToTitle)
+                        .foregroundColor(.fieldTitle)
+
+                    TextField(LocalizedStringKey.fieldToPlaceholder, text: $toPrice)
+
                     Divider()
                 }
             }

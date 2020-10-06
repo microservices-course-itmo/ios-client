@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let barHeight: CGFloat = 60
+    static let interitemSpacing: CGFloat = 10
+    static let minItemWidth: CGFloat = 60
+}
+
 // MARK: - View
 
 /// Horizontal scrollable list of filters with callback on tap on a filter
@@ -16,13 +24,13 @@ struct CatalogFiltersBarView: View {
     let onItemTap: ((Item) -> Void)?
 
     var body: some View {
-        VStack(spacing: 0.0) {
+        VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false, content: itemsHStack)
                 .frame(
                     minWidth: 0,
                     maxWidth: .infinity,
-                    minHeight: 60,
-                    maxHeight: 60,
+                    minHeight: .barHeight,
+                    maxHeight: .barHeight,
                     alignment: .center
                 )
             Divider()
@@ -34,10 +42,10 @@ struct CatalogFiltersBarView: View {
 
 private extension CatalogFiltersBarView {
     func itemsHStack() -> some View {
-        HStack(spacing: 10.0) {
+        HStack(spacing: .interitemSpacing) {
             ForEach(items) { item in
                 ItemButton(item: item, onTap: { self.itemDidTap(item) })
-                    .frame(minWidth: 60, maxWidth: .infinity)
+                    .frame(minWidth: .minItemWidth, maxWidth: .infinity)
             }
         }
     }

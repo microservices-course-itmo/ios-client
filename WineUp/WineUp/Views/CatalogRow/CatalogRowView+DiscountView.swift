@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension Font {
+    static let priceWithDiscount: Font = .system(size: 12, weight: .bold)
+    static let discountPercents: Font = .system(size: 11, weight: .bold)
+    static let originalPrice: Font = .system(size: 24, weight: .bold)
+}
+
+private extension Color {
+    static let discountPercents: Color = .red
+}
+
 // MARK: - View
 
 extension CatalogRowView {
@@ -19,18 +31,15 @@ extension CatalogRowView {
             VStack {
                 HStack {
                     Text(priceWithDiscountText)
-                        .font(.system(size: 12))
+                        .font(.priceWithDiscount)
                         .strikethrough()
-                        .fontWeight(.bold)
                     Text(discountPercentsText)
-                        .font(.system(size: 11))
-                        .foregroundColor(.red)
-                        .fontWeight(.bold)
+                        .font(.discountPercents)
+                        .foregroundColor(.discountPercents)
                 }
                 HStack {
                     Text(originalPriceRubText)
-                        .font(.system(size: 24))
-                        .fontWeight(.bold)
+                        .font(.originalPrice)
                 }
             }
         }

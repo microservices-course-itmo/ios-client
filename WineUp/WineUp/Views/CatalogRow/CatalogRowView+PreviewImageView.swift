@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let titleImageWidth: CGFloat = 110
+    static let titleImageHeight: CGFloat = 130
+    static let ratingViewWidth: CGFloat = 110
+    static let ratingViewHeight: CGFloat = 50
+}
+
 // MARK: - View
 
 extension CatalogRowView {
@@ -20,8 +29,8 @@ extension CatalogRowView {
                 Image(uiImage: item.titleImage)
                     .resizable()
                     .frame(
-                        width: 110,
-                        height: 130,
+                        width: .titleImageWidth,
+                        height: .titleImageHeight,
                         alignment: .center
                     )
                     .aspectRatio(contentMode: .fit)
@@ -29,15 +38,14 @@ extension CatalogRowView {
                     Spacer()
                     RatingView(item: item)
                         .frame(
-                            width: 110,
-                            height: 50,
+                            width: .ratingViewWidth,
+                            height: .ratingViewHeight,
                             alignment: .bottom
                         )
                 }
             }
         }
     }
-
 }
 
 // MARK: - Preview

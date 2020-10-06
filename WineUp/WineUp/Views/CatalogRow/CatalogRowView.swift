@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let previewWidth: CGFloat = 110
+    static let previewHeight: CGFloat = 130
+}
+
 // MARK: - View
 
 /// Catalog item visual representation (like `UITableViewCell`)
@@ -18,8 +25,8 @@ struct CatalogRowView: View {
         HStack {
             PreviewImageView(item: item)
                 .frame(
-                    width: 110,
-                    height: 130,
+                    width: .previewWidth,
+                    height: .previewHeight,
                     alignment: .center
                 )
             InfoView(item: item)

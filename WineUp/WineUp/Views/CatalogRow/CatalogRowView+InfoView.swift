@@ -7,6 +7,29 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension Image {
+    static let heartFill = Image(systemName: "suit.heart.fill")
+}
+
+private extension Font {
+    static let itemTitle: Font = .system(size: 16, weight: .medium)
+    static let heart: Font = .system(size: 25)
+    static let wineDescription: Font = .system(size: 13)
+    static let compatibility: Font = .system(size: 11)
+}
+
+private extension Color {
+    static let heartLiked: Color = .red
+    static let heartNotLiked: Color = .red
+}
+
+private extension CGFloat {
+    static let retailerImageWidth: CGFloat = 80
+    static let retailerImageLeading: CGFloat = 8
+}
+
 // MARK: - View
 
 extension CatalogRowView {
@@ -21,13 +44,12 @@ extension CatalogRowView {
                 // Title and 'like' image
                 HStack {
                     Text(item.title)
-                        .font(.system(size: 16))
-                        .fontWeight(.medium)
+                        .font(.itemTitle)
                         .lineLimit(4)
                     Spacer()
-                    Image(systemName: "suit.heart.fill")
+                    Image.heartFill
                         .foregroundColor(heartColor)
-                        .font(.system(size: 25))
+                        .font(.heart)
                 }
 
                 Spacer()
@@ -35,7 +57,7 @@ extension CatalogRowView {
                 // Wine description
                 HStack {
                     Text(wineDescriptionText)
-                        .font(.system(size: 13))
+                        .font(.wineDescription)
                         .multilineTextAlignment(.leading)
                         .lineLimit(4)
                     Spacer()
@@ -47,7 +69,7 @@ extension CatalogRowView {
                 HStack {
                     Spacer()
                     Text(compatibilityText)
-                        .font(.system(size: 11))
+                        .font(.compatibility)
                 }
 
                 Spacer()
@@ -57,8 +79,8 @@ extension CatalogRowView {
                     Image(uiImage: item.retailerImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 80)
-                        .padding(.leading, 8)
+                        .frame(width: .retailerImageWidth)
+                        .padding(.leading, .retailerImageLeading)
                     Spacer()
                     DiscountView(item: item)
                 }
@@ -71,7 +93,7 @@ extension CatalogRowView {
 
 private extension CatalogRowView.InfoView {
     var heartColor: Color {
-        return item.isLiked ? .red : .gray
+        return item.isLiked ? .heartLiked : .heartNotLiked
     }
 
     var compatibilityText: String {
