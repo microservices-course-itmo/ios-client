@@ -14,3 +14,7 @@ extension CatalogFiltersBarView {
         var title: String
     }
 }
+
+extension CatalogFiltersBarView.Item: Equatable {
+
+}

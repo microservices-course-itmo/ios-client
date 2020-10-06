@@ -15,3 +15,7 @@ extension PriceFilterView {
         var title: String
     }
 }
+
+extension PriceFilterView.Item: Equatable {
+
+}

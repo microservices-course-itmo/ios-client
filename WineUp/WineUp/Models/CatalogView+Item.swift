@@ -44,3 +44,7 @@ extension CatalogView.Item {
         return originalPriceRub * ((100 - discountPercents) / 100)
     }
 }
+
+extension CatalogView.Item: Equatable {
+
+}
