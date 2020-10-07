@@ -44,7 +44,7 @@ private extension CatalogFiltersBarView {
     func itemsHStack() -> some View {
         HStack(spacing: .interitemSpacing) {
             ForEach(items) { item in
-                ItemButton(item: item, onTap: { self.itemDidTap(item) })
+                ItemButton(item: item, onTap: { itemDidTap(item) })
                     .frame(minWidth: .minItemWidth, maxWidth: .infinity)
             }
         }

@@ -19,7 +19,7 @@ struct CatalogView: View {
             SearchBarView(text: $viewModel.searchText)
 
             CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
-                self.viewModel.filterItemDidTap(item)
+                viewModel.filterItemDidTap(item)
             }
 
             List(viewModel.catalogItems) { item in

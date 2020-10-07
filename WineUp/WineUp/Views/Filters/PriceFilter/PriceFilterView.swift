@@ -41,7 +41,7 @@ struct PriceFilterView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: .predefinedListItemsHSpacing) {
                     ForEach(viewModel.predefinedPrices) { item in
-                        ItemButton(item: item, action: { self.viewModel.itemDidTap(item) })
+                        ItemButton(item: item, action: { viewModel.itemDidTap(item) })
                             .frame(minWidth: .predefinedItemMinWidth, maxWidth: .infinity)
                     }
                 }

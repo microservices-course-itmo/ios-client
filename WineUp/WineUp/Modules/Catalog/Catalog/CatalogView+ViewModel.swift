@@ -36,7 +36,7 @@ extension CatalogView.ViewModel {
 
 private extension CatalogView.ViewModel {
     func initWithMockData() {
-        self.catalogItems = CatalogView.Item.mockedData
-        self.filtersBarItems = CatalogFiltersBarView.Item.mockedData
+        catalogItems = CatalogView.Item.mockedData
+        filtersBarItems = CatalogFiltersBarView.Item.mockedData
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - ViewModel
+// MARK: - Variables & Init
 
 extension PriceFilterView {
     final class ViewModel: ObservableObject {
@@ -19,7 +19,7 @@ extension PriceFilterView {
         @Published var selectedPredefinedPrice: Item?
 
         init() {
-            initStaticData()
+            initStaticItems()
         }
     }
 }
@@ -42,7 +42,7 @@ extension PriceFilterView.ViewModel {
 // MARK: - Helpers
 
 private extension PriceFilterView.ViewModel {
-    func initStaticData() {
+    func initStaticItems() {
         predefinedPrices = [
             PriceFilterView.Item(title: "До 1500"),
             PriceFilterView.Item(title: "1500-3000"),
