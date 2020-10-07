@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
 private extension CGFloat {
     static let titlePadding: CGFloat = 20
     static let listSpacing: CGFloat = 10
@@ -14,38 +16,43 @@ private extension CGFloat {
     static let listPaddingTop: CGFloat = 10
 }
 
+private extension LocalizedStringKey {
+    static let recomended = LocalizedStringKey("Рекомендованное")
+}
+
+private extension Font {
+    static let recomended = Font.title.bold()
+}
+
+// MARK: - View
+
 struct RecommendationFilter: View {
 
-    // MARK: - View
+    @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
         VStack {
             HStack {
-                Text("Рекомендованное")
+                Text(LocalizedStringKey.recomended)
                     .padding([.top, .leading], .titlePadding)
-                    .font(Font.title.bold())
+                    .font(.recomended)
                 Spacer()
             }
-            RecommendationFilterList(viewModel: listViewModel,
-                                     spacing: .listSpacing)
+            ItemsList(viewModel: viewModel.listViewModel,
+                      spacing: .listSpacing)
                 .padding(.leading, .listLeading)
                 .padding(.top, .listPaddingTop)
             Spacer()
         }
     }
-
-    // MARK: - Private
-
-    private var listViewModel: RecommendationFilterList.ViewModel {
-        return .init(variants: ["Наиболее вам подходящие",
-                                "По рейтингу"])
-    }
 }
+
+// MARK: - Preview
 
 #if DEBUG
 struct RecommendationFilter_Previews: PreviewProvider {
     static var previews: some View {
-        RecommendationFilter()
+        RecommendationFilter(viewModel: .init())
             .previewLayout(.fixed(width: 420, height: 300))
     }
 }
