@@ -20,7 +20,7 @@ private extension Color {
 }
 
 private extension Image {
-    static let checkedCheckbox = Image(systemName: "checkbox.square")
+    static let checkedCheckbox = Image(systemName: "checkmark.square")
     static let normalCheckbox = Image(systemName: "square")
 }
 
