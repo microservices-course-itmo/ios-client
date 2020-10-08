@@ -5,7 +5,7 @@
 //  Created by Александр Пахомов on 04.10.2020.
 //
 
-import UIKit.UIImage
+import SwiftUI
 
 // TODO: Wrap all the code here into #if DEBUG #endif block in order to remote mocked data from release
 // Currently mocked data is used in 'release' due to lack of server
@@ -35,5 +35,24 @@ extension PriceFilterView.Item {
         PriceFilterView.Item(title: "3000-5000"),
         PriceFilterView.Item(title: "5000-10000"),
         PriceFilterView.Item(title: "Больше 1000")
+    ]
+}
+
+struct StubRadioButtonItem: RadioButtonItem {
+    var text: String
+
+    var textRepresentation: LocalizedStringKey {
+        return LocalizedStringKey(text)
+    }
+
+    var id: Int {
+        text.hash
+    }
+}
+
+extension StubRadioButtonItem {
+    static let mockedData: [StubRadioButtonItem] = [
+        .init(text: "First"),
+        .init(text: "Second")
     ]
 }
