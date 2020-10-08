@@ -17,7 +17,9 @@ private extension CGFloat {
 }
 
 private extension LocalizedStringKey {
-    static let recomended = LocalizedStringKey("Рекомендованное")
+    static let recommendedTitle = LocalizedStringKey("Рекомендованное")
+    static let recommendedOrder = LocalizedStringKey("Наиболее вам подходящие")
+    static let basedOnRatingOrder = LocalizedStringKey("По рейтингу")
 }
 
 private extension Font {
@@ -33,16 +35,38 @@ struct RecommendationFilter: View {
     var body: some View {
         VStack {
             HStack {
-                Text(LocalizedStringKey.recomended)
+                Text(LocalizedStringKey.recommendedTitle)
                     .padding([.top, .leading], .titlePadding)
                     .font(.recomended)
                 Spacer()
             }
-            ItemsList(viewModel: viewModel.listViewModel,
-                      spacing: .listSpacing)
-                .padding(.leading, .listLeading)
-                .padding(.top, .listPaddingTop)
+            SingleCheckedRadioButton(
+                spacing: .listSpacing,
+                items: viewModel.catalogSortOrderItems,
+                isScrollable: false,
+                checkedItem: $viewModel.checkedCatalogSortOrderItem
+            )
+            .padding(.leading, .listLeading)
+            .padding(.top, .listPaddingTop)
+
             Spacer()
+        }
+    }
+}
+
+// MARK: - RadioButtonItem
+
+extension RecommendationFilter.CatalogSortOrderItem: RadioButtonItem {
+    var id: CatalogSortOrder {
+        sortOrder
+    }
+
+    var textRepresentation: LocalizedStringKey {
+        switch sortOrder {
+        case .recommended:
+            return .recommendedOrder
+        case .baseedOnRating:
+            return .basedOnRatingOrder
         }
     }
 }
