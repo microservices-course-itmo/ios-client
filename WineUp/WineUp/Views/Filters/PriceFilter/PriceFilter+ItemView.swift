@@ -69,7 +69,7 @@ private extension PriceFilter.PredefinedPriceIntervalView {
         case .lessThan(let maxPriceRub):
             return .lessThan(maxPriceRub: Int(maxPriceRub))
 
-        case .between(let minPriceRub, let maxPriceRub):
+        case let .between(minPriceRub, maxPriceRub):
             return .between(minPriceRub: Int(minPriceRub), and: Int(maxPriceRub))
 
         case .greaterThan(let minPriceRub):
