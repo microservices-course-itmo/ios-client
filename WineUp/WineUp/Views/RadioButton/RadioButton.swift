@@ -26,8 +26,24 @@ struct RadioButton<Item: RadioButtonItem>: View {
     let maxChecked: Int?
     /// Optionally wrapps content in vertical ScrollView
     let isScrollable: Bool
+    /// HIdes the line at the very bottom
+    let isLineHidden: Bool
 
     @Binding var checkedItems: [Item]
+
+    init(spacing: CGFloat,
+         items: [Item],
+         maxChecked: Int? = nil,
+         isScrollable: Bool = false,
+         isLineHidden: Bool = true,
+         checkedItems: Binding<[Item]>) {
+        self.spacing = spacing
+        self.items = items
+        self.maxChecked = maxChecked
+        self.isScrollable = isScrollable
+        self.isLineHidden = isLineHidden
+        self._checkedItems = checkedItems
+    }
 
     var body: some View {
         if isScrollable {
@@ -47,6 +63,7 @@ private extension RadioButton {
                 ItemButton(
                     onTap: { itemButtonDidTap(item) },
                     item: item,
+                    isLineHidden: isLineHidden,
                     checkedItems: $checkedItems
                 )
             }
@@ -90,9 +107,9 @@ struct RadioButton_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            RadioButton(spacing: 8, items: items, maxChecked: nil, isScrollable: false, checkedItems: $checkedZeroItems)
-            RadioButton(spacing: 8, items: items, maxChecked: nil, isScrollable: false, checkedItems: $checkedOneItem)
-            RadioButton(spacing: 8, items: items, maxChecked: nil, isScrollable: false, checkedItems: $checkedItems)
+            RadioButton(spacing: 8, items: items, maxChecked: 1, checkedItems: $checkedZeroItems)
+            RadioButton(spacing: 8, items: items, isScrollable: true, checkedItems: $checkedOneItem)
+            RadioButton(spacing: 8, items: items, isLineHidden: false, checkedItems: $checkedItems)
         }
         .previewLayout(.fixed(width: 420, height: 130))
     }

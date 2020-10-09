@@ -17,12 +17,14 @@ extension RadioButton {
         let onTap: () -> Void
         /// Item for the button
         let item: Item
+        /// HIdes the line at the very bottom
+        let isLineHidden: Bool
 
         @Binding var checkedItems: [Item]
 
         var body: some View {
             Button(action: onTap) {
-                RadioButton.ItemView(item: item, checkedItems: $checkedItems)
+                RadioButton.ItemView(item: item, isLineHidden: isLineHidden, checkedItems: $checkedItems)
             }
         }
     }
@@ -32,6 +34,8 @@ extension RadioButton {
 
 #if DEBUG
 struct RadioButtonItemButton_Previews: PreviewProvider {
+    typealias ItemButton = RadioButton<StubRadioButtonItem>.ItemButton
+
     static let items = StubRadioButtonItem.mockedData
 
     @State private static var checkedZeroItems: [StubRadioButtonItem] = []
@@ -40,9 +44,9 @@ struct RadioButtonItemButton_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            RadioButton<StubRadioButtonItem>.ItemButton(onTap: {}, item: items[0], checkedItems: $checkedZeroItems)
-            RadioButton<StubRadioButtonItem>.ItemButton(onTap: {}, item: items[0], checkedItems: $checkedOneItem)
-            RadioButton<StubRadioButtonItem>.ItemButton(onTap: {}, item: items[0], checkedItems: $checkedItems)
+            ItemButton(onTap: {}, item: items[0], isLineHidden: false, checkedItems: $checkedZeroItems)
+            ItemButton(onTap: {}, item: items[0], isLineHidden: false, checkedItems: $checkedOneItem)
+            ItemButton(onTap: {}, item: items[0], isLineHidden: false, checkedItems: $checkedItems)
         }
         .previewLayout(.fixed(width: 420, height: 60))
     }

@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Constants
 
 private extension CGFloat {
-    static let checkboxSize: CGFloat = 18.0
+    static let checkboxSize: CGFloat = 15.0
 }
 
 private extension Color {
@@ -24,10 +24,6 @@ private extension Image {
     static let normalCheckbox = Image(systemName: "square")
 }
 
-private extension Font {
-    static let itemText: Font = .title3
-}
-
 // MARK: - View
 
 extension RadioButton {
@@ -36,19 +32,29 @@ extension RadioButton {
 
         /// Item for the view
         let item: Item
+        /// HIdes the line at the very bottom
+        let isLineHidden: Bool
 
         @Binding var checkedItems: [Item]
 
         var body: some View {
-            HStack(alignment: .center, spacing: 8) {
-                checkboxImage
-                    .resizable()
-                    .frame(width: .checkboxSize, height: .checkboxSize)
-                    .foregroundColor(checkboxColor)
-                Text(text)
-                    .font(.itemText)
-                    .foregroundColor(.itemText)
-                Spacer()
+            VStack(spacing: 0) {
+                HStack(alignment: .center, spacing: 8) {
+                    checkboxImage
+                        .resizable()
+                        .frame(width: .checkboxSize, height: .checkboxSize)
+                        .foregroundColor(checkboxColor)
+
+                    Text(text)
+                        .foregroundColor(.itemText)
+
+                    Spacer()
+                }
+                .padding([.leading, .top, .bottom])
+
+                if !isLineHidden {
+                    Divider()
+                }
             }
         }
     }
@@ -86,9 +92,9 @@ struct RadioButtonItemView_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            RadioButton<StubRadioButtonItem>.ItemView(item: items[0], checkedItems: $checkedZeroItems)
-            RadioButton<StubRadioButtonItem>.ItemView(item: items[1], checkedItems: $checkedOneItem)
-            RadioButton<StubRadioButtonItem>.ItemView(item: items[1], checkedItems: $checkedItems)
+            RadioButton<StubRadioButtonItem>.ItemView(item: items[0], isLineHidden: false, checkedItems: $checkedZeroItems)
+            RadioButton<StubRadioButtonItem>.ItemView(item: items[1], isLineHidden: false, checkedItems: $checkedOneItem)
+            RadioButton<StubRadioButtonItem>.ItemView(item: items[1], isLineHidden: true, checkedItems: $checkedItems)
         }
         .previewLayout(.fixed(width: 420, height: 60))
     }
