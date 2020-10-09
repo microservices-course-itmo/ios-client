@@ -28,8 +28,8 @@ extension CatalogFiltersBarView.Item {
     ]
 }
 
-extension PriceFilterView.PredefinedPriceInterval {
-    static let mockedData: [PriceFilterView.PredefinedPriceInterval] = [
+extension PriceFilter.PredefinedPriceInterval {
+    static let mockedData: [PriceFilter.PredefinedPriceInterval] = [
         .lessThan(maxPriceRub: 1500),
         .between(minPriceRub: 1500, maxPriceRub: 3000),
         .between(minPriceRub: 3000, maxPriceRub: 5000),

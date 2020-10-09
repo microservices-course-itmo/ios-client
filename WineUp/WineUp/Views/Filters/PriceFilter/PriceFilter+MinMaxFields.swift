@@ -1,5 +1,5 @@
 //
-//  PriceFilterView+MinMaxFields.swift
+//  PriceFilter+MinMaxFields.swift
 //  WineUp
 //
 //  Created by Александр Пахомов on 05.10.2020.
@@ -27,12 +27,12 @@ private extension LocalizedStringKey {
 
 // MARK: - View
 
-extension PriceFilterView {
+extension PriceFilter {
     /// View with fields for manual price interval setting
     struct MinMaxFields: View {
 
-        @Binding var fromPrice: String
-        @Binding var toPrice: String
+        @Binding var minPriceRub: Float?
+        @Binding var maxPriceRub: Float?
 
         var body: some View {
             HStack(alignment: .center, spacing: .fieldsHSpacing) {
@@ -40,7 +40,7 @@ extension PriceFilterView {
                     Text(LocalizedStringKey.fieldFromTitle)
                         .foregroundColor(.fieldTitle)
 
-                    TextField(LocalizedStringKey.fieldFromPlaceholder, text: $fromPrice)
+                    TextField(LocalizedStringKey.fieldFromPlaceholder, text: minPriceRubText)
 
                     Divider()
                 }
@@ -49,7 +49,7 @@ extension PriceFilterView {
                     Text(LocalizedStringKey.fieldToTitle)
                         .foregroundColor(.fieldTitle)
 
-                    TextField(LocalizedStringKey.fieldToPlaceholder, text: $toPrice)
+                    TextField(LocalizedStringKey.fieldToPlaceholder, text: maxPriceRubText)
 
                     Divider()
                 }
@@ -58,17 +58,39 @@ extension PriceFilterView {
     }
 }
 
+// MARK: - Helpers
+
+private extension PriceFilter.MinMaxFields {
+    var minPriceRubText: Binding<String> {
+        .init { () -> String in
+            minPriceRub.flatMap { "\(Int($0))" } ?? ""
+        } set: { text in
+            minPriceRub = text.isEmpty ? nil : Float(text)
+        }
+    }
+
+    var maxPriceRubText: Binding<String> {
+        .init { () -> String in
+            maxPriceRub.flatMap { "\(Int($0))" } ?? ""
+        } set: { text in
+            maxPriceRub = text.isEmpty ? nil : Float(text)
+        }
+    }
+}
+
 // MARK: - Preview
 
 #if DEBUG
-struct PriceFilterViewMinMaxFields_Previews: PreviewProvider {
+struct PriceFilterMinMaxFields_Previews: PreviewProvider {
 
-    @State private static var fromPrice: String = ""
-    @State private static var toPrice: String = ""
+    @State private static var minPriceRub: Float?
+    @State private static var maxPriceRub: Float?
 
     static var previews: some View {
-        return PriceFilterView.MinMaxFields(fromPrice: $fromPrice, toPrice: $toPrice)
-            .previewLayout(.fixed(width: 390, height: 80))
+        Group {
+            PriceFilter.MinMaxFields(minPriceRub: $minPriceRub, maxPriceRub: $maxPriceRub)
+        }
+        .previewLayout(.fixed(width: 390, height: 80))
     }
 }
 #endif

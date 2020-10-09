@@ -1,5 +1,5 @@
 //
-//  PriceFilterView.swift
+//  PriceFilter.swift
 //  WineUp
 //
 //  Created by Nikolai Solonenko on 02.10.2020.
@@ -23,14 +23,14 @@ private extension LocalizedStringKey {
 // MARK: - View
 
 /// Price filter view
-struct PriceFilterView: View {
+struct PriceFilter: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: .rootVSpacing) {
 
-            MinMaxFields(fromPrice: $viewModel.minPriceString, toPrice: $viewModel.maxPriceString)
+            MinMaxFields(minPriceRub: $viewModel.minPriceRub, maxPriceRub: $viewModel.maxPriceRub)
 
             // Discount offers switch
             Toggle(isOn: $viewModel.showDiscountOffers) {
@@ -40,9 +40,14 @@ struct PriceFilterView: View {
             // Scrollable list of predefined prices intervals
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: .predefinedListItemsHSpacing) {
-                    ForEach(viewModel.predefinedPrices) { item in
-                        ItemButton(item: item, action: { viewModel.itemDidTap(item) })
-                            .frame(minWidth: .predefinedItemMinWidth, maxWidth: .infinity)
+                    ForEach(viewModel.predefinedPrices) { interval in
+                        PredefinedPriceIntervalButton(
+                            interval: interval,
+                            action: {
+                                viewModel.predefinedPriceIntervalDidTap(interval)
+                            }
+                        )
+                        .frame(minWidth: .predefinedItemMinWidth, maxWidth: .infinity)
                     }
                 }
             }
@@ -61,10 +66,12 @@ struct PriceFilterView: View {
 // MARK: - Preview
 
 #if DEBUG
-struct PriceFilterView_Previews: PreviewProvider {
+struct PriceFilter_Previews: PreviewProvider {
     static var previews: some View {
-        return PriceFilterView(viewModel: .init())
-            .previewLayout(.fixed(width: 414, height: 250))
+        Group {
+            PriceFilter(viewModel: .init())
+        }
+        .previewLayout(.fixed(width: 414, height: 250))
     }
 }
 #endif
