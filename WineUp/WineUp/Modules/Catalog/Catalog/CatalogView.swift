@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let rootVStackSpacing: CGFloat = 0
+}
+
+private extension LocalizedStringKey {
+    static let navigationTitle = LocalizedStringKey("Catalog")
+}
+
 // MARK: - View
 
 /// Stack of filters and list of catalog offers
@@ -15,7 +25,7 @@ struct CatalogView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: .rootVStackSpacing) {
             SearchBarView(text: $viewModel.searchText)
 
             CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
@@ -26,7 +36,7 @@ struct CatalogView: View {
                 CatalogRowView(item: item)
             }
         }
-        .navigationTitle("Catalog")
+        .navigationTitle(.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
     }
@@ -38,8 +48,6 @@ struct CatalogView: View {
 struct CatalogView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            CatalogView(viewModel: .init())
-                .previewDevice("iPhone 11 Pro")
             CatalogView(viewModel: .init())
         }
     }

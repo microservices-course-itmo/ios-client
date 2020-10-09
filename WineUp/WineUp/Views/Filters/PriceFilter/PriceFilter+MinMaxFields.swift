@@ -61,6 +61,7 @@ extension PriceFilter {
 // MARK: - Helpers
 
 private extension PriceFilter.MinMaxFields {
+    /// Bridge between `minPriceRub` and it's text representation
     var minPriceRubText: Binding<String> {
         .init { () -> String in
             minPriceRub.flatMap { "\(Int($0))" } ?? ""
@@ -69,6 +70,7 @@ private extension PriceFilter.MinMaxFields {
         }
     }
 
+    /// Bridge between `maxPriceRub` and it's text representation
     var maxPriceRubText: Binding<String> {
         .init { () -> String in
             maxPriceRub.flatMap { "\(Int($0))" } ?? ""

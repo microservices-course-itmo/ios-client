@@ -30,6 +30,16 @@ private extension CGFloat {
     static let retailerImageLeading: CGFloat = 8
 }
 
+private extension LocalizedStringKey {
+    static func compatibility(percentage: Int) -> LocalizedStringKey {
+        return "Подходит вам на \(percentage)%"
+    }
+
+    static func wineDescription(country: String, color: String, wineAstringency: String, quantityLiters: Int) -> LocalizedStringKey {
+        return "\(country), \(color), \(wineAstringency), \(quantityLiters) л"
+    }
+}
+
 // MARK: - View
 
 extension CatalogRowView {
@@ -96,12 +106,17 @@ private extension CatalogRowView.InfoView {
         return item.isLiked ? .heartLiked : .heartNotLiked
     }
 
-    var compatibilityText: String {
-        return "Подходит вам на \(Int(item.chemistry))%"
+    var compatibilityText: LocalizedStringKey {
+        return .compatibility(percentage: Int(item.chemistry))
     }
 
-    var wineDescriptionText: String {
-        return "\(item.country), \(item.color.name), \(item.wineAstringency.name), \(item.quantityLiters) л"
+    var wineDescriptionText: LocalizedStringKey {
+        return .wineDescription(
+            country: item.country,
+            color: item.color.name,
+            wineAstringency: item.wineAstringency.name,
+            quantityLiters: Int(item.quantityLiters)
+        )
     }
 }
 
