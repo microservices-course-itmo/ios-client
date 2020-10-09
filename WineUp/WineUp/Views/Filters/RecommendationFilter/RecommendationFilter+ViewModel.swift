@@ -19,9 +19,7 @@ extension RecommendationFilter {
             initStaticCatalogSortOrderItems()
         }
     }
-}
 
-extension RecommendationFilter {
     struct CatalogSortOrderItem: Equatable {
         var sortOrder: CatalogSortOrder
     }
