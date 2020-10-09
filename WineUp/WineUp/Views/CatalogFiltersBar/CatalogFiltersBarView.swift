@@ -38,6 +38,16 @@ struct CatalogFiltersBarView: View {
     }
 }
 
+// MARK: - Model
+
+extension CatalogFiltersBarView {
+    struct Item: Identifiable, Equatable {
+        var id = UUID()
+        /// Filter name
+        var title: String
+    }
+}
+
 // MARK: - Displaying Items
 
 private extension CatalogFiltersBarView {

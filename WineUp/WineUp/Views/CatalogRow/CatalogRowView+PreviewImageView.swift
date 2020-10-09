@@ -22,7 +22,7 @@ extension CatalogRowView {
     /// Catalog item title image and rating overlay view
     struct PreviewImageView: View {
 
-        let item: CatalogView.Item
+        let item: CatalogView.RowItem
 
         var body: some View {
             ZStack {
@@ -53,7 +53,7 @@ extension CatalogRowView {
 #if DEBUG
 struct CatalogRowViewPreviewImageView_Previews: PreviewProvider {
     static var previews: some View {
-        return CatalogRowView.PreviewImageView(item: CatalogView.Item.mockedData[0])
+        return CatalogRowView.PreviewImageView(item: CatalogView.RowItem.mockedData[0])
             .previewLayout(.fixed(width: 130, height: 130))
     }
 }

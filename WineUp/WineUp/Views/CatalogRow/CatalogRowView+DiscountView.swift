@@ -25,7 +25,7 @@ extension CatalogRowView {
     /// Catalog item price offer view
     struct DiscountView: View {
 
-        let item: CatalogView.Item
+        let item: CatalogView.RowItem
 
         var body: some View {
             VStack {
@@ -70,7 +70,7 @@ private extension CatalogRowView.DiscountView {
 #if DEBUG
 struct CatalogRowViewDiscountView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowView.DiscountView(item: CatalogView.Item.mockedData[0])
+        CatalogRowView.DiscountView(item: CatalogView.RowItem.mockedData[0])
             .previewLayout(.fixed(width: 150, height: 50))
     }
 }

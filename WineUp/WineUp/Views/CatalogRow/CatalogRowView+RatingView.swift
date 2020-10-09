@@ -39,7 +39,7 @@ extension CatalogRowView {
     /// Catalog item rating view (stars row)
     struct RatingView: View {
 
-        let item: CatalogView.Item
+        let item: CatalogView.RowItem
 
         var body: some View {
             ZStack {
@@ -76,7 +76,7 @@ private extension CatalogRowView.RatingView {
 #if DEBUG
 struct CatalogRowViewRatingView_Previews: PreviewProvider {
     static var previews: some View {
-        let item = CatalogView.Item.mockedData[0]
+        let item = CatalogView.RowItem.mockedData[0]
         return CatalogRowView.RatingView(item: item)
             .previewLayout(.fixed(width: 120, height: 50))
     }

@@ -19,7 +19,7 @@ private extension CGFloat {
 /// Catalog item visual representation (like `UITableViewCell`)
 struct CatalogRowView: View {
 
-    let item: CatalogView.Item
+    let item: CatalogView.RowItem
 
     var body: some View {
         HStack {
@@ -39,7 +39,7 @@ struct CatalogRowView: View {
 #if DEBUG
 struct CatalogRowView_Previews: PreviewProvider {
     static var previews: some View {
-        let item = CatalogView.Item.mockedData[0]
+        let item = CatalogView.RowItem.mockedData[0]
         return CatalogRowView(item: item)
             .previewLayout(.fixed(width: 414, height: 150))
     }

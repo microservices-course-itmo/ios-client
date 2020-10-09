@@ -36,7 +36,7 @@ extension CatalogRowView {
     /// Catalog item info, price offer, compatibility and retailer view
     struct InfoView: View {
 
-        let item: CatalogView.Item
+        let item: CatalogView.RowItem
 
         var body: some View {
             VStack {
@@ -110,7 +110,7 @@ private extension CatalogRowView.InfoView {
 #if DEBUG
 struct CatalogRowViewInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowView.InfoView(item: CatalogView.Item.mockedData[0])
+        CatalogRowView.InfoView(item: CatalogView.RowItem.mockedData[0])
             .previewLayout(.fixed(width: 274, height: 130))
     }
 }
