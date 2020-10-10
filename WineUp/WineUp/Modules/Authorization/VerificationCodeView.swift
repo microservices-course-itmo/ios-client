@@ -20,7 +20,7 @@ struct VerificationCodeView: View {
 
     var body: some View {
         NavigationView {
-            VStack(alignment: .center, spacing: 75, content: {
+            VStack(alignment: .center, spacing: 35, content: {
                 VStack(alignment: .center, spacing: 30, content: {
                     Text("Код введен неверно").foregroundColor(.red)
                     Text("Введите код подтверждения").font(.title2)
@@ -31,14 +31,41 @@ struct VerificationCodeView: View {
                             .multilineTextAlignment(.center)
                             .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         Rectangle()
-                            .frame(width: 105, height: 2.0 , alignment: .top)
+                            .frame(width: 105, height: 2.0, alignment: .top)
                             .foregroundColor(Color.red)
-                        Text("Hello World").padding(.top, 50)
-                        Text("Hello World").padding(.top, 50)
+                        Button(action: {}, label: {
+                            Text("Войти")
+                                .foregroundColor(.red)
+                                .padding([.leading, .trailing], 20)
+                                .padding([.top, .bottom], 8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.red, lineWidth: 3)
+                                )
+                        }).padding(.top, 30)
+                        Button(action: {}, label: {
+                            Text("Отправить повторно")
+                                .foregroundColor(.red)
+                                .padding([.leading, .trailing], 20)
+                                .padding([.top, .bottom], 8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.red, lineWidth: 3)
+                                )
+                        }).padding(.top, 30)
                     }).padding(.top, 10)
 
-                    Text("Hello World")
-                    Text("Hello World").padding(.top, 110)
+                    Text("Отправить повторно через 59с").font(.callout)
+                    Button(action: {}, label: {
+                        Text("Назад")
+                            .foregroundColor(.red)
+                            .padding([.leading, .trailing], 150)
+                            .padding([.top, .bottom], 8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(Color.red, lineWidth: 3)
+                            )
+                    }).padding(.top, 110)
                 })
             }).padding(.top, 80)
             .navigationBarTitle(Text("WineUP").font(.subheadline), displayMode: .large)
