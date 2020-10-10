@@ -22,7 +22,7 @@ private extension Font {
 
 private extension Color {
     static let heartLiked: Color = .red
-    static let heartNotLiked: Color = .red
+    static let heartNotLiked: Color = .gray
 }
 
 private extension CGFloat {
