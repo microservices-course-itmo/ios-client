@@ -9,30 +9,28 @@ import SwiftUI
 
 struct VerificationCodeView: View {
 
-    @State private var code: String = ""
-
-    init() {
-        guard let largeFont = UIFont(name: "Georgia-Bold", size: 50) else {
-            return
-        }
-        UINavigationBar.appearance().largeTitleTextAttributes = [.font: largeFont]
-    }
+    @ObservedObject private var viewModel = VerificationCodeViewModel()
 
     var body: some View {
-        NavigationView {
             VStack(alignment: .center, spacing: 35, content: {
+
+                //Блок "Введите код"
                 VStack(alignment: .center, spacing: 30, content: {
                     Text("Код введен неверно").foregroundColor(.red)
                     Text("Введите код подтверждения").font(.title2)
                 })
+                //Блок с кодом, кнопками и тайтлом отправить повторно
                 VStack(alignment: .center, spacing: 30, content: {
+                    // Подблок кода и кнопок
                     VStack(alignment: .center, spacing: -5, content: {
-                        TextField("000000", text: $code)
+                        //TextField кода
+                        TextField("000000", text: $viewModel.code)
                             .multilineTextAlignment(.center)
-                            .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                            .font(.title)
                         Rectangle()
                             .frame(width: 105, height: 2.0, alignment: .top)
                             .foregroundColor(Color.red)
+                        //Кнопка войти
                         Button(action: {}, label: {
                             Text("Войти")
                                 .foregroundColor(.red)
@@ -43,6 +41,7 @@ struct VerificationCodeView: View {
                                         .stroke(Color.red, lineWidth: 3)
                                 )
                         }).padding(.top, 30)
+                        //Кнопка отправить повторно
                         Button(action: {}, label: {
                             Text("Отправить повторно")
                                 .foregroundColor(.red)
@@ -55,7 +54,9 @@ struct VerificationCodeView: View {
                         }).padding(.top, 30)
                     }).padding(.top, 10)
 
+                    //Label отпарвить повторно
                     Text("Отправить повторно через 59с").font(.callout)
+                    //Кннопка назад
                     Button(action: {}, label: {
                         Text("Назад")
                             .foregroundColor(.red)
@@ -68,13 +69,15 @@ struct VerificationCodeView: View {
                     }).padding(.top, 110)
                 })
             }).padding(.top, 80)
-            .navigationBarTitle(Text("WineUP").font(.subheadline), displayMode: .large)
         }
     }
-}
+
+#if DEBUG
 
 struct VerificationCodeViewPreviews: PreviewProvider {
     static var previews: some View {
         return VerificationCodeView()
     }
 }
+
+#endif
