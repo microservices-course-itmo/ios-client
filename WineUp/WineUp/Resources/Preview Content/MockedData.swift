@@ -38,18 +38,6 @@ extension PriceFilter.PredefinedPriceInterval {
     ]
 }
 
-struct StubRadioButtonItem: RadioButtonItem {
-    var text: String
-
-    var textRepresentation: LocalizedStringKey {
-        return LocalizedStringKey(text)
-    }
-
-    var id: Int {
-        text.hash
-    }
-}
-
 extension StubRadioButtonItem {
     static let mockedData: [StubRadioButtonItem] = [
         .init(text: "First"),
