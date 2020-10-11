@@ -13,7 +13,6 @@ struct VerificationCodeView: View {
 
     var body: some View {
             VStack(alignment: .center, spacing: 35, content: {
-
                 //Блок "Введите код"
                 VStack(alignment: .center, spacing: 30, content: {
                     Text("Код введен неверно").foregroundColor(.red)
