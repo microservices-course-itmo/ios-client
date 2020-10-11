@@ -55,13 +55,16 @@ struct PhoneAuthorizationView: View {
                         .padding(.horizontal, 20)
                     }
                 })
-            }).padding() .navigationBarTitle("WineUp")
+            }).padding()
+            .navigationBarTitle("WineUp")
         }
     }
 }
 
+#if DEBUG
 struct PhoneView_Previews: PreviewProvider {
     static var previews: some View {
         PhoneAuthorizationView(phoneNumber: PhoneNumberModel())
     }
 }
+#endif
