@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CatalogFiltersBarItemModel: Identifiable {
+struct CatalogFiltersBarItemModel: Identifiable, Equatable {
     var id = UUID()
     var title: String
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PriceFilterView: View {
+struct PriceFilterView: IFilterView {
 
     // MARK: - State
 
@@ -17,7 +17,13 @@ struct PriceFilterView: View {
     var items: [PriceFilterItemModel]
     var onItemTap: OnItemTap?
 
-    // MARK: - View
+    // MARK: - IFilterView
+    var title: String { "Цена" }
+    var isResetButtonShown: Bool { true }
+
+    var content: AnyView {
+        AnyView(body)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10, content: {
@@ -47,7 +53,9 @@ struct PriceFilterView: View {
                     }
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 60, maxHeight: 60, alignment: .center)
-        }).padding(.leading, 5)
+        })
+        .padding(.top)
+        .padding(.leading, 5)
         .padding(.trailing, 10)
     }
 
@@ -70,7 +78,7 @@ struct PriceFilterViewPreviews: PreviewProvider {
         PriceFilterItemModel(title: "Больше 1000")
     ]
     static var previews: some View {
-        return PriceFilterView(items: items, onItemTap: nil)
+        return PriceFilterView(items: items, onItemTap: nil).content
             .previewLayout(.fixed(width: 414, height: 250))
     }
 }
