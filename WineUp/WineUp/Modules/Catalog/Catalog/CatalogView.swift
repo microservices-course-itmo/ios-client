@@ -31,9 +31,9 @@ struct CatalogView: View {
 struct CatalogView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            CatalogView()
+            CatalogView(searchText: "")
                 .previewDevice("iPhone 11 Pro")
-            CatalogView()
+            CatalogView(searchText: "")
         }
     }
 }
