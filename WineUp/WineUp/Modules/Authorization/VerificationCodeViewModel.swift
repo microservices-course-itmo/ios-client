@@ -8,5 +8,5 @@
 import Foundation
 
 final class VerificationCodeViewModel: ObservableObject {
-     var code: String = ""
+    @Published var code: String = ""
 }
