@@ -9,18 +9,22 @@ import Foundation
 import Combine
 import  SwiftUI
 
-class PhoneNumberModel: ObservableObject {
-    let objectWillChange = ObservableObjectPublisher()
-    var correctNum = "" {
+class PhoneNumberViewModel: ObservableObject {
+
+    @Published var correctNum = "" {
         didSet {
-            self.correctNum = self.formatter(mask: "+X (XXX) XXX-XX-XX", phone: correctNum)
-            objectWillChange.send()
+            if correctNum != oldValue {
+            correctNum = formatter(mask: "+X (XXX) XXX-XX-XX", phone: correctNum)
+            }
         }
     }
+
     func formatter(mask: String, phone: String) -> String {
-        var numbers = phone.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+
+        var numbers = phone.filter("0123456789".contains)
         var result = ""
         var index = numbers.startIndex
+
         if numbers.first != "7" && !numbers.isEmpty {
             if numbers.first == "8" {
                 numbers.remove(at: numbers.index(numbers.startIndex, offsetBy: 0))
