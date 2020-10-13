@@ -16,7 +16,27 @@ struct CharacteristicsFilterView: View {
                     .frame(minWidth: 60, maxWidth: .infinity)
                 Divider()
             }
-        }
+        }.padding(.top)
+    }
+}
+
+struct ColorCharacteristicView: IFilterView {
+    var items: [CharacteristicsFilterItemModel]
+    var title: String { "Цвет" }
+    var isResetButtonShown: Bool { true }
+
+    var content: AnyView {
+        AnyView(CharacteristicsFilterView(items: items))
+    }
+}
+
+struct SugarCharacteristicView: IFilterView {
+    var items: [CharacteristicsFilterItemModel]
+    var title: String { "Сахар" }
+    var isResetButtonShown: Bool { true }
+
+    var content: AnyView {
+        AnyView(CharacteristicsFilterView(items: items))
     }
 }
 

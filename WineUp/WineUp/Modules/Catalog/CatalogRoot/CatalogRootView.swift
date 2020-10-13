@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct CatalogRootView: View {
+    @EnvironmentObject var popupPresenter: PopupPresenter
     @ObservedObject private var viewModel = CatalogRootViewModel()
 
     var body: some View {
         NavigationView {
-            CatalogView(searchText: "")
+            CatalogView(searchText: "", popupPresenter: popupPresenter)
         }
     }
 }

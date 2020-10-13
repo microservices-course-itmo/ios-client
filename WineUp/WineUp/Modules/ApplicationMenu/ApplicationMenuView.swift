@@ -8,30 +8,36 @@
 import SwiftUI
 
 struct ApplicationMenuView: View {
-    @ObservedObject private var viewModel = ApplicationMenuViewModel()
+
+    @ObservedObject private var popupPresenter = PopupPresenter()
+    @ObservedObject private var viewModel = ViewModel()
 
     var body: some View {
-        TabView {
-         CatalogRootView()
-                 .tabItem {
-                     Image(systemName: "house.fill")
-                     Text("Главное")
-                 }
-         CatalogRootView()
-                 .tabItem {
-                     Image(systemName: "book.fill")
-                     Text("Каталог")
-                 }
-         CatalogRootView()
-                 .tabItem {
-                     Image(systemName: "star.fill")
-                     Text("Избранное")
-                 }
-         CatalogRootView()
-                 .tabItem {
-                     Image(systemName: "person.fill")
-                     Text("Профиль")
-                 }
-        }
+        ZStack {
+            TabView {
+                CatalogRootView()
+                    .tabItem {
+                        Image(systemName: "house.fill")
+                        Text("Главное")
+                    }
+                CatalogRootView()
+                    .tabItem {
+                        Image(systemName: "book.fill")
+                        Text("Каталог")
+                    }
+                CatalogRootView()
+                    .tabItem {
+                        Image(systemName: "star.fill")
+                        Text("Избранное")
+                    }
+                CatalogRootView()
+                    .tabItem {
+                        Image(systemName: "person.fill")
+                        Text("Профиль")
+                    }
+            }
+
+            popupPresenter.popupView
+        }.environmentObject(popupPresenter)
     }
 }

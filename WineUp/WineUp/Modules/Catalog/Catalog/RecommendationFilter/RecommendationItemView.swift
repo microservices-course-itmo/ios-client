@@ -26,7 +26,6 @@ struct RecommendationItemView: View {
                 .frame(width: .checkmarkSize, height: .checkmarkSize)
                 .foregroundColor(checkmarkColor)
             Text(item.text)
-                .font(.title3)
             Spacer()
         }
     }

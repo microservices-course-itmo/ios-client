@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct CatalogView: View {
-    @ObservedObject private var viewModel = CatalogViewModel()
-    @State var searchText: String
+    @ObservedObject private var viewModel: ViewModel
+
+    init(searchText: String, popupPresenter: PopupPresenter) {
+        self.viewModel = ViewModel(searchText: searchText,
+                                   popupPresenter: popupPresenter)
+    }
 
     var body: some View {
         VStack(spacing: 0.0) {
-            SearchBarView(text: $searchText)
-            Text(searchText)
+            SearchBarView(text: $viewModel.searchText)
+            Text(viewModel.searchText)
             CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
                 self.viewModel.filterItemDidTap(item)
             }
@@ -28,12 +32,12 @@ struct CatalogView: View {
     }
 }
 
+#if DEBUG
 struct CatalogView_Previews: PreviewProvider {
+
     static var previews: some View {
-        Group {
-            CatalogView(searchText: "")
-                .previewDevice("iPhone 11 Pro")
-            CatalogView(searchText: "")
-        }
+        CatalogView(searchText: "", popupPresenter: PopupPresenter())
+            .previewDevice("iPhone 11 Pro")
     }
 }
+#endif

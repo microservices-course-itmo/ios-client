@@ -14,24 +14,20 @@ private extension CGFloat {
     static let listPaddingTop: CGFloat = 10
 }
 
-struct RecommendationFilter: View {
+struct RecommendationFilter: IFilterView {
 
-    // MARK: - View
+    // MARK: - IFilterView
 
-    var body: some View {
-        VStack {
-            HStack {
-                Text("Рекомендованное")
-                    .padding([.top, .leading], .titlePadding)
-                    .font(Font.title.bold())
-                Spacer()
+    var title: String { "Рекомендованное" }
+
+    var content: AnyView {
+        AnyView(
+            VStack {
+                RecommendationFilterList(viewModel: listViewModel,
+                                         spacing: .listSpacing)
+                    .padding(.top, .listPaddingTop)
             }
-            RecommendationFilterList(viewModel: listViewModel,
-                                     spacing: .listSpacing)
-                .padding(.leading, .listLeading)
-                .padding(.top, .listPaddingTop)
-            Spacer()
-        }
+        )
     }
 
     // MARK: - Private
@@ -45,7 +41,7 @@ struct RecommendationFilter: View {
 #if DEBUG
 struct RecommendationFilter_Previews: PreviewProvider {
     static var previews: some View {
-        RecommendationFilter()
+        RecommendationFilter().content
             .previewLayout(.fixed(width: 420, height: 300))
     }
 }
