@@ -10,7 +10,7 @@ import XCTest
 
 class WineUpPhoneNumberFormatterTest: XCTestCase {
 
-    func phoneFormatterTestCase() {
+    func testPhoneFormatter() {
           let loginChecker = PhoneNumberViewModel()
           XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "890055535"), "+7 (900) 555-35")
           XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "+79005553535"), "+7 (900) 555-35-35")
