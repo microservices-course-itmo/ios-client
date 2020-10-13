@@ -7,20 +7,19 @@
 
 import Foundation
 import Combine
-import  SwiftUI
+import SwiftUI
 
 class PhoneNumberViewModel: ObservableObject {
 
     @Published var correctNum = "" {
         didSet {
             if correctNum != oldValue {
-            correctNum = formatter(mask: "+X (XXX) XXX-XX-XX", phone: correctNum)
+                correctNum = formatter(mask: "+X (XXX) XXX-XX-XX", phone: correctNum)
             }
         }
     }
 
     func formatter(mask: String, phone: String) -> String {
-
         var numbers = phone.filter("0123456789".contains)
         var result = ""
         var index = numbers.startIndex
@@ -40,5 +39,13 @@ class PhoneNumberViewModel: ObservableObject {
             }
         }
         return result
+    }
+
+    func loginButtonDidTap() {
+
+    }
+
+    func continueWithoutAuthButtonDidTap() {
+
     }
 }

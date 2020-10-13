@@ -10,15 +10,22 @@ import XCTest
 
 class WineUpPhoneNumberFormatterTest: XCTestCase {
 
-    func testPhoneFormatter() {
-          let loginChecker = PhoneNumberViewModel()
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "890055535"), "+7 (900) 555-35")
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "+79005553535"), "+7 (900) 555-35-35")
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "79005553535"), "+7 (900) 555-35-35")
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "89005553535"), "+7 (900) 555-35-35")
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "9005553535"), "+7 (900) 555-35-35")
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "8l9f0s0d5a5:kkd5*d#$3f5g3h5"), "+7 (900) 555-35-35")
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "79005553535000000000"), "+7 (900) 555-35-35")
-          XCTAssertEqual(loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: "90055535357"), "+7 (900) 555-35-35")
-      }
+    func testPhoneFormatterTestCase() {
+        runPhoneFormatterTest(withRawPhone: "890055535", andResult: "+7 (900) 555-35")
+        runPhoneFormatterTest(withRawPhone: "+79005553535", andResult: "+7 (900) 555-35-35")
+        runPhoneFormatterTest(withRawPhone: "79005553535", andResult: "+7 (900) 555-35-35")
+        runPhoneFormatterTest(withRawPhone: "89005553535", andResult: "+7 (900) 555-35-35")
+        runPhoneFormatterTest(withRawPhone: "9005553535", andResult: "+7 (900) 555-35-35")
+        runPhoneFormatterTest(withRawPhone: "8l9f0s0d5a5:kkd5*d#$3f5g3h5", andResult: "+7 (900) 555-35-35")
+        runPhoneFormatterTest(withRawPhone: "79005553535000000000", andResult: "+7 (900) 555-35-35")
+        runPhoneFormatterTest(withRawPhone: "90055535357", andResult: "+7 (900) 555-35-35")
+    }
+
+    private func runPhoneFormatterTest(withRawPhone phone: String, andResult expectedResult: String) {
+        let loginChecker = PhoneNumberViewModel()
+        XCTAssertEqual(
+            loginChecker.formatter(mask: "+X (XXX) XXX-XX-XX", phone: phone),
+            expectedResult
+        )
+    }
 }
