@@ -19,6 +19,7 @@ class PhoneNumberViewModel: ObservableObject {
         }
     }
 
+    /// Formats `phone` value using `mask` where 'X' means a space which must be replaces with a digit
     func formatter(mask: String, phone: String) -> String {
         var numbers = phone.filter("0123456789".contains)
         var result = ""

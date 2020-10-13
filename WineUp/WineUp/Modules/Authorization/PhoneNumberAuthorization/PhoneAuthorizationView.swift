@@ -18,8 +18,11 @@ struct PhoneAuthorizationView: View {
             Text("Введите номер телефона для авторизации")
                 .font(.system(size: 25))
                 .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
+
+            // Phone text field with bottom line
             VStack(alignment: .center, spacing: 0) {
-                TextField("+7 (9XX) XXX-XX-XX", text: $viewModel.correctNum) .multilineTextAlignment(.leading)
+                TextField("+7 (9XX) XXX-XX-XX", text: $viewModel.correctNum)
+                    .multilineTextAlignment(.leading)
                     .padding(.horizontal, 26.0)
                     .font(.system(size: 25))
                 Divider()
@@ -27,6 +30,8 @@ struct PhoneAuthorizationView: View {
                     .padding(.horizontal, 0.0)
                     .background(themeColor)
             }
+
+            // Buttons stack ('Login' and 'Continue without auth')
             VStack(alignment: .center, spacing: 20) {
                 Button(action: viewModel.loginButtonDidTap) {
                     Text("Войти")
