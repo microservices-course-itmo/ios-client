@@ -17,7 +17,7 @@ struct PhoneAuthorizationView: View {
         VStack(alignment: .center, spacing: 40) {
             Text("Введите номер телефона для авторизации")
                 .font(.system(size: 25))
-                .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
+                .lineLimit(2)
 
             // Phone text field with bottom line
             VStack(alignment: .center, spacing: 0) {
