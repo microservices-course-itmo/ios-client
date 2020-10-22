@@ -26,8 +26,12 @@ struct LoginBirthdayInput: View {
     }
 }
 
+// MARK: - LoginBirthdayInput+ViewModel
+
 extension LoginBirthdayInput {
     final class ViewModel: ObservableObject {
+
+        // MARK: Variables
 
         @Published var birthday = Date() {
             didSet {
@@ -38,6 +42,8 @@ extension LoginBirthdayInput {
 
         private let onSubmit: () -> Void
 
+        // MARK: Public Methods
+
         init(onSubmit: @escaping () -> Void) {
             self.onSubmit = onSubmit
         }
@@ -46,8 +52,20 @@ extension LoginBirthdayInput {
             onSubmit()
         }
 
+        // MARK: Private Methods
+
         private func birthdayDidChange(birthday: Date?) {
             isDoneButtonActive = birthday != nil
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct LoginBirthdayInput_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginBirthdayInput(viewModel: .init(onSubmit: {}))
+    }
+}
+#endif

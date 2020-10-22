@@ -7,6 +7,25 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let buttonsSpacing: CGFloat = 24
+    static let buttonHorizontalPadding: CGFloat = 35
+    static let buttonCornerRadius: CGFloat = 25
+}
+
+private extension Color {
+    static let buttonTitle: Color = .white
+    static let buttonBackground: Color = .blue
+}
+
+private extension Font {
+    static let buttonTitle = Font.body.bold()
+}
+
+// MARK: - View
+
 struct LoginYoNButtonsContainer<Label: View>: View {
 
     let title: String
@@ -18,33 +37,46 @@ struct LoginYoNButtonsContainer<Label: View>: View {
 
     var body: some View {
         LoginContainer(title: title, viewLabel: label, actionLabel: {
-            HStack(alignment: .center, spacing: 24) {
+            HStack(alignment: .center, spacing: .buttonsSpacing) {
                 Button(action: onYesButtonTap) {
                     Text(yesButtonTitle)
                 }
-                .padding(.horizontal, 35)
+                .padding(.horizontal, .buttonHorizontalPadding)
                 .padding(.vertical)
-                .foregroundColor(.white)
-                .background(Color.blue)
-                .font(Font.body.bold())
-                .cornerRadius(25)
+                .foregroundColor(.buttonTitle)
+                .background(Color.buttonBackground)
+                .font(.buttonTitle)
+                .cornerRadius(.buttonCornerRadius)
 
                 Button(action: onNoButtonTap) {
                     Text(noButtonTitle)
                 }
-                .padding(.horizontal, 35)
+                .padding(.horizontal, .buttonHorizontalPadding)
                 .padding(.vertical)
-                .foregroundColor(.white)
-                .background(Color.blue)
-                .font(Font.body)
-                .cornerRadius(25)
+                .foregroundColor(.buttonTitle)
+                .background(Color.buttonBackground)
+                .font(.buttonTitle)
+                .cornerRadius(.buttonCornerRadius)
             }
         })
     }
 }
 
-//struct LoginYoNButtonsContainer_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoginYoNButtonsContainer()
-//    }
-//}
+// MARK: - Preview
+
+#if DEBUG
+struct LoginYoNButtonsContainer_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginYoNButtonsContainer(
+            title: "Title",
+            yesButtonTitle: "Yes",
+            noButtonTitle: "No",
+            onYesButtonTap: {},
+            onNoButtonTap: {},
+            label: {
+                Text("ViewLabel")
+            }
+        )
+    }
+}
+#endif

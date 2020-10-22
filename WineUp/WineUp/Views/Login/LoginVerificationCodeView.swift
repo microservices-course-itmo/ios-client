@@ -32,8 +32,12 @@ struct LoginVerificationCodeView: View {
     }
 }
 
+// MARK: - LoginVerificationCodeView+ViewModel
+
 extension LoginVerificationCodeView {
     final class ViewModel: ObservableObject {
+
+        // MARK: Variables
 
         @Published var isCodeWrong = false
         @Published var canResendCode = false
@@ -44,6 +48,8 @@ extension LoginVerificationCodeView {
 
         private var timer: Timer!
         private var onSubmit: () -> Void
+
+        // MARK: Public Methods
 
         init(onSubmit: @escaping () -> Void) {
             self.onSubmit = onSubmit
@@ -63,6 +69,8 @@ extension LoginVerificationCodeView {
                 self.updateUI()
             }
         }
+
+        // MARK: Private Methods
 
         private func tick() {
             if secondsToResendCode > 0 {
@@ -90,3 +98,13 @@ extension LoginVerificationCodeView {
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct LoginVerificationCodeView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginVerificationCodeView(viewModel: .init(onSubmit: {}))
+    }
+}
+#endif

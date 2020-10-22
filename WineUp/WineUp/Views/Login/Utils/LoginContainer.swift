@@ -7,6 +7,19 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let actionLabelTop: CGFloat = 75
+    static let viewLabelTop: CGFloat = 50
+}
+
+private extension Font {
+    static let containerTitle: Font = .title
+}
+
+// MARK: - View
+
 struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
 
     let title: String
@@ -14,10 +27,10 @@ struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
     let actionLabel: () -> ActionLabel
 
     var body: some View {
-        VStack(alignment: .center, spacing: 75) {
-            VStack(alignment: .center, spacing: 50) {
+        VStack(alignment: .center, spacing: .actionLabelTop) {
+            VStack(alignment: .center, spacing: .viewLabelTop) {
                 Text(title)
-                    .font(.title)
+                    .font(.containerTitle)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
 
@@ -28,9 +41,17 @@ struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
         }
     }
 }
-//
-//struct LoginContainer_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoginContainer()
-//    }
-//}
+
+// MARK: - Preview
+
+#if DEBUG
+struct LoginContainer_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginContainer(title: "Title", viewLabel: {
+            Text("ViewLabel")
+        }, actionLabel: {
+            Text("ActionLabel")
+        })
+    }
+}
+#endif

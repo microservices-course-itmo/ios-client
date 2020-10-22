@@ -7,6 +7,22 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let buttonHorizontalPadding: CGFloat = 35
+    static let buttonCornerRadius: CGFloat = 25
+}
+
+private extension Color {
+    static let activeButtonTitle = Color(.systemBackground)
+    static let activeButtonBackground: Color = .blue
+    static let disabledButtonTitle = Color(.label)
+    static let disabledButtonBackground = Color(.systemGray4)
+}
+
+// MARK: - View
+
 struct LoginOneButtonContainer<Label: View>: View {
 
     let title: String
@@ -20,29 +36,41 @@ struct LoginOneButtonContainer<Label: View>: View {
             Button(action: onButtonTap) {
                 Text(buttonTitle)
             }
-            .padding(.horizontal, 35)
+            .padding(.horizontal, .buttonHorizontalPadding)
             .padding(.vertical)
             .foregroundColor(buttonForegroundColor)
             .background(buttonBackgroundColor)
-            .cornerRadius(25)
+            .cornerRadius(.buttonCornerRadius)
         })
     }
 }
 
+// MARK: - Helpers
+
 private extension LoginOneButtonContainer {
     var buttonForegroundColor: Color {
-        isButtonActive ? Color(.systemBackground) : Color(.label)
+        isButtonActive ? .activeButtonTitle : .disabledButtonTitle
     }
 
     var buttonBackgroundColor: Color {
-        isButtonActive ? .blue : Color(.systemGray4)
+        isButtonActive ? .activeButtonBackground : .disabledButtonBackground
     }
 }
 
+// MARK: - Preview
+
 #if DEBUG
-//struct LoginOneButtonContainer_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoginOneButtonContainer()
-//    }
-//}
+struct LoginOneButtonContainer_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            LoginOneButtonContainer(title: "Title", isButtonActive: false, buttonTitle: "Button", onButtonTap: {}, label: {
+                Text("ViewLabel")
+            })
+
+            LoginOneButtonContainer(title: "Title", isButtonActive: true, buttonTitle: "Button", onButtonTap: {}, label: {
+                Text("ViewLabel")
+            })
+        }
+    }
+}
 #endif

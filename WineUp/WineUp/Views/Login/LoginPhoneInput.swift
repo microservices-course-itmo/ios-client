@@ -8,6 +8,12 @@
 import SwiftUI
 import Combine
 
+// MARK: - Constants
+
+private extension Font {
+    static let phoneNumberTextField: Font = .system(size: 16)
+}
+
 // MARK: - View
 
 struct LoginPhoneInput: View {
@@ -25,17 +31,19 @@ struct LoginPhoneInput: View {
             label: {
                 TextField("+7 (XXX) XXX-XX-XX", text: $viewModel.phoneNumber.value)
                     .multilineTextAlignment(.center)
-                    .font(.system(size: 16))
+                    .font(.phoneNumberTextField)
                     .keyboardType(.phonePad)
             }
         )
     }
 }
 
-// MARK: - ViewModel
+// MARK: - LoginPhoneInput+ViewModel
 
 extension LoginPhoneInput {
     final class ViewModel: ObservableObject {
+
+        // MARK: Variables
 
         @Published var isNextButtonActive = false
         @Published var phoneNumber = FormattableContainer("", formatter: ViewModel.formatRuPhoneNumber(phone:)) {
@@ -46,11 +54,11 @@ extension LoginPhoneInput {
 
         let onNextButtonTap: () -> Void
 
+        // MARK: Public Methods
+
         init(onNextButtonTap: @escaping () -> Void) {
             self.onNextButtonTap = onNextButtonTap
         }
-
-        // MARK: - Public Methods
 
         func loginButtonDidTap() {
             onNextButtonTap()
@@ -60,7 +68,7 @@ extension LoginPhoneInput {
 
         }
 
-        // MARK: - Private Methods
+        // MARK: Private Methods
 
         private func phoneNumberDidSet() {
             isNextButtonActive = phoneNumber.value.count == 18
@@ -97,8 +105,12 @@ extension LoginPhoneInput {
     }
 }
 
-//struct LoginPhoneInput_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoginPhoneInput()
-//    }
-//}
+// MARK: - Preview
+
+#if DEBUG
+struct LoginPhoneInput_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginPhoneInput(viewModel: .init(onNextButtonTap: {}))
+    }
+}
+#endif

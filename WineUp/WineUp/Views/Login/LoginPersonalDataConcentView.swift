@@ -30,3 +30,13 @@ struct LoginPersonalDataConcentView: View {
         )
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct LoginPersonalDataConcentView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginPersonalDataConcentView(onConcent: {})
+    }
+}
+#endif

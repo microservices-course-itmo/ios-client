@@ -20,6 +20,8 @@ struct LoginAgeRestrictionView: View {
     }
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct LoginAgeRestrictionView_Previews: PreviewProvider {
     static var previews: some View {
