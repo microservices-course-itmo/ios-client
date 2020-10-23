@@ -7,16 +7,23 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct ApplicationRootView: View {
-    @ObservedObject private var viewModel = ApplicationRootViewModel()
+
+    @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        ApplicationMenuView()
+        ApplicationMenuView(viewModel: viewModel.applicationMenuViewModel)
     }
 }
 
-struct ApplicationRootViewPreviews: PreviewProvider {
+// MARK: - Preview
+
+#if DEBUG
+struct ApplicationRootView_Previews: PreviewProvider {
     static var previews: some View {
-        ApplicationRootView()
+        ApplicationRootView(viewModel: .init())
     }
 }
+#endif

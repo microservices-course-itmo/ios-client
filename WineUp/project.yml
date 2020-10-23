@@ -74,7 +74,7 @@ targets:
                 if which rswift >/dev/null; then
                   rswift generate "$SRCROOT/WineUp/Resources/R.generated.swift"
                 else
-                    echo "warning: Rswift not installed, run `brew install rswift`"
+                    echo "warning: Rswift not installed, run 'brew install rswift'"
                     exit 1
                 fi
         inputFiles:

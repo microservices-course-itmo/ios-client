@@ -11,7 +11,7 @@ import SwiftUI
 struct WineUpApp: App {
     var body: some Scene {
         WindowGroup {
-            ApplicationRootView()
+            ApplicationRootView(viewModel: .init())
         }
     }
 }
