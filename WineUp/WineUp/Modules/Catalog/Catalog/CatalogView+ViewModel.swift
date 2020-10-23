@@ -42,6 +42,10 @@ extension CatalogView {
             .init()
         }
 
+        var countryFilterViewModel: CountryFilterView.ViewModel {
+            .init()
+        }
+
         var wineAstringencyFilterViewModel: WineAstringencyFilter.ViewModel {
             .init()
         }

@@ -70,7 +70,7 @@ struct CatalogView: View {
             )
         case .country:
             return wrapFilter(
-                Color.red,
+                CountryFilterView(viewModel: viewModel.countryFilterViewModel),
                 title: "Страна"
             )
         case .wineAstringency:
