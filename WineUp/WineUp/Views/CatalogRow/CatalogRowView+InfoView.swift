@@ -96,27 +96,25 @@ extension CatalogRowView {
                 }
             }
         }
-    }
-}
 
-// MARK: - Helpers
+        // MARK: Helpers
 
-private extension CatalogRowView.InfoView {
-    var heartColor: Color {
-        return item.isLiked ? .heartLiked : .heartNotLiked
-    }
+        private var heartColor: Color {
+            return item.isLiked ? .heartLiked : .heartNotLiked
+        }
 
-    var compatibilityText: LocalizedStringKey {
-        return .compatibility(percentage: Int(item.chemistry))
-    }
+        private var compatibilityText: LocalizedStringKey {
+            return .compatibility(percentage: Int(item.chemistry))
+        }
 
-    var wineDescriptionText: LocalizedStringKey {
-        return .wineDescription(
-            country: item.country,
-            color: item.color.name,
-            wineAstringency: item.wineAstringency.name,
-            quantityLiters: Int(item.quantityLiters)
-        )
+        private var wineDescriptionText: LocalizedStringKey {
+            return .wineDescription(
+                country: item.country,
+                color: item.color.name,
+                wineAstringency: item.wineAstringency.name,
+                quantityLiters: Int(item.quantityLiters)
+            )
+        }
     }
 }
 

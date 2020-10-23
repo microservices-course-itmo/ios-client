@@ -52,12 +52,10 @@ struct RadioButton<Item: RadioButtonItem>: View {
             itemsList()
         }
     }
-}
 
-// MARK: - Displaying Items
+    // MARK: Displaying Items
 
-private extension RadioButton {
-    func itemsList() -> some View {
+    private func itemsList() -> some View {
         VStack(alignment: .leading, spacing: spacing) {
             ForEach(items) { item in
                 ItemButton(
@@ -69,12 +67,10 @@ private extension RadioButton {
             }
         }
     }
-}
 
-// MARK: - Helpers
+    // MARK: Helpers
 
-private extension RadioButton {
-    func itemButtonDidTap(_ item: Item) {
+    private func itemButtonDidTap(_ item: Item) {
         if checkedItems.contains(item) {
             checkedItems.remove(item)
         } else {
@@ -87,7 +83,7 @@ private extension RadioButton {
         }
     }
 
-    var canCheckItem: Bool {
+    private var canCheckItem: Bool {
         guard let maxChecked = maxChecked else {
             return true
         }

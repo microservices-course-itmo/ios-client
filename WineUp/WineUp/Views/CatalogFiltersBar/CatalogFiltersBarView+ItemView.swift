@@ -29,24 +29,22 @@ extension CatalogFiltersBarView {
                 .foregroundColor(.itemTitle)
                 .font(.itemTitle)
         }
-    }
-}
 
-// MARK: - Helpers
+        // MARK: Helpers
 
-private extension CatalogFiltersBarView.ItemView {
-    var title: String {
-        switch item {
-        case .recomendation:
-            return "Рекомендованные"
-        case .price:
-            return "Цена"
-        case .country:
-            return "Страна"
-        case .wineColor:
-            return "Цвет"
-        case .wineAstringency:
-            return "Сахар"
+        private var title: String {
+            switch item {
+            case .recomendation:
+                return "Рекомендованные"
+            case .price:
+                return "Цена"
+            case .country:
+                return "Страна"
+            case .wineColor:
+                return "Цвет"
+            case .wineAstringency:
+                return "Сахар"
+            }
         }
     }
 }

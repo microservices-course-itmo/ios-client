@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct LazyPager<Content: View>: View {
     let pageCount: Int
     @Binding var currentIndex: Int
@@ -31,3 +33,29 @@ struct LazyPager<Content: View>: View {
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct LazyPager_Previews: PreviewProvider {
+    private static func pageFor(index: Int) -> some View {
+        switch index {
+        case 0:
+            return Color.red
+        case 1:
+            return Color.blue
+        default:
+            return Color.clear
+        }
+    }
+
+    static var previews: some View {
+
+        Group {
+            LazyPager(pageCount: 2, currentIndex: .constant(0), content: pageFor(index:))
+            LazyPager(pageCount: 2, currentIndex: .constant(1), content: pageFor(index:))
+        }
+        .previewLayout(.fixed(width: 414, height: 300))
+    }
+}
+#endif

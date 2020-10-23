@@ -57,26 +57,23 @@ extension RadioButton {
                 }
             }
         }
-    }
-}
+        // MARK: Helpers
 
-// MARK: - Helpers
+        private var checkboxImage: Image {
+            isChecked ? .checkedCheckbox : .normalCheckbox
+        }
 
-private extension RadioButton.ItemView {
-    var checkboxImage: Image {
-        isChecked ? .checkedCheckbox : .normalCheckbox
-    }
+        private var checkboxColor: Color {
+            isChecked ? .checkedCheckbox : .normalCheckbox
+        }
 
-    var checkboxColor: Color {
-        isChecked ? .checkedCheckbox : .normalCheckbox
-    }
+        private var text: LocalizedStringKey {
+            item.textRepresentation
+        }
 
-    var text: LocalizedStringKey {
-        item.textRepresentation
-    }
-
-    var isChecked: Bool {
-        checkedItems.contains(item)
+        private var isChecked: Bool {
+            checkedItems.contains(item)
+        }
     }
 }
 

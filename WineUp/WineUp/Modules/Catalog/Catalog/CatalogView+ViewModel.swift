@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Combine
 
-// MARK: - Variables & Init
+// MARK: - CatalogView+ViewModel
 
 extension CatalogView {
     final class ViewModel: ObservableObject {
@@ -22,8 +22,47 @@ extension CatalogView {
         init() {
             initWithMockData()
         }
-    }
 
+        // MARK: Public Methods
+
+        func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
+            assert(filtersBarItems.contains(item) && presentedFiltersBarItem == nil)
+            presentedFiltersBarItem = item
+        }
+
+        func dismissFilterDidTap() {
+            assert(presentedFiltersBarItem != nil)
+            presentedFiltersBarItem = nil
+        }
+
+        var recommendationFilterViewModel: RecommendationFilter.ViewModel {
+            .init()
+        }
+
+        var priceFilterViewModel: PriceFilter.ViewModel {
+            .init()
+        }
+
+        var wineAstringencyFilterViewModel: WineAstringencyFilter.ViewModel {
+            .init()
+        }
+
+        var wineColorFilterViewModel: WineColorFilter.ViewModel {
+            .init()
+        }
+
+        // MARK: Helpers
+
+        private func initWithMockData() {
+            catalogItems = CatalogView.RowItem.mockedData
+            filtersBarItems = CatalogFiltersBarView.Item.mockedData
+        }
+    }
+}
+
+// MARK: - CatalogView+RowItem
+
+extension CatalogView {
     struct RowItem: Identifiable, Equatable {
         var id = UUID()
         /// Title name of wine
@@ -55,44 +94,5 @@ extension CatalogView {
         var priceWithDiscount: Float {
             return originalPriceRub * ((100 - discountPercents) / 100)
         }
-    }
-}
-
-// MARK: - Public Methods
-
-extension CatalogView.ViewModel {
-    func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
-        assert(filtersBarItems.contains(item) && presentedFiltersBarItem == nil)
-        presentedFiltersBarItem = item
-    }
-
-    func dismissFilterDidTap() {
-        assert(presentedFiltersBarItem != nil)
-        presentedFiltersBarItem = nil
-    }
-
-    var recommendationFilterViewModel: RecommendationFilter.ViewModel {
-        .init()
-    }
-
-    var priceFilterViewModel: PriceFilter.ViewModel {
-        .init()
-    }
-
-    var wineAstringencyFilterViewModel: WineAstringencyFilter.ViewModel {
-        .init()
-    }
-
-    var wineColorFilterViewModel: WineColorFilter.ViewModel {
-        .init()
-    }
-}
-
-// MARK: - Helpers
-
-private extension CatalogView.ViewModel {
-    func initWithMockData() {
-        catalogItems = CatalogView.RowItem.mockedData
-        filtersBarItems = CatalogFiltersBarView.Item.mockedData
     }
 }

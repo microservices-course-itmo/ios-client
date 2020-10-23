@@ -90,9 +90,11 @@ extension LoginView {
 
         }
     }
+}
 
-    // MARK: - LoginView+Page
+// MARK: - LoginView+Page
 
+extension LoginView {
     enum Page {
         case ageQuestion, ageRestriction, phoneNumber, verificationCode, name, birthday, city, personalDataConcent
     }

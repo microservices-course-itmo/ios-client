@@ -36,6 +36,23 @@ struct CatalogFiltersBarView: View {
             Divider()
         }
     }
+
+    // MARK: Displaying Items
+
+    private func itemsHStack() -> some View {
+        HStack(spacing: .interitemSpacing) {
+            ForEach(items) { item in
+                ItemButton(item: item, onTap: { itemDidTap(item) })
+                    .frame(minWidth: .minItemWidth, maxWidth: .infinity)
+            }
+        }
+    }
+
+    // MARK: Helpers
+
+    private func itemDidTap(_ item: Item) {
+        onItemTap?(item)
+    }
 }
 
 // MARK: - Model
@@ -47,27 +64,6 @@ extension CatalogFiltersBarView {
         var id: Int {
             hashValue
         }
-    }
-}
-
-// MARK: - Displaying Items
-
-private extension CatalogFiltersBarView {
-    func itemsHStack() -> some View {
-        HStack(spacing: .interitemSpacing) {
-            ForEach(items) { item in
-                ItemButton(item: item, onTap: { itemDidTap(item) })
-                    .frame(minWidth: .minItemWidth, maxWidth: .infinity)
-            }
-        }
-    }
-}
-
-// MARK: - Helpers
-
-private extension CatalogFiltersBarView {
-    func itemDidTap(_ item: Item) {
-        onItemTap?(item)
     }
 }
 

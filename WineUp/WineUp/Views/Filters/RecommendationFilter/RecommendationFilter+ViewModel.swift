@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Variables & Init
+// MARK: - RecommendationFilter+ViewModel
 
 extension RecommendationFilter {
     final class ViewModel: ObservableObject {
@@ -18,26 +18,22 @@ extension RecommendationFilter {
         init() {
             initStaticCatalogSortOrderItems()
         }
-    }
 
+        // MARK: Helpers
+
+        private func initStaticCatalogSortOrderItems() {
+            catalogSortOrderItems = [
+                .init(sortOrder: .recommended),
+                .init(sortOrder: .baseedOnRating)
+            ]
+        }
+    }
+}
+
+// MARK: - RecommendationFilter+CatalogSortOrderItem
+
+extension RecommendationFilter {
     struct CatalogSortOrderItem: Equatable {
         var sortOrder: CatalogSortOrder
-    }
-}
-
-// MARK: - Public Methods
-
-extension RecommendationFilter.ViewModel {
-
-}
-
-// MARK: - Helpers
-
-private extension RecommendationFilter.ViewModel {
-    func initStaticCatalogSortOrderItems() {
-        catalogSortOrderItems = [
-            .init(sortOrder: .recommended),
-            .init(sortOrder: .baseedOnRating)
-        ]
     }
 }

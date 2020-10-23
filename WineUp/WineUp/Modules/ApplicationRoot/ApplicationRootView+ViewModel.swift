@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Variables & Init
+// MARK: - ApplicationRootView+ViewModel
 
 extension ApplicationRootView {
     final class ViewModel: ObservableObject {

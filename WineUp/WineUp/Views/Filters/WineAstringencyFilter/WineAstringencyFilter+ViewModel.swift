@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Variables & Init
+// MARK: - WineAstringencyFilter+ViewModel
 
 extension WineAstringencyFilter {
     final class ViewModel: ObservableObject {
@@ -18,22 +18,24 @@ extension WineAstringencyFilter {
         init() {
             initStaticItems()
         }
-    }
 
-    struct Item: Equatable {
-        var wineAstringency: WineAstringency
+        // MARK: - Helpers
+
+        private func initStaticItems() {
+            items = [
+                .init(wineAstringency: .dry),
+                .init(wineAstringency: .semiDry),
+                .init(wineAstringency: .semiSweet),
+                .init(wineAstringency: .sweet)
+            ]
+        }
     }
 }
 
-// MARK: - Helpers
+// MARK: - WineAstringencyFilter+Item
 
-private extension WineAstringencyFilter.ViewModel {
-    func initStaticItems() {
-        items = [
-            .init(wineAstringency: .dry),
-            .init(wineAstringency: .semiDry),
-            .init(wineAstringency: .semiSweet),
-            .init(wineAstringency: .sweet)
-        ]
+extension WineAstringencyFilter {
+    struct Item: Equatable {
+        var wineAstringency: WineAstringency
     }
 }

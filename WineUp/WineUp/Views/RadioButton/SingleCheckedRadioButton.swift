@@ -41,13 +41,11 @@ struct SingleCheckedRadioButton<Item: RadioButtonItem>: View {
             checkedItems: checkedItems
         )
     }
-}
 
-// MARK: - Helpers
+    // MARK: Helpers
 
-private extension SingleCheckedRadioButton {
     /// Computed array mapped from `checkedItem`
-    var checkedItems: Binding<[Item]> {
+    private var checkedItems: Binding<[Item]> {
         Binding<[Item]>(get: {
             checkedItem.flatMap { [$0] } ?? []
         }, set: {

@@ -21,14 +21,12 @@ extension CatalogFiltersBarView {
                 ItemView(item: item).padding()
             })
         }
-    }
-}
 
-// MARK: - Helpers
+        // MARK: Helpers
 
-private extension CatalogFiltersBarView.ItemButton {
-    func didTap() {
-        onTap?()
+        private func didTap() {
+            onTap?()
+        }
     }
 }
 

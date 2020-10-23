@@ -7,7 +7,7 @@
 
 import Combine
 
-// MARK: - Variables & Init
+// MARK: - PriceFilter+ViewModel
 
 extension PriceFilter {
     final class ViewModel: ObservableObject {
@@ -21,8 +21,37 @@ extension PriceFilter {
         init() {
             initStaticItems()
         }
-    }
 
+        // MARK: - Public Methods
+
+        func predefinedPriceIntervalDidTap(_ interval: PriceFilter.PredefinedPriceInterval) {
+            assert(predefinedPrices.contains(interval))
+
+            // If user taps on selected one
+            if interval == selectedPredefinedPrice {
+                selectedPredefinedPrice = nil
+            } else {
+                selectedPredefinedPrice = interval
+            }
+        }
+
+        // MARK: - Helpers
+
+        private func initStaticItems() {
+            predefinedPrices = [
+                .lessThan(maxPriceRub: 1_500),
+                .between(minPriceRub: 1_500, maxPriceRub: 3_000),
+                .between(minPriceRub: 3_000, maxPriceRub: 5_000),
+                .between(minPriceRub: 5_000, maxPriceRub: 10_000),
+                .greaterThan(minPriceRub: 10_000)
+            ]
+        }
+    }
+}
+
+// MARK: - PriceFilter+PredefinedPriceInterval
+
+extension PriceFilter {
     enum PredefinedPriceInterval: Identifiable, Hashable, Equatable {
         case lessThan(maxPriceRub: Float)
         case between(minPriceRub: Float, maxPriceRub: Float)
@@ -31,34 +60,5 @@ extension PriceFilter {
         var id: Int {
             hashValue
         }
-    }
-}
-
-// MARK: - Public Methods
-
-extension PriceFilter.ViewModel {
-    func predefinedPriceIntervalDidTap(_ interval: PriceFilter.PredefinedPriceInterval) {
-        assert(predefinedPrices.contains(interval))
-
-        // If user taps on selected one
-        if interval == selectedPredefinedPrice {
-            selectedPredefinedPrice = nil
-        } else {
-            selectedPredefinedPrice = interval
-        }
-    }
-}
-
-// MARK: - Helpers
-
-private extension PriceFilter.ViewModel {
-    func initStaticItems() {
-        predefinedPrices = [
-            .lessThan(maxPriceRub: 1_500),
-            .between(minPriceRub: 1_500, maxPriceRub: 3_000),
-            .between(minPriceRub: 3_000, maxPriceRub: 5_000),
-            .between(minPriceRub: 5_000, maxPriceRub: 10_000),
-            .greaterThan(minPriceRub: 10_000)
-        ]
     }
 }

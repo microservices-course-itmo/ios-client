@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Variables & Init
+// MARK: - WineColorFilter+ViewModel
 
 extension WineColorFilter {
     final class ViewModel: ObservableObject {
@@ -18,21 +18,23 @@ extension WineColorFilter {
         init() {
             initStaticItems()
         }
-    }
 
-    struct Item: Equatable {
-        var wineColor: WineColor
+        // MARK: - Helpers
+
+        private func initStaticItems() {
+            items = [
+                .init(wineColor: .white),
+                .init(wineColor: .red),
+                .init(wineColor: .rose)
+            ]
+        }
     }
 }
 
-// MARK: - Helpers
+// MARK: - WineColorFilter+Item
 
-private extension WineColorFilter.ViewModel {
-    func initStaticItems() {
-        items = [
-            .init(wineColor: .white),
-            .init(wineColor: .red),
-            .init(wineColor: .rose)
-        ]
+extension WineColorFilter {
+    struct Item: Equatable {
+        var wineColor: WineColor
     }
 }

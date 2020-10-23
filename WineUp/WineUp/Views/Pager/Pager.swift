@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - View
+
 struct Pager<Content: View>: View {
     let pageCount: Int
     @Binding var currentIndex: Int
@@ -29,10 +31,22 @@ struct Pager<Content: View>: View {
     }
 }
 
+// MARK: - Preview
+
 #if DEBUG
-//struct Pager_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Pager()
-//    }
-//}
+struct Pager_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            Pager(pageCount: 2, currentIndex: .constant(0)) {
+                Color.red
+                Color.blue
+            }
+            Pager(pageCount: 2, currentIndex: .constant(1)) {
+                Color.red
+                Color.blue
+            }
+        }
+        .previewLayout(.fixed(width: 414, height: 300))
+    }
+}
 #endif

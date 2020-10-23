@@ -7,18 +7,15 @@
 
 import Foundation
 
-// MARK: - Variables & Init
+// MARK: - CatalogRootView+ViewModel
 
 extension CatalogRootView {
     final class ViewModel: ObservableObject {
 
-    }
-}
+        // MARK: - Public Methods
 
-// MARK: - Public Methods
-
-extension CatalogRootView.ViewModel {
-    var catalogViewModel: CatalogView.ViewModel {
-        return .init()
+        var catalogViewModel: CatalogView.ViewModel {
+            return .init()
+        }
     }
 }

@@ -43,25 +43,23 @@ extension CatalogRowView {
                 }
             }
         }
-    }
-}
 
-// MARK: - Helpers
+        // MARK: Helpers
 
-private extension CatalogRowView.DiscountView {
-    var priceWithDiscountText: String {
-        let priceWithDiscount = Int(item.priceWithDiscount)
-        return "\(priceWithDiscount)₽"
-    }
+        private var priceWithDiscountText: String {
+            let priceWithDiscount = Int(item.priceWithDiscount)
+            return "\(priceWithDiscount)₽"
+        }
 
-    var discountPercentsText: String {
-        let discountPercents = Int(item.discountPercents)
-        return "-\(discountPercents)₽"
-    }
+        private var discountPercentsText: String {
+            let discountPercents = Int(item.discountPercents)
+            return "-\(discountPercents)₽"
+        }
 
-    var originalPriceRubText: String {
-        let originalPriceRun = Int(item.originalPriceRub)
-        return "\(originalPriceRun)₽"
+        private var originalPriceRubText: String {
+            let originalPriceRun = Int(item.originalPriceRub)
+            return "\(originalPriceRun)₽"
+        }
     }
 }
 

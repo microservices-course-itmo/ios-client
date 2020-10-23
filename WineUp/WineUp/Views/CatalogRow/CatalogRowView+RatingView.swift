@@ -60,14 +60,12 @@ extension CatalogRowView {
                 }
             }
         }
-    }
-}
 
-// MARK: - Helpers
+        // MARK: Helpers
 
-private extension CatalogRowView.RatingView {
-    func color(forIndex index: Int) -> Color {
-        return Float(index) <= item.rating ? .burningStar : .normalStar
+        private func color(forIndex index: Int) -> Color {
+            return Float(index) <= item.rating ? .burningStar : .normalStar
+        }
     }
 }
 

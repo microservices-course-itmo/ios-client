@@ -35,10 +35,9 @@ struct CatalogView: View {
         }
     }
 
-}
+    // MARK: Helpers
 
-private extension CatalogView {
-    func content() -> some View {
+    private func content() -> some View {
         VStack(spacing: .rootVStackSpacing) {
             SearchBarView(text: $viewModel.searchText)
 
@@ -57,7 +56,7 @@ private extension CatalogView {
         .navigationBarHidden(false)
     }
 
-    func wrappedFilterViewFor(item: CatalogFiltersBarView.Item) -> some View {
+    private func wrappedFilterViewFor(item: CatalogFiltersBarView.Item) -> some View {
         switch item {
         case .recomendation:
             return wrapFilter(
@@ -87,7 +86,7 @@ private extension CatalogView {
         }
     }
 
-    func wrapFilter<V: View>(_ filter: V, title: String) -> AnyView {
+    private func wrapFilter<V: View>(_ filter: V, title: String) -> AnyView {
         PopupContainer(onShouldDismiss: {
             withAnimation(.defaultEaseInOut) {
                 viewModel.dismissFilterDidTap()
