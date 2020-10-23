@@ -32,7 +32,7 @@ struct ApplicationMenuView: View {
 
     var body: some View {
         TabView {
-            CatalogRootView(viewModel: viewModel.catalogRootViewModel)
+            LoginView(viewModel: viewModel.loginViewModel)
                 .tabItem {
                     Image.mainTab
                     Text(LocalizedStringKey.mainTab)

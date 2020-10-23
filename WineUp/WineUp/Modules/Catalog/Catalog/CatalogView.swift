@@ -104,6 +104,7 @@ struct CatalogView: View {
 
 #if DEBUG
 struct CatalogView_Previews: PreviewProvider {
+
     static var previews: some View {
         Group {
             CatalogView(viewModel: .init())
