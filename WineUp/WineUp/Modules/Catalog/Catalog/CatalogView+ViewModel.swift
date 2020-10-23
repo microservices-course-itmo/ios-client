@@ -16,6 +16,7 @@ extension CatalogView {
 
         @Published var catalogItems: [CatalogView.RowItem] = []
         @Published var filtersBarItems: [CatalogFiltersBarView.Item] = []
+        @Published var presentedFiltersBarItem: CatalogFiltersBarView.Item?
         @Published var searchText: String = ""
 
         init() {
@@ -61,7 +62,29 @@ extension CatalogView {
 
 extension CatalogView.ViewModel {
     func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
+        assert(filtersBarItems.contains(item) && presentedFiltersBarItem == nil)
+        presentedFiltersBarItem = item
+    }
 
+    func dismissFilterDidTap() {
+        assert(presentedFiltersBarItem != nil)
+        presentedFiltersBarItem = nil
+    }
+
+    var recommendationFilterViewModel: RecommendationFilter.ViewModel {
+        .init()
+    }
+
+    var priceFilterViewModel: PriceFilter.ViewModel {
+        .init()
+    }
+
+    var wineAstringencyFilterViewModel: WineAstringencyFilter.ViewModel {
+        .init()
+    }
+
+    var wineColorFilterViewModel: WineColorFilter.ViewModel {
+        .init()
     }
 }
 

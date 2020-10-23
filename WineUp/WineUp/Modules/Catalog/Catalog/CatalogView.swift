@@ -25,11 +25,27 @@ struct CatalogView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
+        ZStack {
+            content()
+
+            if let item = viewModel.presentedFiltersBarItem {
+                wrappedFilterViewFor(item: item)
+                    .transition(.opacity)
+            }
+        }
+    }
+
+}
+
+private extension CatalogView {
+    func content() -> some View {
         VStack(spacing: .rootVStackSpacing) {
             SearchBarView(text: $viewModel.searchText)
 
             CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
-                viewModel.filterItemDidTap(item)
+                withAnimation(.defaultEaseInOut) {
+                    viewModel.filterItemDidTap(item)
+                }
             }
 
             List(viewModel.catalogItems) { item in
@@ -39,6 +55,49 @@ struct CatalogView: View {
         .navigationTitle(.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
+    }
+
+    func wrappedFilterViewFor(item: CatalogFiltersBarView.Item) -> some View {
+        switch item {
+        case .recomendation:
+            return wrapFilter(
+                RecommendationFilter(viewModel: viewModel.recommendationFilterViewModel),
+                title: "Рекомендации"
+            )
+        case .price:
+            return wrapFilter(
+                PriceFilter(viewModel: viewModel.priceFilterViewModel),
+                title: "Цена"
+            )
+        case .country:
+            return wrapFilter(
+                Color.red,
+                title: "Страна"
+            )
+        case .wineAstringency:
+            return wrapFilter(
+                WineAstringencyFilter(viewModel: viewModel.wineAstringencyFilterViewModel),
+                title: "Сахар"
+            )
+        case .wineColor:
+            return wrapFilter(
+                WineColorFilter(viewModel: viewModel.wineColorFilterViewModel),
+                title: "Цвет"
+            )
+        }
+    }
+
+    func wrapFilter<V: View>(_ filter: V, title: String) -> AnyView {
+        PopupContainer(onShouldDismiss: {
+            withAnimation(.defaultEaseInOut) {
+                viewModel.dismissFilterDidTap()
+            }
+        }, label: {
+            FilterContainer(title: title, onSubmit: {}, filter: {
+                filter
+            })
+        })
+        .anyView
     }
 }
 

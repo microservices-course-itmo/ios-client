@@ -25,9 +25,28 @@ extension CatalogFiltersBarView {
         let item: Item
 
         var body: some View {
-            Text(item.title)
+            Text(title)
                 .foregroundColor(.itemTitle)
                 .font(.itemTitle)
+        }
+    }
+}
+
+// MARK: - Helpers
+
+private extension CatalogFiltersBarView.ItemView {
+    var title: String {
+        switch item {
+        case .recomendation:
+            return "Рекомендованные"
+        case .price:
+            return "Цена"
+        case .country:
+            return "Страна"
+        case .wineColor:
+            return "Цвет"
+        case .wineAstringency:
+            return "Сахар"
         }
     }
 }

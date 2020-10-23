@@ -10,20 +10,17 @@ import SwiftUI
 // MARK: - Constants
 
 private extension CGFloat {
-    static let titlePadding: CGFloat = 16
     static let radioButtonSpacing: CGFloat = 0
     static let radioButtonLeading: CGFloat = 16
     static let radioButtonPaddingTop: CGFloat = 8
 }
 
 private extension LocalizedStringKey {
-    static let recommendedTitle = LocalizedStringKey("Рекомендованное")
     static let recommendedOrder = LocalizedStringKey("Наиболее вам подходящие")
     static let basedOnRatingOrder = LocalizedStringKey("По рейтингу")
 }
 
 private extension Font {
-    static let recomended = Font.title.bold()
     static let radioButtonText = Font.system(size: 15)
 }
 
@@ -35,13 +32,6 @@ struct RecommendationFilter: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Text(LocalizedStringKey.recommendedTitle)
-                    .padding([.top, .leading], .titlePadding)
-                    .font(.recomended)
-                Spacer()
-            }
-
             SingleCheckedRadioButton(
                 spacing: .radioButtonSpacing,
                 items: viewModel.catalogSortOrderItems,
@@ -52,8 +42,6 @@ struct RecommendationFilter: View {
             .font(.radioButtonText)
             .padding(.leading, .radioButtonLeading)
             .padding(.top, .radioButtonPaddingTop)
-
-            Spacer()
         }
     }
 }

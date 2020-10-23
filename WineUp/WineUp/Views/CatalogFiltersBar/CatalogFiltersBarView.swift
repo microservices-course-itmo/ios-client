@@ -41,10 +41,12 @@ struct CatalogFiltersBarView: View {
 // MARK: - Model
 
 extension CatalogFiltersBarView {
-    struct Item: Identifiable, Equatable {
-        var id = UUID()
-        /// Filter name
-        var title: String
+    enum Item: Identifiable, Hashable {
+        case recomendation, price, wineAstringency, wineColor, country
+
+        var id: Int {
+            hashValue
+        }
     }
 }
 

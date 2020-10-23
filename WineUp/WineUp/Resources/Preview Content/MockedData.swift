@@ -19,11 +19,11 @@ extension CatalogView.RowItem {
 
 extension CatalogFiltersBarView.Item {
     static let mockedData: [CatalogFiltersBarView.Item] = [
-        CatalogFiltersBarView.Item(title: "Рекомендованные"),
-        CatalogFiltersBarView.Item(title: "Цена"),
-        CatalogFiltersBarView.Item(title: "Страна"),
-        CatalogFiltersBarView.Item(title: "Цвет"),
-        CatalogFiltersBarView.Item(title: "Сахар")
+        .recomendation,
+        .price,
+        .country,
+        .wineColor,
+        .wineAstringency
     ]
 }
 
