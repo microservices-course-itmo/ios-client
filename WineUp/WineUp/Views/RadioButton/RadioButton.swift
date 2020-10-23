@@ -63,7 +63,7 @@ private extension RadioButton {
                 ItemButton(
                     onTap: { itemButtonDidTap(item) },
                     item: item,
-                    isLineHidden: isLineHidden,
+                    isLineHidden: isLineHidden || item == items.last,
                     checkedItems: $checkedItems
                 )
             }
