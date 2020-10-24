@@ -7,12 +7,26 @@
 
 import SwiftUI
 
+// MARK: - View
+
+/// Navigation wrapper of CatalogView
 struct CatalogRootView: View {
-    @ObservedObject private var viewModel = CatalogRootViewModel()
+
+    @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
         NavigationView {
-            CatalogView(searchText: "")
+            CatalogView(viewModel: viewModel.catalogViewModel)
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct CatalogRootView_Previews: PreviewProvider {
+    static var previews: some View {
+        CatalogRootView(viewModel: .init())
+    }
+}
+#endif

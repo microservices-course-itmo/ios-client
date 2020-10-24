@@ -7,33 +7,108 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
+private extension CGFloat {
+    static let rootVStackSpacing: CGFloat = 0
+}
+
+private extension LocalizedStringKey {
+    static let navigationTitle = LocalizedStringKey("Catalog")
+}
+
+// MARK: - View
+
+/// Stack of filters and list of catalog offers
 struct CatalogView: View {
-    @ObservedObject private var viewModel = CatalogViewModel()
-    @State var searchText: String
+
+    @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        VStack(spacing: 0.0) {
-            SearchBarView(text: $searchText)
-            Text(searchText)
-            CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
-                self.viewModel.filterItemDidTap(item)
+        ZStack {
+            content()
+
+            if let item = viewModel.presentedFiltersBarItem {
+                wrappedFilterViewFor(item: item)
+                    .transition(.opacity)
             }
-            List(viewModel.items) { item in
+        }
+    }
+
+    // MARK: Helpers
+
+    private func content() -> some View {
+        VStack(spacing: .rootVStackSpacing) {
+            SearchBarView(text: $viewModel.searchText)
+
+            CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
+                withAnimation(.defaultEaseInOut) {
+                    viewModel.filterItemDidTap(item)
+                }
+            }
+
+            List(viewModel.catalogItems) { item in
                 CatalogRowView(item: item)
             }
         }
-        .navigationBarHidden(false)
-        .navigationTitle("Catalog")
+        .navigationTitle(.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(false)
+    }
+
+    private func wrappedFilterViewFor(item: CatalogFiltersBarView.Item) -> some View {
+        switch item {
+        case .recomendation:
+            return wrapFilter(
+                RecommendationFilter(viewModel: viewModel.recommendationFilterViewModel),
+                title: "Рекомендации"
+            )
+        case .price:
+            return wrapFilter(
+                PriceFilter(viewModel: viewModel.priceFilterViewModel),
+                title: "Цена"
+            )
+        case .country:
+            return wrapFilter(
+                CountryFilterView(viewModel: viewModel.countryFilterViewModel),
+                title: "Страна"
+            )
+        case .wineAstringency:
+            return wrapFilter(
+                WineAstringencyFilter(viewModel: viewModel.wineAstringencyFilterViewModel),
+                title: "Сахар"
+            )
+        case .wineColor:
+            return wrapFilter(
+                WineColorFilter(viewModel: viewModel.wineColorFilterViewModel),
+                title: "Цвет"
+            )
+        }
+    }
+
+    private func wrapFilter<V: View>(_ filter: V, title: String) -> AnyView {
+        PopupContainer(onShouldDismiss: {
+            withAnimation(.defaultEaseInOut) {
+                viewModel.dismissFilterDidTap()
+            }
+        }, label: {
+            FilterContainer(title: title, onSubmit: {}, filter: {
+                filter
+            })
+        })
+        .anyView
     }
 }
 
+// MARK: - Preview
+
+#if DEBUG
 struct CatalogView_Previews: PreviewProvider {
+
     static var previews: some View {
         Group {
-            CatalogView(searchText: "")
-                .previewDevice("iPhone 11 Pro")
-            CatalogView(searchText: "")
+            CatalogView(viewModel: .init())
         }
     }
 }
+#endif
