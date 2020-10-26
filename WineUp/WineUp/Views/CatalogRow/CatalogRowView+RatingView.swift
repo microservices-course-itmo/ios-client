@@ -52,9 +52,10 @@ extension CatalogRowView {
                         }
                     }
                     .padding(.vertical)
+
                     Text(LocalizedStringKey.ratingTitle)
                         .font(.ratingTitle)
-                        .foregroundColor(Color.gray)
+                        .foregroundColor(.gray)
                         .padding(.top, 2.0)
                 }
             }

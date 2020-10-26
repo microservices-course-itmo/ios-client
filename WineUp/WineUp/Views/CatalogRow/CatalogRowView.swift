@@ -18,7 +18,7 @@ private extension CGFloat {
 
 /// Catalog item visual representation (like `UITableViewCell`)
 struct CatalogRowView: View {
-    
+
     let item: CatalogView.RowItem
 
     var body: some View {

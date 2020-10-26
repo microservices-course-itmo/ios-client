@@ -17,7 +17,7 @@ private extension CGFloat {
 }
 
 private extension Color {
-    static let discountColor: Color = Color(red: 145 / 255, green: 22 / 255, blue: 52 / 255)
+    static let discountColor = Color(red: 145 / 255, green: 22 / 255, blue: 52 / 255)
 }
 
 // MARK: - View
@@ -30,7 +30,7 @@ extension CatalogRowView {
 
         var body: some View {
             VStack(alignment: .center, spacing: 2.0) {
-                ZStack(alignment: .leading)  {
+                ZStack(alignment: .leading) {
                     Image(uiImage: item.titleImage)
                         .resizable()
                         .frame(
@@ -40,10 +40,15 @@ extension CatalogRowView {
                         )
                         .aspectRatio(contentMode: .fit)
 
-                    Text("-\(String(Int(item.discountPercents)))%").italic().foregroundColor(.white).rotationEffect(.degrees(-5))
-
-
-                        .frame(width: 50, height: 50, alignment: .center).background(Circle().fill(Color.discountColor))
+                    Text("-\(String(Int(item.discountPercents)))%")
+                        .italic()
+                        .foregroundColor(.white)
+                        .rotationEffect(.degrees(-5))
+                        .frame(width: 50, height: 50, alignment: .center)
+                        .background(
+                            Circle()
+                                .fill(Color.discountColor)
+                        )
                         .offset(x: 55)
                 }
                 Text("\(item.year) г.")

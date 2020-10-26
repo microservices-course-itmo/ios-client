@@ -23,7 +23,7 @@ private extension Font {
 }
 
 private extension Color {
-    static let heartLiked: Color = Color(red: 145 / 255, green: 22 / 255, blue: 52 / 255)
+    static let heartLiked = Color(red: 145 / 255, green: 22 / 255, blue: 52 / 255)
     static let heartNotLiked: Color = .gray
 }
 
@@ -32,11 +32,11 @@ private extension LocalizedStringKey {
         return "Подходит вам на \(percentage)%"
     }
 
-    static func wineDescription(description: String) ->  LocalizedStringKey {
+    static func wineDescription(description: String) -> LocalizedStringKey {
         return "\(description)"
     }
 
-    static func wineCharacteristicsDescription(color: String, wineAstringency: String) ->  LocalizedStringKey {
+    static func wineCharacteristicsDescription(color: String, wineAstringency: String) -> LocalizedStringKey {
         return "\(color), \(wineAstringency)"
     }
 }
@@ -53,10 +53,10 @@ extension CatalogRowView {
             VStack(alignment: .leading) {
                 //TODO вынести в отдельный view
 
-                    Image.heartFill
-                        .foregroundColor(heartColor)
-                        .font(.heart)
-                        .padding(.leading, 200.0)
+                Image.heartFill
+                    .foregroundColor(heartColor)
+                    .font(.heart)
+                    .padding(.leading, 200.0)
 
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
@@ -66,40 +66,51 @@ extension CatalogRowView {
                     }
                     .padding(.trailing)
 
-                    Text("\(item.title), \(String(format:"%.2f",item.quantityLiters))л")
+                    Text("\(item.title), \(String(format: "%.2f", item.quantityLiters))л")
                         .font(.itemTitle)
                         .multilineTextAlignment(.leading)
                         .lineLimit(4)
                         .padding(.trailing, 15.0)
                 }
-                Divider().frame(width: 200.0)
+
+                Divider()
+                    .frame(width: 200.0)
+
                 //TODO Вынести в отдельный view
                 VStack(alignment: .leading, spacing: 4.0) {
                     HStack {
-                        Image(item.country).resizable()
+                        Image(item.country)
+                            .resizable()
                             .frame(width: 25.0, height: 16.0)
+
                         Text(countryText)
                             .font(.wineDescription)
                             .foregroundColor(Color.gray)
                     }
                     HStack {
-                        Image.wineIcon.resizable()
+                        Image.wineIcon
+                            .resizable()
                             .frame(width: 25.0, height: 25.0)
+
                         Text(characteristicsText)
                             .font(.wineDescription)
                             .foregroundColor(Color.gray)
                     }
                     HStack {
-                        Image.compatibilityIcon.resizable()
+                        Image.compatibilityIcon
+                            .resizable()
                             .frame(width: 25.0, height: 25.0)
+
                         Text(compatibilityText)
                             .font(.wineDescription)
                             .foregroundColor(Color.gray)
                     }
 
                     HStack {
-                        Image.shopIcon.resizable()
+                        Image.shopIcon
+                            .resizable()
                             .frame(width: 25.0, height: 25.0)
+
                         Text(retailerText)
                             .font(.wineDescription)
                             .foregroundColor(Color.gray)
@@ -130,7 +141,7 @@ extension CatalogRowView {
 
         private var characteristicsText: LocalizedStringKey {
             return .wineCharacteristicsDescription(color: item.color.name,
-                                                   wineAstringency: item.wineAstringency.name )
+                                                   wineAstringency: item.wineAstringency.name)
 
         }
         private var shopText: LocalizedStringKey {

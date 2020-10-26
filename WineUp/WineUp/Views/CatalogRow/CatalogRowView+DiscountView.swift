@@ -24,9 +24,9 @@ private extension Color {
 extension CatalogRowView {
     /// Catalog item price offer view
     struct DiscountView: View {
-        
+
         let item: CatalogView.RowItem
-        
+
         var body: some View {
             VStack(alignment: .trailing) {
                 HStack {
@@ -35,22 +35,24 @@ extension CatalogRowView {
                         .strikethrough()
                 }
                 HStack {
-                    Text("Стоимость:").font(.itemPrice)
+                    Text("Стоимость:")
+                        .font(.itemPrice)
+
                     Spacer()
+
                     Text(priceWithDiscountText)
                         .font(.priceWithDiscount)
-                    
                 }
             }
         }
-        
+
         // MARK: Helpers
-        
+
         private var priceWithDiscountText: String {
             let priceWithDiscount = Int(item.priceWithDiscount)
             return "\(priceWithDiscount)₽"
         }
-        
+
         private var originalPriceRubText: String {
             let originalPriceRun = Int(item.originalPriceRub)
             return "\(originalPriceRun)₽"
