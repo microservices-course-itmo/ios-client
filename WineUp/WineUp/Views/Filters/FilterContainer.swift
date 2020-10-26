@@ -11,12 +11,6 @@ import SwiftUI
 
 private extension Font {
     static let filterTitle: Font = .title
-    static let buttonTitle: Font = .body
-}
-
-private extension Color {
-    static let buttonTitle: Color = .white
-    static let buttonBackground: Color = .blue
 }
 
 // MARK: - View
@@ -37,18 +31,14 @@ struct FilterContainer<Filter: View>: View {
 
             Button(action: onSubmit, label: {
                 Text("Применить")
-                    .font(.buttonTitle)
-                    .foregroundColor(.buttonTitle)
-                    .padding()
-                    .padding(.horizontal, 16)
-                    .background(Color.buttonBackground.cornerRadius(16))
+                    .horizontallySpanned()
             })
-            .padding(.bottom)
+            .defaultStyled(isDisabled: false)
         }
         .padding(8)
         .background(
             Color.white
-                .cornerRadius(25)
+                .cornerRadius(16)
                 .faintShadow()
         )
         .padding(8)

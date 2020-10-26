@@ -20,6 +20,7 @@ private extension Font {
 
 // MARK: - View
 
+/// Login container with vertically located View and Action labels
 struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
 
     let title: String
