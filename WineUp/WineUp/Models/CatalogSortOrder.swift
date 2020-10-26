@@ -12,4 +12,8 @@ enum CatalogSortOrder {
     case recommended
     /// Show most rated first
     case baseedOnRating
+    /// Show lower price first
+    case priceAsc
+    /// Show higher price first
+    case priceDesc
 }

@@ -1,8 +1,8 @@
 //
-//  RecommendationFilter.swift
+//  FavoritesSortByView.swift
 //  WineUp
 //
-//  Created by Dmitry Rebrik on 04.10.2020.
+//  Created by Александр Пахомов on 26.10.2020.
 //
 
 import SwiftUI
@@ -18,6 +18,8 @@ private extension CGFloat {
 private extension LocalizedStringKey {
     static let recommendedOrder = LocalizedStringKey("Наиболее вам подходящие")
     static let basedOnRatingOrder = LocalizedStringKey("По рейтингу")
+    static let priceAsc = LocalizedStringKey("По возрастанию цены")
+    static let priceDesc = LocalizedStringKey("По убыванию цены")
 }
 
 private extension Font {
@@ -26,7 +28,7 @@ private extension Font {
 
 // MARK: - View
 
-struct RecommendationFilter: View {
+struct FavoritesSortByView: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
 
@@ -34,10 +36,10 @@ struct RecommendationFilter: View {
         VStack {
             SingleCheckedRadioButton(
                 spacing: .radioButtonSpacing,
-                items: viewModel.catalogSortOrderItems,
+                items: viewModel.sortByItems,
                 isScrollable: false,
                 isLineHidden: true,
-                checkedItem: $viewModel.checkedCatalogSortOrderItem
+                checkedItem: $viewModel.checkedSortByItems
             )
             .font(.radioButtonText)
             .padding(.leading, .radioButtonLeading)
@@ -48,18 +50,22 @@ struct RecommendationFilter: View {
 
 // MARK: - RadioButtonItem
 
-extension RecommendationFilter.CatalogSortOrderItem: RadioButtonItem {
+extension FavoritesSortByView.SortByItem: RadioButtonItem {
     var id: CatalogSortOrder {
-        sortOrder
+        sortBy
     }
 
     var textRepresentation: LocalizedStringKey {
-        switch sortOrder {
+        switch sortBy {
         case .recommended:
             return .recommendedOrder
         case .baseedOnRating:
             return .basedOnRatingOrder
-        default:
+        case .priceAsc:
+            return .priceAsc
+        case .priceDesc:
+            return .priceDesc
+        @unknown default:
             fatalError("Unexpected sort order")
         }
     }
@@ -68,9 +74,9 @@ extension RecommendationFilter.CatalogSortOrderItem: RadioButtonItem {
 // MARK: - Preview
 
 #if DEBUG
-struct RecommendationFilter_Previews: PreviewProvider {
+struct FavoritesSortByView_Previews: PreviewProvider {
     static var previews: some View {
-        RecommendationFilter(viewModel: .init())
+        FavoritesSortByView(viewModel: .init())
             .previewLayout(.fixed(width: 420, height: 300))
     }
 }
