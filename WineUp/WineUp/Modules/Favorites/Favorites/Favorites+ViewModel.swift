@@ -22,6 +22,10 @@ extension FavoritesView {
 
         // MARK: Public Methods
 
+        func clearFavorites() {
+
+        }
+
         // MARK: Helpers
 
         private func initWithMockData() {
