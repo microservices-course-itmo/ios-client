@@ -14,7 +14,7 @@ private extension CGFloat {
 }
 
 private extension LocalizedStringKey {
-    static let navigationTitle = LocalizedStringKey("Catalog")
+    static let navigationTitle = LocalizedStringKey("Каталог")
 }
 
 // MARK: - View
