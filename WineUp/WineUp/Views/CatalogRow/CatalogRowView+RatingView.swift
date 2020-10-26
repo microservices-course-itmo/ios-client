@@ -16,21 +16,21 @@ private extension CGFloat {
 
 private extension Image {
     static let starFill = Image(systemName: "star.fill")
+    static let star = Image(systemName: "star")
 }
 
 private extension LocalizedStringKey {
-    static let ratingTitle = LocalizedStringKey("Оценка экспертов:")
+    static let ratingTitle = LocalizedStringKey("ОЦЕНКА ЭКСПЕРТОВ")
 }
 
 private extension Color {
     static let backgroundVeil = Color(white: 1, opacity: 0.6)
-    static let burningStar: Color = .black
-    static let normalStar: Color = .gray
+    static let burningStar: Color = .yellow
 }
 
 private extension Font {
-    static let ratingTitle: Font = .system(size: 11, weight: .semibold)
-    static let star: Font = .system(size: 13)
+    static let ratingTitle: Font = .system(size: 11, weight: .light)
+    static let star: Font = .system(size: 11)
 }
 
 // MARK: - View
@@ -43,28 +43,28 @@ extension CatalogRowView {
 
         var body: some View {
             ZStack {
-                Color.backgroundVeil.ignoresSafeArea()
-                VStack {
-                    Text(LocalizedStringKey.ratingTitle)
-                        .font(.ratingTitle)
-                        .padding(.top, .ratingTitleTop)
-                    Spacer()
-                    HStack {
+                HStack {
+                    HStack(spacing: 2) {
                         ForEach(1..<6) { index in
-                            Image.starFill
+                            image(forIndex: index)
                                 .font(.star)
-                                .foregroundColor(color(forIndex: index))
+                                .foregroundColor(.burningStar)
                         }
                     }
-                    .padding(.bottom, .starsRowBottom)
+                    .padding(.vertical)
+
+                    Text(LocalizedStringKey.ratingTitle)
+                        .font(.ratingTitle)
+                        .foregroundColor(.gray)
+                        .padding(.top, 2.0)
                 }
             }
         }
 
         // MARK: Helpers
 
-        private func color(forIndex index: Int) -> Color {
-            return Float(index) <= item.rating ? .burningStar : .normalStar
+        private func image(forIndex index: Int) -> Image {
+            return Float(index) <= item.rating ? .starFill : .star
         }
     }
 }
@@ -76,7 +76,7 @@ struct CatalogRowViewRatingView_Previews: PreviewProvider {
     static var previews: some View {
         let item = CatalogView.RowItem.mockedData[0]
         return CatalogRowView.RatingView(item: item)
-            .previewLayout(.fixed(width: 120, height: 50))
+            .previewLayout(.fixed(width: 240, height: 15))
     }
 }
 #endif
