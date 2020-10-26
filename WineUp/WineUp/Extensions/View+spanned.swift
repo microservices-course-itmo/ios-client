@@ -8,19 +8,31 @@
 import SwiftUI
 
 extension View {
-    func horizontallySpanned(minSpace: CGFloat? = nil) -> some View {
+    func horizontallySpanned(minSpace: CGFloat? = nil, alignment: HorizontalAlignment = .center) -> some View {
         HStack {
-            Spacer(minLength: minSpace)
+            if alignment != .leading {
+                Spacer(minLength: minSpace)
+            }
+
             self
-            Spacer(minLength: minSpace)
+
+            if alignment != .trailing {
+                Spacer(minLength: minSpace)
+            }
         }
     }
 
-    func verticallySpanned(minSpace: CGFloat? = nil) -> some View {
+    func verticallySpanned(minSpace: CGFloat? = nil, alignment: VerticalAlignment = .center) -> some View {
         VStack {
-            Spacer(minLength: minSpace)
+            if alignment != .top {
+                Spacer(minLength: minSpace)
+            }
+
             self
-            Spacer(minLength: minSpace)
+
+            if alignment != .bottom {
+                Spacer(minLength: minSpace)
+            }
         }
     }
 }

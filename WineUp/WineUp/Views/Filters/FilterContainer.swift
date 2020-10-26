@@ -25,7 +25,8 @@ struct FilterContainer<Filter: View>: View {
         VStack {
             Text(title)
                 .font(.filterTitle)
-                .padding()
+                .padding([.leading, .top])
+                .horizontallySpanned(alignment: .leading)
 
             filter()
 
