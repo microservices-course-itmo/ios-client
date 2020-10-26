@@ -74,6 +74,8 @@ extension CatalogView {
         var country: String
         /// Wine color (red/white/rose)
         var color: WineColor
+        /// Production year
+        var year: String
         /// Wine astringency (dry/semi-dry/semi-sweet/sweet)
         var wineAstringency: WineAstringency
         /// Quantity of bottle in liters
@@ -85,14 +87,13 @@ extension CatalogView {
         /// Title image of wine
         var titleImage: UIImage
         /// Retailer's logo
-        var retailerImage: UIImage
+        var retailerName: String
         /// Rating of wine
         var rating: Float
         /// Price without discount in rub
         var originalPriceRub: Float
         /// Discount percentage
         var discountPercents: Float
-
         /// Price with discount in rub
         var priceWithDiscount: Float {
             return originalPriceRub * ((100 - discountPercents) / 100)

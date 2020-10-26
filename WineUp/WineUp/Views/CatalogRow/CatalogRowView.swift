@@ -11,14 +11,14 @@ import SwiftUI
 
 private extension CGFloat {
     static let previewWidth: CGFloat = 110
-    static let previewHeight: CGFloat = 130
+    static let previewHeight: CGFloat = 330
 }
 
 // MARK: - View
 
 /// Catalog item visual representation (like `UITableViewCell`)
 struct CatalogRowView: View {
-
+    
     let item: CatalogView.RowItem
 
     var body: some View {
@@ -39,9 +39,9 @@ struct CatalogRowView: View {
 #if DEBUG
 struct CatalogRowView_Previews: PreviewProvider {
     static var previews: some View {
-        let item = CatalogView.RowItem.mockedData[0]
+        let item = CatalogView.RowItem.mockedData[1]
         return CatalogRowView(item: item)
-            .previewLayout(.fixed(width: 414, height: 150))
+            .previewLayout(.fixed(width: 414, height: 350))
     }
 }
 #endif
