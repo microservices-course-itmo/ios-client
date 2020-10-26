@@ -77,43 +77,57 @@ struct FavoritesView: View {
             ]
         )
     }
+}
 
-    // MARK: - Helpers
+// MARK: - Helpers
 
-    private func sortByButtonDidTap() {
+typealias FavoritesRowView = CatalogRowView
+
+private extension FavoritesView {
+    func sortByButtonDidTap() {
         withAnimation(.defaultEaseInOut) {
             showSortByView = true
         }
     }
 
-    private func sortByViewShouldDismiss() {
+    func sortByViewShouldDismiss() {
         withAnimation(.defaultEaseInOut) {
             showSortByView = false
         }
     }
 
-    private func sortByViewDidSubmit() {
+    func sortByViewDidSubmit() {
         withAnimation(.defaultEaseInOut) {
             showSortByView = false
         }
     }
 
-    private func clearFavoritesButtonDidTap() {
+    func clearFavoritesButtonDidTap() {
         assert(!showActionSheet)
         showActionSheet = true
     }
 
-    private func clearFavoritesDidConfirm() {
+    func clearFavoritesDidConfirm() {
         showActionSheet = false
         viewModel.clearFavorites()
     }
 
-    private func clearFavoritesDidCancel() {
+    func clearFavoritesDidCancel() {
         showActionSheet = false
     }
 }
 
-typealias FavoritesRowView = CatalogRowView
+private extension FavoritesSortByView {
+    typealias Wrapped = PopupContainer<FilterContainer<FavoritesSortByView>>
+
+    func wrapped(onShouldDismiss: @escaping () -> Void, onSubmit: @escaping () -> Void) -> Wrapped {
+        PopupContainer(onShouldDismiss: onShouldDismiss) {
+            FilterContainer(title: "Сортировать по", onSubmit: onSubmit) {
+                self
+            }
+        }
+    }
+}
 
 // MARK: - Preview
 
@@ -127,15 +141,3 @@ struct FavoritesView_Previews: PreviewProvider {
     }
 }
 #endif
-
-private extension FavoritesSortByView {
-    typealias Wrapped = PopupContainer<FilterContainer<FavoritesSortByView>>
-
-    func wrapped(onShouldDismiss: @escaping () -> Void, onSubmit: @escaping () -> Void) -> Wrapped {
-        PopupContainer(onShouldDismiss: onShouldDismiss) {
-            FilterContainer(title: "Title", onSubmit: onSubmit) {
-                self
-            }
-        }
-    }
-}

@@ -24,7 +24,9 @@ extension FavoritesSortByView {
         private func initStaticSortByItems() {
             sortByItems = [
                 .init(sortBy: .recommended),
-                .init(sortBy: .baseedOnRating)
+                .init(sortBy: .baseedOnRating),
+                .init(sortBy: .priceAsc),
+                .init(sortBy: .priceDesc)
             ]
         }
     }
