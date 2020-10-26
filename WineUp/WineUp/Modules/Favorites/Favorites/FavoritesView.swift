@@ -74,7 +74,7 @@ struct FavoritesView: View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack {
                 ForEach(viewModel.favoritesItems) { item in
-                    FavoritesRowView(item: item)
+                    WinePositionView(item: item)
                         .padding()
                 }
             }
@@ -107,8 +107,6 @@ struct FavoritesView: View {
 }
 
 // MARK: - Helpers
-
-typealias FavoritesRowView = CatalogRowView
 
 private extension FavoritesView {
     func sortByButtonDidTap() {

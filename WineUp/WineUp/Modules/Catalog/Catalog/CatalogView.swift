@@ -50,7 +50,7 @@ struct CatalogView: View {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack {
                     ForEach(viewModel.catalogItems) { item in
-                        CatalogRowView(item: item)
+                        WinePositionView(item: item)
                             .padding()
                     }
                 }

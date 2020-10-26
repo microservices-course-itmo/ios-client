@@ -13,7 +13,7 @@ import Combine
 extension FavoritesView {
     final class ViewModel: ObservableObject {
 
-        @Published var favoritesItems: [FavoritesView.RowItem] = []
+        @Published var favoritesItems: [WinePosition] = []
         @Published var searchText: String = ""
 
         init() {
@@ -33,13 +33,7 @@ extension FavoritesView {
         // MARK: Helpers
 
         private func initWithMockData() {
-            favoritesItems = RowItem.mockedData
+            favoritesItems = WinePosition.mockedData
         }
     }
-}
-
-// MARK: - FavoritesView+RowItem
-
-extension FavoritesView {
-    typealias RowItem = CatalogView.RowItem
 }
