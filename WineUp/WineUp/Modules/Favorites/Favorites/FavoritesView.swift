@@ -57,14 +57,35 @@ struct FavoritesView: View {
                 }
             }
 
-            List(viewModel.favoritesItems) { item in
-                FavoritesRowView(item: item)
-            }
+                if viewModel.favoritesItems.isEmpty {
+                    emptyFavoritesLabel()
+                } else {
+                    favoriteItemsList()
+                }
         }
         .actionSheet(isPresented: $showActionSheet, content: actionSheet)
         .navigationTitle(.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
+    }
+
+    private func favoriteItemsList() -> some View {
+        List(viewModel.favoritesItems) { item in
+            FavoritesRowView(item: item)
+        }
+    }
+
+    private func emptyFavoritesLabel() -> some View {
+        VStack {
+            Spacer()
+            Text("🤔")
+                .font(.system(size: 64))
+                .padding(8)
+            Text("Совпадений не найдено")
+                .font(.system(size: 24))
+                .foregroundColor(Color(.secondaryLabel))
+            Spacer()
+        }
     }
 
     private func actionSheet() -> ActionSheet {

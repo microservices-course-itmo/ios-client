@@ -23,7 +23,7 @@ extension FavoritesView {
         // MARK: Public Methods
 
         func clearFavorites() {
-
+            favoritesItems = []
         }
 
         var favoritesSortByViewModel: FavoritesSortByView.ViewModel {
