@@ -118,11 +118,11 @@ private extension FavoritesView {
 }
 
 private extension FavoritesSortByView {
-    typealias Wrapped = PopupContainer<FilterContainer<FavoritesSortByView>>
+    typealias Wrapped = PopupContainer<SubmitDialog<FavoritesSortByView>>
 
     func wrapped(onShouldDismiss: @escaping () -> Void, onSubmit: @escaping () -> Void) -> Wrapped {
         PopupContainer(onShouldDismiss: onShouldDismiss) {
-            FilterContainer(title: "Сортировать по", onSubmit: onSubmit) {
+            SubmitDialog(title: "Сортировать по", onSubmit: onSubmit) {
                 self
             }
         }

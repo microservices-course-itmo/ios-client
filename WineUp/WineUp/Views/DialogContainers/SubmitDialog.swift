@@ -1,5 +1,5 @@
 //
-//  FilterContainer.swift
+//  SubmitDialog.swift
 //  WineUp
 //
 //  Created by Александр Пахомов on 23.10.2020.
@@ -15,11 +15,12 @@ private extension Font {
 
 // MARK: - View
 
-struct FilterContainer<Filter: View>: View {
+/// Container with just Title, Label and 'Submit' button in vertical stack
+struct SubmitDialog<Label: View>: View {
 
     let title: String
     let onSubmit: () -> Void
-    let filter: () -> Filter
+    let label: () -> Label
 
     var body: some View {
         VStack {
@@ -28,7 +29,7 @@ struct FilterContainer<Filter: View>: View {
                 .padding([.leading, .top])
                 .horizontallySpanned(alignment: .leading)
 
-            filter()
+            label()
 
             Button(action: onSubmit, label: {
                 Text("Применить")
@@ -51,7 +52,7 @@ struct FilterContainer<Filter: View>: View {
 #if DEBUG
 struct FilterContainer_Previews: PreviewProvider {
     static var previews: some View {
-        FilterContainer(title: "Title", onSubmit: {}, filter: {
+        SubmitDialog(title: "Title", onSubmit: {}, label: {
             Color.red
                 .frame(width: 100, height: 100)
                 .padding()

@@ -92,7 +92,7 @@ struct CatalogView: View {
                 viewModel.dismissFilterDidTap()
             }
         }, label: {
-            FilterContainer(title: title, onSubmit: {}, filter: {
+            SubmitDialog(title: title, onSubmit: {}, label: {
                 filter
             })
         })
