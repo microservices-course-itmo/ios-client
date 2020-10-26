@@ -36,6 +36,7 @@ struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
                     .lineLimit(3)
 
                 viewLabel()
+                    .frame(minHeight: UIScreen.main.bounds.height * 0.075)
             }
 
             actionLabel()
