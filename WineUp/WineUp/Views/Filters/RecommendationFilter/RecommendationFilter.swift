@@ -49,7 +49,7 @@ struct RecommendationFilter: View {
 // MARK: - RadioButtonItem
 
 extension RecommendationFilter.CatalogSortOrderItem: RadioButtonItem {
-    var id: CatalogSortOrder {
+    var id: SortBy {
         sortOrder
     }
 

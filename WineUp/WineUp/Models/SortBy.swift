@@ -1,5 +1,5 @@
 //
-//  CatalogSortOrder.swift
+//  SortBy.swift
 //  WineUp
 //
 //  Created by Александр Пахомов on 06.10.2020.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CatalogSortOrder {
+enum SortBy {
     /// Show recommended first
     case recommended
     /// Show most rated first

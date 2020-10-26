@@ -34,6 +34,6 @@ extension FavoritesSortByView {
 
 extension FavoritesSortByView {
     struct SortByItem: Equatable {
-        var sortBy: CatalogSortOrder
+        var sortBy: SortBy
     }
 }

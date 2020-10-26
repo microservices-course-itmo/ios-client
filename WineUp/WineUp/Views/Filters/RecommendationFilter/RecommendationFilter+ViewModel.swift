@@ -34,6 +34,6 @@ extension RecommendationFilter {
 
 extension RecommendationFilter {
     struct CatalogSortOrderItem: Equatable {
-        var sortOrder: CatalogSortOrder
+        var sortOrder: SortBy
     }
 }

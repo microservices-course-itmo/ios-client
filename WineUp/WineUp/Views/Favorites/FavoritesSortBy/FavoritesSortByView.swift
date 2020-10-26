@@ -51,7 +51,7 @@ struct FavoritesSortByView: View {
 // MARK: - RadioButtonItem
 
 extension FavoritesSortByView.SortByItem: RadioButtonItem {
-    var id: CatalogSortOrder {
+    var id: SortBy {
         sortBy
     }
 
