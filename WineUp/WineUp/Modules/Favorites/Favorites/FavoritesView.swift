@@ -40,7 +40,7 @@ struct FavoritesView: View {
     }
 
     private func content() -> some View {
-        VStack {
+        VStack(spacing: 0) {
             SearchBarView(text: $viewModel.searchText)
 
             HStack {
@@ -57,11 +57,12 @@ struct FavoritesView: View {
                 }
             }
 
-                if viewModel.favoritesItems.isEmpty {
-                    emptyFavoritesLabel()
-                } else {
-                    favoriteItemsList()
-                }
+            if viewModel.favoritesItems.isEmpty {
+                emptyFavoritesLabel()
+            } else {
+                Divider()
+                favoriteItemsList()
+            }
         }
         .actionSheet(isPresented: $showActionSheet, content: actionSheet)
         .navigationTitle(.navigationTitle)
@@ -70,8 +71,13 @@ struct FavoritesView: View {
     }
 
     private func favoriteItemsList() -> some View {
-        List(viewModel.favoritesItems) { item in
-            FavoritesRowView(item: item)
+        ScrollView(.vertical, showsIndicators: true) {
+            VStack {
+                ForEach(viewModel.favoritesItems) { item in
+                    FavoritesRowView(item: item)
+                        .padding()
+                }
+            }
         }
     }
 

@@ -47,8 +47,13 @@ struct CatalogView: View {
                 }
             }
 
-            List(viewModel.catalogItems) { item in
-                CatalogRowView(item: item)
+            ScrollView(.vertical, showsIndicators: true) {
+                VStack {
+                    ForEach(viewModel.catalogItems) { item in
+                        CatalogRowView(item: item)
+                            .padding()
+                    }
+                }
             }
         }
         .navigationTitle(.navigationTitle)
