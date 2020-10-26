@@ -21,5 +21,9 @@ extension ApplicationMenuView {
         var catalogRootViewModel: CatalogRootView.ViewModel {
             .init()
         }
+
+        var favoritesRootViewModel: FavoritesRootView.ViewModel {
+            .init()
+        }
     }
 }

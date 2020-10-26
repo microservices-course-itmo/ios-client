@@ -42,7 +42,7 @@ struct ApplicationMenuView: View {
                     Image.catalogTab
                     Text(LocalizedStringKey.catalogTab)
                 }
-            CatalogRootView(viewModel: viewModel.catalogRootViewModel)
+            FavoritesRootView(viewModel: viewModel.favoritesRootViewModel)
                 .tabItem {
                     Image.favoritesTab
                     Text(LocalizedStringKey.favoritesTab)
