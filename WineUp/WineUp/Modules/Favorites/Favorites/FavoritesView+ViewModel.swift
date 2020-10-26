@@ -26,6 +26,10 @@ extension FavoritesView {
 
         }
 
+        var favoritesSortByViewModel: FavoritesSortByView.ViewModel {
+            .init()
+        }
+
         // MARK: Helpers
 
         private func initWithMockData() {
