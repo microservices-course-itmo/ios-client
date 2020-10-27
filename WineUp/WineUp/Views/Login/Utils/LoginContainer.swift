@@ -20,6 +20,7 @@ private extension Font {
 
 // MARK: - View
 
+/// Login container with vertically located View and Action labels
 struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
 
     let title: String
@@ -35,6 +36,7 @@ struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
                     .lineLimit(3)
 
                 viewLabel()
+                    .frame(minHeight: UIScreen.main.bounds.height * 0.075)
             }
 
             actionLabel()

@@ -1,5 +1,5 @@
 //
-//  CatalogRowView+InfoView.swift
+//  WinePositionView+InfoView.swift
 //  WineUp
 //
 //  Created by George on 25.09.2020.
@@ -43,11 +43,11 @@ private extension LocalizedStringKey {
 
 // MARK: - View
 
-extension CatalogRowView {
+extension WinePositionView {
     /// Catalog item info, price offer, compatibility and retailer view
     struct InfoView: View {
 
-        let item: CatalogView.RowItem
+        let item: WinePosition
 
         var body: some View {
             VStack(alignment: .leading) {
@@ -56,11 +56,11 @@ extension CatalogRowView {
                 Image.heartFill
                     .foregroundColor(heartColor)
                     .font(.heart)
-                    .padding(.leading, 200.0)
+                    .horizontallySpanned(alignment: .trailing)
 
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
-                        CatalogRowView.RatingView(item: item)
+                        WinePositionView.RatingView(item: item)
                             .padding(.vertical)
                             .frame(width: 200.0, height: 10.0)
                     }
@@ -74,7 +74,6 @@ extension CatalogRowView {
                 }
 
                 Divider()
-                    .frame(width: 200.0)
 
                 //TODO Вынести в отдельный view
                 VStack(alignment: .leading, spacing: 4.0) {
@@ -85,7 +84,7 @@ extension CatalogRowView {
 
                         Text(countryText)
                             .font(.wineDescription)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(.gray)
                     }
                     HStack {
                         Image.wineIcon
@@ -94,7 +93,7 @@ extension CatalogRowView {
 
                         Text(characteristicsText)
                             .font(.wineDescription)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(.gray)
                     }
                     HStack {
                         Image.compatibilityIcon
@@ -103,7 +102,7 @@ extension CatalogRowView {
 
                         Text(compatibilityText)
                             .font(.wineDescription)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(.gray)
                     }
 
                     HStack {
@@ -113,11 +112,11 @@ extension CatalogRowView {
 
                         Text(retailerText)
                             .font(.wineDescription)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(.gray)
                     }
                 }
 
-                CatalogRowView.DiscountView(item: item)
+                WinePositionView.DiscountView(item: item)
             }
         }
 
@@ -155,7 +154,7 @@ extension CatalogRowView {
 #if DEBUG
 struct CatalogRowViewInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowView.InfoView(item: CatalogView.RowItem.mockedData[1])
+        WinePositionView.InfoView(item: WinePosition.mockedData[1])
             .previewLayout(.fixed(width: 274, height: 430))
     }
 }

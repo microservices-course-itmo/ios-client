@@ -14,7 +14,7 @@ private extension CGFloat {
 }
 
 private extension LocalizedStringKey {
-    static let navigationTitle = LocalizedStringKey("Catalog")
+    static let navigationTitle = LocalizedStringKey("Каталог")
 }
 
 // MARK: - View
@@ -47,8 +47,13 @@ struct CatalogView: View {
                 }
             }
 
-            List(viewModel.catalogItems) { item in
-                CatalogRowView(item: item)
+            ScrollView(.vertical, showsIndicators: true) {
+                VStack {
+                    ForEach(viewModel.catalogItems) { item in
+                        WinePositionView(item: item)
+                            .padding()
+                    }
+                }
             }
         }
         .navigationTitle(.navigationTitle)
@@ -92,7 +97,7 @@ struct CatalogView: View {
                 viewModel.dismissFilterDidTap()
             }
         }, label: {
-            FilterContainer(title: title, onSubmit: {}, filter: {
+            SubmitDialog(title: title, onSubmit: {}, label: {
                 filter
             })
         })

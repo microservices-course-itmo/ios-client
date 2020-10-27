@@ -1,5 +1,5 @@
 //
-//  CatalogRowView+Rating.swift
+//  WinePositionView+Rating.swift
 //  WineUp
 //
 //  Created by George on 25.09.2020.
@@ -35,11 +35,11 @@ private extension Font {
 
 // MARK: - View
 
-extension CatalogRowView {
+extension WinePositionView {
     /// Catalog item rating view (stars row)
     struct RatingView: View {
 
-        let item: CatalogView.RowItem
+        let item: WinePosition
 
         var body: some View {
             ZStack {
@@ -74,8 +74,8 @@ extension CatalogRowView {
 #if DEBUG
 struct CatalogRowViewRatingView_Previews: PreviewProvider {
     static var previews: some View {
-        let item = CatalogView.RowItem.mockedData[0]
-        return CatalogRowView.RatingView(item: item)
+        let item = WinePosition.mockedData[0]
+        return WinePositionView.RatingView(item: item)
             .previewLayout(.fixed(width: 240, height: 15))
     }
 }

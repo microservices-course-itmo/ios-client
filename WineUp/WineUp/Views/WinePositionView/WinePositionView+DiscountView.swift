@@ -1,5 +1,5 @@
 //
-//  CatalogRowView+DiscountView.swift
+//  WinePositionView+DiscountView.swift
 //  WineUp
 //
 //  Created by George on 25.09.2020.
@@ -21,11 +21,11 @@ private extension Color {
 
 // MARK: - View
 
-extension CatalogRowView {
+extension WinePositionView {
     /// Catalog item price offer view
     struct DiscountView: View {
 
-        let item: CatalogView.RowItem
+        let item: WinePosition
 
         var body: some View {
             VStack(alignment: .trailing) {
@@ -65,7 +65,7 @@ extension CatalogRowView {
 #if DEBUG
 struct CatalogRowViewDiscountView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowView.DiscountView(item: CatalogView.RowItem.mockedData[1])
+        WinePositionView.DiscountView(item: WinePosition.mockedData[1])
             .previewLayout(.fixed(width: 250, height: 150))
     }
 }
