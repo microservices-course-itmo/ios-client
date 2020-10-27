@@ -11,21 +11,11 @@ import SwiftUI
 
 private extension CGFloat {
     static let buttonsSpacing: CGFloat = 24
-    static let buttonHorizontalPadding: CGFloat = 35
-    static let buttonCornerRadius: CGFloat = 25
-}
-
-private extension Color {
-    static let buttonTitle: Color = .white
-    static let buttonBackground: Color = .blue
-}
-
-private extension Font {
-    static let buttonTitle = Font.body.bold()
 }
 
 // MARK: - View
 
+/// Login container for some View and two buttons below
 struct LoginYoNButtonsContainer<Label: View>: View {
 
     let title: String
@@ -38,25 +28,23 @@ struct LoginYoNButtonsContainer<Label: View>: View {
     var body: some View {
         LoginContainer(title: title, viewLabel: label, actionLabel: {
             HStack(alignment: .center, spacing: .buttonsSpacing) {
+                Spacer()
+                Spacer()
+
                 Button(action: onYesButtonTap) {
                     Text(yesButtonTitle)
+                        .horizontallySpanned()
                 }
-                .padding(.horizontal, .buttonHorizontalPadding)
-                .padding(.vertical)
-                .foregroundColor(.buttonTitle)
-                .background(Color.buttonBackground)
-                .font(.buttonTitle)
-                .cornerRadius(.buttonCornerRadius)
+                .defaultStyled(isDisabled: false)
 
                 Button(action: onNoButtonTap) {
                     Text(noButtonTitle)
+                        .horizontallySpanned()
                 }
-                .padding(.horizontal, .buttonHorizontalPadding)
-                .padding(.vertical)
-                .foregroundColor(.buttonTitle)
-                .background(Color.buttonBackground)
-                .font(.buttonTitle)
-                .cornerRadius(.buttonCornerRadius)
+                .defaultStyled(isDisabled: false)
+
+                Spacer()
+                Spacer()
             }
         })
     }

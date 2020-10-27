@@ -7,22 +7,9 @@
 
 import SwiftUI
 
-// MARK: - Constants
-
-private extension CGFloat {
-    static let buttonHorizontalPadding: CGFloat = 35
-    static let buttonCornerRadius: CGFloat = 25
-}
-
-private extension Color {
-    static let activeButtonTitle = Color(.systemBackground)
-    static let activeButtonBackground: Color = .blue
-    static let disabledButtonTitle = Color(.label)
-    static let disabledButtonBackground = Color(.systemGray4)
-}
-
 // MARK: - View
 
+/// Login container for some View and one button like 'Submit'  below
 struct LoginOneButtonContainer<Label: View>: View {
 
     let title: String
@@ -33,27 +20,18 @@ struct LoginOneButtonContainer<Label: View>: View {
 
     var body: some View {
         LoginContainer(title: title, viewLabel: label, actionLabel: {
-            Button(action: onButtonTap) {
-                Text(buttonTitle)
+            HStack {
+                Spacer(minLength: 16)
+
+                Button(action: onButtonTap) {
+                    Text(buttonTitle)
+                        .horizontallySpanned()
+                }
+                .defaultStyled(isDisabled: !isButtonActive)
+
+                Spacer(minLength: 16)
             }
-            .padding(.horizontal, .buttonHorizontalPadding)
-            .padding(.vertical)
-            .foregroundColor(buttonForegroundColor)
-            .background(buttonBackgroundColor)
-            .cornerRadius(.buttonCornerRadius)
         })
-    }
-}
-
-// MARK: - Helpers
-
-private extension LoginOneButtonContainer {
-    var buttonForegroundColor: Color {
-        isButtonActive ? .activeButtonTitle : .disabledButtonTitle
-    }
-
-    var buttonBackgroundColor: Color {
-        isButtonActive ? .activeButtonBackground : .disabledButtonBackground
     }
 }
 

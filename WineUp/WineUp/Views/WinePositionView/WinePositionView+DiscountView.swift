@@ -1,5 +1,5 @@
 //
-//  CatalogRowView+DiscountView.swift
+//  WinePositionView+DiscountView.swift
 //  WineUp
 //
 //  Created by George on 25.09.2020.
@@ -10,9 +10,9 @@ import SwiftUI
 // MARK: - Constants
 
 private extension Font {
-    static let priceWithDiscount: Font = .system(size: 12, weight: .bold)
-    static let discountPercents: Font = .system(size: 11, weight: .bold)
-    static let originalPrice: Font = .system(size: 24, weight: .bold)
+    static let priceWithDiscount: Font = .system(size: 24, weight: .medium)
+    static let originalPrice: Font = .system(size: 12, weight: .medium)
+    static let itemPrice: Font = .system(size: 20, weight: .regular)
 }
 
 private extension Color {
@@ -21,25 +21,27 @@ private extension Color {
 
 // MARK: - View
 
-extension CatalogRowView {
+extension WinePositionView {
     /// Catalog item price offer view
     struct DiscountView: View {
 
-        let item: CatalogView.RowItem
+        let item: WinePosition
 
         var body: some View {
-            VStack {
-                HStack {
-                    Text(priceWithDiscountText)
-                        .font(.priceWithDiscount)
-                        .strikethrough()
-                    Text(discountPercentsText)
-                        .font(.discountPercents)
-                        .foregroundColor(.discountPercents)
-                }
+            VStack(alignment: .trailing) {
                 HStack {
                     Text(originalPriceRubText)
                         .font(.originalPrice)
+                        .strikethrough()
+                }
+                HStack {
+                    Text("Стоимость:")
+                        .font(.itemPrice)
+
+                    Spacer()
+
+                    Text(priceWithDiscountText)
+                        .font(.priceWithDiscount)
                 }
             }
         }
@@ -49,11 +51,6 @@ extension CatalogRowView {
         private var priceWithDiscountText: String {
             let priceWithDiscount = Int(item.priceWithDiscount)
             return "\(priceWithDiscount)₽"
-        }
-
-        private var discountPercentsText: String {
-            let discountPercents = Int(item.discountPercents)
-            return "-\(discountPercents)₽"
         }
 
         private var originalPriceRubText: String {
@@ -68,8 +65,8 @@ extension CatalogRowView {
 #if DEBUG
 struct CatalogRowViewDiscountView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRowView.DiscountView(item: CatalogView.RowItem.mockedData[0])
-            .previewLayout(.fixed(width: 150, height: 50))
+        WinePositionView.DiscountView(item: WinePosition.mockedData[1])
+            .previewLayout(.fixed(width: 250, height: 150))
     }
 }
 #endif
