@@ -20,14 +20,14 @@ struct LoginPhoneInput: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
 
-    var body: some View {
-        print("Render, phoneNumber: \(viewModel.phoneNumber)")
+    let onNextButtonTap: () -> Void
 
-        return LoginOneButtonContainer(
+    var body: some View {
+        LoginOneButtonContainer(
             title: "Введите ваш номер телефона",
             isButtonActive: viewModel.isNextButtonActive,
             buttonTitle: "Далее",
-            onButtonTap: viewModel.loginButtonDidTap,
+            onButtonTap: onNextButtonTap,
             label: {
                 TextField("+7 (XXX) XXX-XX-XX", text: $viewModel.phoneNumber.value)
                     .multilineTextAlignment(.center)
@@ -52,16 +52,18 @@ extension LoginPhoneInput {
             }
         }
 
-        let onNextButtonTap: () -> Void
+        private let container: DIContainer
+        private let cancelBag = CancelBag()
 
         // MARK: Public Methods
 
-        init(onNextButtonTap: @escaping () -> Void) {
-            self.onNextButtonTap = onNextButtonTap
-        }
+        init(container: DIContainer) {
+            self.container = container
 
-        func loginButtonDidTap() {
-            onNextButtonTap()
+            cancelBag.collect {
+                container.appState.bind(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber.value)
+                $phoneNumber.bind(\.value, to: container.appState, by: \.value.userData.loginForm.phoneNumber)
+            }
         }
 
         func continueWithoutAuthButtonDidTap() {
@@ -108,9 +110,13 @@ extension LoginPhoneInput {
 // MARK: - Preview
 
 #if DEBUG
+extension LoginPhoneInput.ViewModel {
+    static let preview = LoginPhoneInput.ViewModel(container: .preview)
+}
+
 struct LoginPhoneInput_Previews: PreviewProvider {
     static var previews: some View {
-        LoginPhoneInput(viewModel: .init(onNextButtonTap: {}))
+        LoginPhoneInput(viewModel: .preview, onNextButtonTap: {})
     }
 }
 #endif

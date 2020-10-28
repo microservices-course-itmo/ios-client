@@ -18,14 +18,15 @@ private extension Font {
 struct LoginNameInput: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
+    let onSubmit: () -> Void
 
     var body: some View {
         LoginOneButtonContainer(
             title: "Укажите ваше имя",
             isButtonActive: viewModel.isDoneButtonActive,
             buttonTitle: "Далее",
-            onButtonTap: viewModel.doneButtonDidTap, label: {
-                TextField("Иван", text: $viewModel.name.value)
+            onButtonTap: onSubmit, label: {
+                TextField("Иван", text: $viewModel.name)
                     .multilineTextAlignment(.center)
                     .font(.nameTextField)
             }
@@ -40,30 +41,22 @@ extension LoginNameInput {
 
         // MARK: Variables
 
-        @Published var name: FormattableContainer<String>!
+        @Published var name = ""
         @Published var isDoneButtonActive = false
 
-        private let onSubmit: () -> Void
+        private let container: DIContainer
+        private let cancelBag = CancelBag()
 
         // MARK: Public Methods
 
-        init(onSubmit: @escaping () -> Void) {
-            self.onSubmit = onSubmit
-            self.name = .init("", formatter: self.format(_:), onChange: self.nameDidChange(name:))
-        }
+        init(container: DIContainer) {
+            self.container = container
 
-        func doneButtonDidTap() {
-            onSubmit()
-        }
-
-        // MARK: Private Methods
-
-        private func format(_ rawName: String) -> String {
-            return rawName
-        }
-
-        private func nameDidChange(name: String) {
-            isDoneButtonActive = !name.isEmpty
+            cancelBag.collect {
+                container.appState.bindDisplayValue(\.userData.loginForm.name, to: self, by: \.name)
+                $name.toInputtable(of: container.appState, at: \.value.userData.loginForm.name)
+                container.appState.map { $0.userData.loginForm.name.hasValue }.bind(to: self, by: \.isDoneButtonActive)
+            }
         }
     }
 }
@@ -71,9 +64,13 @@ extension LoginNameInput {
 // MARK: - Preview
 
 #if DEBUG
+extension LoginNameInput.ViewModel {
+    static let preview = LoginNameInput.ViewModel(container: .preview)
+}
+
 struct LoginNameInput_Previews: PreviewProvider {
     static var previews: some View {
-        LoginNameInput(viewModel: .init(onSubmit: {}))
+        LoginNameInput(viewModel: .preview, onSubmit: {})
     }
 }
 #endif

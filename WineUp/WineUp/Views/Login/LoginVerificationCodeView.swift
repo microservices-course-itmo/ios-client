@@ -13,6 +13,11 @@ struct LoginVerificationCodeView: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
 
+    init(viewModel: ViewModel, onSubmit: @escaping () -> Void) {
+        self.viewModel = viewModel
+        viewModel.onSubmit = onSubmit
+    }
+
     var body: some View {
         LoginContainer(title: "Введите код", viewLabel: {
             TextField("XXXXXX", text: $viewModel.code.value)
@@ -45,18 +50,27 @@ extension LoginVerificationCodeView {
         @Published var isResendInProgress = false
         @Published var isSubmitInProgress = false
         @Published var code: FormattableContainer<String>!
+        @Published var phoneNumber = ""
 
+        private let container: DIContainer
+        private let cancelBag = CancelBag()
         private var timer: Timer!
-        private var onSubmit: () -> Void
+
+        var onSubmit: (() -> Void)?
 
         // MARK: Public Methods
 
-        init(onSubmit: @escaping () -> Void) {
-            self.onSubmit = onSubmit
+        init(container: DIContainer) {
+            self.container = container
+
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.tick()
             }
             self.code = .init("", formatter: ViewModel.format, onChange: self.codeDidChange(code:))
+
+            cancelBag.collect {
+                container.appState.bind(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber)
+            }
         }
 
         func resendButtonDidTap() {
@@ -88,7 +102,7 @@ extension LoginVerificationCodeView {
                 isSubmitInProgress = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.isSubmitInProgress = false
-                    self.onSubmit()
+                    self.onSubmit?()
                 }
             }
         }
@@ -102,9 +116,13 @@ extension LoginVerificationCodeView {
 // MARK: - Preview
 
 #if DEBUG
+extension LoginVerificationCodeView.ViewModel {
+    static let preview = LoginVerificationCodeView.ViewModel(container: .preview)
+}
+
 struct LoginVerificationCodeView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginVerificationCodeView(viewModel: .init(onSubmit: {}))
+        LoginVerificationCodeView(viewModel: .preview, onSubmit: {})
     }
 }
 #endif

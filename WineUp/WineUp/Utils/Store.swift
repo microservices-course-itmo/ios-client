@@ -60,24 +60,3 @@ extension Binding {
         })
     }
 }
-
-extension Store where Failure == Never {
-    /// Creates bidirectional connection from Store's field to object's one and from publisher to Store's field
-    func biAssign<V: Equatable, P: Publisher, O>(
-        _ valueKeyPath: WritableKeyPath<Output, V>,
-        to object: O,
-        on keyPath: ReferenceWritableKeyPath<O, V>,
-        publisher: P
-    ) -> [AnyCancellable] where P.Failure == Never, P.Output == V {
-        return [
-            publisher
-                .removeDuplicates()
-                .sink(receiveValue: { [weak self] value in
-                self?.value[keyPath: valueKeyPath] = value
-            }),
-
-            map(valueKeyPath)
-                .assign(to: keyPath, on: object)
-        ]
-    }
-}

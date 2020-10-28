@@ -16,11 +16,7 @@ final class CancelBag {
     }
 
     func collect(@Builder _ cancellables: () -> [AnyCancellable]) {
-        collect(contentsOf: cancellables())
-    }
-
-    func collect(contentsOf cancellables: [AnyCancellable]) {
-        subscriptions.formUnion(cancellables)
+        subscriptions.formUnion(cancellables())
     }
 
     @_functionBuilder
