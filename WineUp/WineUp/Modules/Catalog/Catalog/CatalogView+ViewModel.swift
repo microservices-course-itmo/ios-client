@@ -8,6 +8,14 @@
 import UIKit
 import Combine
 
+// MARK: - CatalogView+Routing
+
+extension CatalogView {
+    struct Routing: Equatable {
+        var winePositionId: UUID?
+    }
+}
+
 // MARK: - CatalogView+ViewModel
 
 extension CatalogView {
@@ -18,7 +26,10 @@ extension CatalogView {
         @Published var presentedFiltersBarItem: CatalogFiltersBarView.Item?
         @Published var searchText: String = ""
 
-        init() {
+        private let container: DIContainer
+
+        init(container: DIContainer) {
+            self.container = container
             initWithMockData()
         }
 
@@ -62,3 +73,9 @@ extension CatalogView {
         }
     }
 }
+
+#if DEBUG
+extension CatalogView.ViewModel {
+    static let preview = CatalogView.ViewModel(container: .preview)
+}
+#endif

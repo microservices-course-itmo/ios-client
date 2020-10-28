@@ -18,7 +18,13 @@ extension LoginView {
         @Published var currentPage: Int = 0
         @Published var pages: [Page] = [.ageQuestion]
 
+        private let container: DIContainer
+
         // MARK: Public
+
+        init(container: DIContainer) {
+            self.container = container
+        }
 
         func olderThan18ButtonDidTap() {
             nextPage(.phoneNumber)
@@ -99,3 +105,9 @@ extension LoginView {
         case ageQuestion, ageRestriction, phoneNumber, verificationCode, name, birthday, city, personalDataConcent
     }
 }
+
+#if DEBUG
+extension LoginView.ViewModel {
+    static let preview = LoginView.ViewModel(container: .preview)
+}
+#endif

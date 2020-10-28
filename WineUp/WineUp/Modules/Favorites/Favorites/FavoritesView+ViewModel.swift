@@ -8,6 +8,14 @@
 import UIKit
 import Combine
 
+// MARK: - Routing
+
+extension FavoritesView {
+    struct Routing: Equatable {
+        var winePositionId: UUID?
+    }
+}
+
 // MARK: - FavoritesView+ViewModel
 
 extension FavoritesView {
@@ -16,7 +24,10 @@ extension FavoritesView {
         @Published var favoritesItems: [WinePosition] = []
         @Published var searchText: String = ""
 
-        init() {
+        private let container: DIContainer
+
+        init(container: DIContainer) {
+            self.container = container
             initWithMockData()
         }
 
@@ -37,3 +48,9 @@ extension FavoritesView {
         }
     }
 }
+
+#if DEBUG
+extension FavoritesView.ViewModel {
+    static let preview = FavoritesView.ViewModel(container: .preview)
+}
+#endif

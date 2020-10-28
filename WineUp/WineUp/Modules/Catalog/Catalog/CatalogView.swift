@@ -112,7 +112,7 @@ struct CatalogView_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            CatalogView(viewModel: .init())
+            CatalogView(viewModel: .preview)
         }
     }
 }

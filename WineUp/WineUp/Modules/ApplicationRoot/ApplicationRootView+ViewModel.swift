@@ -11,7 +11,11 @@ import Foundation
 
 extension ApplicationRootView {
     final class ViewModel: ObservableObject {
+        private let container: DIContainer
 
+        init(container: DIContainer) {
+            self.container = container
+        }
     }
 }
 
@@ -19,6 +23,14 @@ extension ApplicationRootView {
 
 extension ApplicationRootView.ViewModel {
     var applicationMenuViewModel: ApplicationMenuView.ViewModel {
-        return .init()
+        return .init(container: container)
     }
 }
+
+// MARK: - Previews
+
+#if DEBUG
+extension ApplicationRootView.ViewModel {
+    static let preview = ApplicationRootView.ViewModel(container: .preview)
+}
+#endif
