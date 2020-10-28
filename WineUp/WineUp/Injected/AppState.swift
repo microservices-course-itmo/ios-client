@@ -10,6 +10,7 @@ import Combine
 
 struct AppState: Equatable {
     var routing = Routing()
+    var userData = UserData()
 }
 
 extension AppState {
@@ -18,6 +19,12 @@ extension AppState {
         var selectedTab = ApplicationMenuView.Tab.main
         var catalogView = CatalogView.Routing()
         var favoritesView = FavoritesView.Routing()
+    }
+}
+
+extension AppState {
+    struct UserData: Equatable {
+        var loginForm = LoginView.Form()
     }
 }
 
