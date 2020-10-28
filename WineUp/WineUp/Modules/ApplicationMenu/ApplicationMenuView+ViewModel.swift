@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 // MARK: - ApplicationMenuView+ViewModel
 
@@ -21,16 +20,13 @@ extension ApplicationMenuView {
         init(container: DIContainer) {
             self.container = container
 
-            container
-                .appState.biAssign(\.routing.selectedTab, to: self, on: \.selectedTab, publisher: $selectedTab)
-                .put(in: cancelBag)
+            cancelBag.collect {
+                container.appState.bind(\.routing.selectedTab, to: self, by: \.selectedTab)
+                $selectedTab.bind(to: container.appState, by: \.value.routing.selectedTab)
+            }
         }
 
         // MARK: - Public Methods
-
-        var loginViewModel: LoginView.ViewModel {
-            .init(container: container)
-        }
 
         var catalogRootViewModel: CatalogRootView.ViewModel {
             .init(container: container)

@@ -11,10 +11,18 @@ import Foundation
 
 extension ApplicationRootView {
     final class ViewModel: ObservableObject {
+
+        @Published var showLogin = true
+
         private let container: DIContainer
+        private let cancelBag = CancelBag()
 
         init(container: DIContainer) {
             self.container = container
+
+            cancelBag.collect {
+                container.appState.map(\.routing.didLogin).toggle().bind(to: self, by: \.showLogin)
+            }
         }
     }
 }
@@ -22,8 +30,12 @@ extension ApplicationRootView {
 // MARK: - Public Methods
 
 extension ApplicationRootView.ViewModel {
+    var loginViewModel: LoginView.ViewModel {
+        .init(container: container)
+    }
+
     var applicationMenuViewModel: ApplicationMenuView.ViewModel {
-        return .init(container: container)
+        .init(container: container)
     }
 }
 

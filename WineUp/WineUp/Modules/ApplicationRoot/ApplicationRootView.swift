@@ -14,7 +14,11 @@ struct ApplicationRootView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        ApplicationMenuView(viewModel: viewModel.applicationMenuViewModel)
+        if viewModel.showLogin {
+            LoginView(viewModel: viewModel.loginViewModel)
+        } else {
+            ApplicationMenuView(viewModel: viewModel.applicationMenuViewModel)
+        }
     }
 }
 

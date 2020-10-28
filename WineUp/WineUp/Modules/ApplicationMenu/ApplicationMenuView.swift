@@ -32,7 +32,7 @@ struct ApplicationMenuView: View {
 
     var body: some View {
         TabView(selection: $viewModel.selectedTab) {
-            LoginView(viewModel: viewModel.loginViewModel)
+            Color.red
                 .tabItem {
                     Image.mainTab
                     Text(LocalizedStringKey.mainTab)
