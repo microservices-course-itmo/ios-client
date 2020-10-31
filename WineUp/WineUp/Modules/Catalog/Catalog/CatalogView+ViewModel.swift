@@ -28,9 +28,16 @@ extension CatalogView {
         @Published var searchText: String = ""
 
         private let container: DIContainer
+        private let cancelBag = CancelBag()
 
         init(container: DIContainer) {
             self.container = container
+
+            cancelBag.collect {
+                container.appState.bind(\.routing.catalog.winePositionId, to: self, by: \.selectedCatalogItemId)
+                $selectedCatalogItemId.bind(to: container.appState, by: \.value.routing.catalog.winePositionId)
+            }
+
             initWithMockData()
         }
 
