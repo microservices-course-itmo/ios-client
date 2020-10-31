@@ -35,6 +35,10 @@ extension ApplicationMenuView {
         var favoritesRootViewModel: FavoritesRootView.ViewModel {
             .init(container: container)
         }
+
+        var profileViewModel: ProfileView.ViewModel {
+            .init(container: container)
+        }
     }
 }
 

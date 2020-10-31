@@ -50,7 +50,7 @@ struct ApplicationMenuView: View {
                     Text(LocalizedStringKey.favoritesTab)
                 }
                 .tag(Tab.favorites)
-            CatalogRootView(viewModel: viewModel.catalogRootViewModel)
+            ProfileView(viewModel: viewModel.profileViewModel)
                 .tabItem {
                     Image.profileTab
                     Text(LocalizedStringKey.profileTab)
