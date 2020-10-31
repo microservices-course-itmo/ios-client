@@ -46,11 +46,7 @@ extension LoginPhoneInput {
         // MARK: Variables
 
         @Published var isNextButtonActive = false
-        @Published var phoneNumber = FormattableContainer("", formatter: ViewModel.formatRuPhoneNumber(phone:)) {
-            didSet {
-                phoneNumberDidSet()
-            }
-        }
+        @Published var phoneNumber = FormattableContainer("", formatter: ViewModel.formatRuPhoneNumber(phone:))
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
@@ -61,8 +57,9 @@ extension LoginPhoneInput {
             self.container = container
 
             cancelBag.collect {
-                container.appState.bind(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber.value)
-                $phoneNumber.bind(\.value, to: container.appState, by: \.value.userData.loginForm.phoneNumber)
+                container.appState.bindDisplayValue(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber.value)
+                $phoneNumber.map(\.value).toInputtable(of: container.appState, at: \.value.userData.loginForm.phoneNumber)
+                container.appState.map { $0.userData.loginForm.phoneNumber.value?.count == 18 }.bind(to: self, by: \.isNextButtonActive)
             }
         }
 
@@ -71,10 +68,6 @@ extension LoginPhoneInput {
         }
 
         // MARK: Private Methods
-
-        private func phoneNumberDidSet() {
-            isNextButtonActive = phoneNumber.value.count == 18
-        }
 
         private static func formatRuPhoneNumber(phone: String) -> String {
             return format(mask: "+X (XXX) XXX-XX-XX", phone: phone)
