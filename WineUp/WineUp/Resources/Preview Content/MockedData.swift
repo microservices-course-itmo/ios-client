@@ -17,6 +17,21 @@ extension WinePosition {
     ]
 }
 
+extension WinePosition {
+    var details: Details {
+        .init(
+            winePositionId: id,
+            tasteDescription: "Вкус вина — очень сухой, свежий и бархатистый, с приятной горчинкой, нотами белых цветов в нежном букете",
+            dishSuggestions: "Прекрасно в сочетании с жареным ягненком, свининой с овощами и сырами средней выдержки",
+            reviews: [
+                WinePosition.Details.Review(reviewerFullName: "Марков Павел", rating: 5, review: "Очень достойное. В меру фруктовое, прекрасно пьется. В моем личном рейтинге из всех российских вин уверенно занимает первое место", timestamp: Date()),
+                .init(reviewerFullName: "Петр Петров", rating: 3, review: "Вино очень понравилось . Легкое , приятно пьётся. Легкий аромат скошенных трав и фруктов", timestamp: Date())
+            ],
+            suggestions: WinePosition.mockedData
+        )
+    }
+}
+
 extension CatalogFiltersBarView.Item {
     static let mockedData: [CatalogFiltersBarView.Item] = [
         .recomendation,
