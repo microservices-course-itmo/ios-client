@@ -74,8 +74,16 @@ struct FavoritesView: View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack {
                 ForEach(viewModel.favoritesItems) { item in
-                    WinePositionView(item: item)
-                        .padding()
+                    NavigationLink(
+                        destination: WinePositionDetailsView(
+                            viewModel: viewModel.winePositionDetailsViewModelFor(item)),
+                        tag: item.id,
+                        selection: $viewModel.selectedFavoriteItemId, label: {
+                            WinePositionView(item: item)
+                                .foregroundColor(.black)
+                                .padding()
+                        }
+                    )
                 }
             }
         }

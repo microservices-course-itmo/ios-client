@@ -50,8 +50,16 @@ struct CatalogView: View {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack {
                     ForEach(viewModel.catalogItems) { item in
-                        WinePositionView(item: item)
-                            .padding()
+                        NavigationLink(
+                            destination: WinePositionDetailsView(
+                                viewModel: viewModel.winePositionDetailsViewModelFor(item)),
+                            tag: item.id,
+                            selection: $viewModel.selectedCatalogItemId, label: {
+                                WinePositionView(item: item)
+                                    .foregroundColor(.black)
+                                    .padding()
+                            }
+                        )
                     }
                 }
             }
