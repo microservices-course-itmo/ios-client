@@ -11,23 +11,27 @@ import SwiftUI
 
 struct LoginPersonalDataConcentView: View {
 
+    @State private var doConcent = false
+
     let onConcent: () -> Void
-    @State private var doConcent = false {
-        didSet {
-            if doConcent {
-                onConcent()
-            }
-        }
-    }
 
     var body: some View {
         LoginContainer(title: "Согласитесь)", viewLabel: {
-            Toggle("Соглашаюсь с обработкой персональных данных", isOn: $doConcent)
+            Toggle("Соглашаюсь с обработкой персональных данных", isOn: $doConcent.onSet(didToggle(doCencent:)))
                 .padding()
         }, actionLabel: {
             EmptyView()
+        })
+    }
+}
+
+// MARK: - Helpers
+
+private extension LoginPersonalDataConcentView {
+    func didToggle(doCencent: Bool) {
+        if doConcent {
+            onConcent()
         }
-        )
     }
 }
 

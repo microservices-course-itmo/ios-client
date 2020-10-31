@@ -26,7 +26,7 @@ struct CatalogRootView: View {
 #if DEBUG
 struct CatalogRootView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogRootView(viewModel: .init())
+        CatalogRootView(viewModel: .preview)
     }
 }
 #endif

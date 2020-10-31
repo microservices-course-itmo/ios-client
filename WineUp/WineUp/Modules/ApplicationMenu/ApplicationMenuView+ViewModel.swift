@@ -12,18 +12,48 @@ import SwiftUI
 extension ApplicationMenuView {
     final class ViewModel: ObservableObject {
 
-        // MARK: - Public Methods
+        @Published var selectedTab: Tab = .main
 
-        var loginViewModel: LoginView.ViewModel {
-            .init()
+        private let container: DIContainer
+        private let cancelBag = CancelBag()
+
+        init(container: DIContainer) {
+            self.container = container
+
+            cancelBag.collect {
+                container.appState.bind(\.routing.selectedTab, to: self, by: \.selectedTab)
+                $selectedTab.bind(to: container.appState, by: \.value.routing.selectedTab)
+            }
         }
 
+        // MARK: - Public Methods
+
         var catalogRootViewModel: CatalogRootView.ViewModel {
-            .init()
+            .init(container: container)
         }
 
         var favoritesRootViewModel: FavoritesRootView.ViewModel {
-            .init()
+            .init(container: container)
+        }
+
+        var profileViewModel: ProfileView.ViewModel {
+            .init(container: container)
         }
     }
 }
+
+// MARK: - ApplicationMenuView+Tab
+
+extension ApplicationMenuView {
+    enum Tab: Hashable {
+        case main, catalog, favorites, profile
+    }
+}
+
+// MARK: - Previews
+
+#if DEBUG
+extension ApplicationMenuView.ViewModel {
+    static let preview = ApplicationMenuView.ViewModel(container: .preview)
+}
+#endif

@@ -161,7 +161,7 @@ struct FavoritesView_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            FavoritesView(viewModel: .init())
+            FavoritesView(viewModel: .preview)
         }
     }
 }

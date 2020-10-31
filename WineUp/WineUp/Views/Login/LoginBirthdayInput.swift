@@ -12,13 +12,14 @@ import SwiftUI
 struct LoginBirthdayInput: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
+    let onSubmit: () -> Void
 
     var body: some View {
         LoginOneButtonContainer(
             title: "Укажите вашу дату рождения",
             isButtonActive: viewModel.isDoneButtonActive,
             buttonTitle: "Далее",
-            onButtonTap: viewModel.doneButtonDidTap, label: {
+            onButtonTap: onSubmit, label: {
                 DatePicker("День рождения", selection: $viewModel.birthday, displayedComponents: .date)
                     .padding()
             }
@@ -33,29 +34,22 @@ extension LoginBirthdayInput {
 
         // MARK: Variables
 
-        @Published var birthday = Date() {
-            didSet {
-                birthdayDidChange(birthday: birthday)
-            }
-        }
+        @Published var birthday = Date()
         @Published var isDoneButtonActive = false
 
-        private let onSubmit: () -> Void
+        private let container: DIContainer
+        private let cancelBag = CancelBag()
 
         // MARK: Public Methods
 
-        init(onSubmit: @escaping () -> Void) {
-            self.onSubmit = onSubmit
-        }
+        init(container: DIContainer) {
+            self.container = container
 
-        func doneButtonDidTap() {
-            onSubmit()
-        }
-
-        // MARK: Private Methods
-
-        private func birthdayDidChange(birthday: Date?) {
-            isDoneButtonActive = birthday != nil
+            cancelBag.collect {
+                container.appState.bindDisplayValue(\.userData.loginForm.birthday, to: self, by: \.birthday)
+                $birthday.toInputtable(of: container.appState, at: \.value.userData.loginForm.birthday)
+                container.appState.map(\.userData.loginForm.birthday.hadUpdates).bind(to: self, by: \.isDoneButtonActive)
+            }
         }
     }
 }
@@ -63,9 +57,13 @@ extension LoginBirthdayInput {
 // MARK: - Preview
 
 #if DEBUG
+extension LoginBirthdayInput.ViewModel {
+    static let preview = LoginBirthdayInput.ViewModel(container: .preview)
+}
+
 struct LoginBirthdayInput_Previews: PreviewProvider {
     static var previews: some View {
-        LoginBirthdayInput(viewModel: .init(onSubmit: {}))
+        LoginBirthdayInput(viewModel: .preview, onSubmit: {})
     }
 }
 #endif

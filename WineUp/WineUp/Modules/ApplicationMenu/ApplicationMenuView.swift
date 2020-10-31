@@ -31,27 +31,31 @@ struct ApplicationMenuView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        TabView {
-            LoginView(viewModel: viewModel.loginViewModel)
+        TabView(selection: $viewModel.selectedTab) {
+            Color.red
                 .tabItem {
                     Image.mainTab
                     Text(LocalizedStringKey.mainTab)
                 }
+                .tag(Tab.main)
             CatalogRootView(viewModel: viewModel.catalogRootViewModel)
                 .tabItem {
                     Image.catalogTab
                     Text(LocalizedStringKey.catalogTab)
                 }
+                .tag(Tab.catalog)
             FavoritesRootView(viewModel: viewModel.favoritesRootViewModel)
                 .tabItem {
                     Image.favoritesTab
                     Text(LocalizedStringKey.favoritesTab)
                 }
-            CatalogRootView(viewModel: viewModel.catalogRootViewModel)
+                .tag(Tab.favorites)
+            ProfileView(viewModel: viewModel.profileViewModel)
                 .tabItem {
                     Image.profileTab
                     Text(LocalizedStringKey.profileTab)
                 }
+                .tag(Tab.profile)
         }
     }
 }
@@ -61,7 +65,7 @@ struct ApplicationMenuView: View {
 #if DEBUG
 struct ApplicationMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        ApplicationMenuView(viewModel: .init())
+        ApplicationMenuView(viewModel: .preview)
     }
 }
 #endif
