@@ -17,7 +17,29 @@ struct WinePositionDetailsView: View {
         ScrollView {
             VStack {
                 WinePositionView(item: viewModel.winePosition)
+                    .padding()
+
+                DetailsView(winePosition: viewModel.winePosition, details: viewModel.details)
+                    .padding(.vertical)
+
+                ReviewsList(winePosition: viewModel.winePosition, details: viewModel.details)
+                    .padding(.vertical)
+
+                SuggestionsList(winePosition: viewModel.winePosition, details: viewModel.details)
+                    .padding(.vertical)
             }
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct WinePositionDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            WinePositionDetailsView(viewModel: .preview)
+        }
+    }
+}
+#endif
