@@ -7,6 +7,11 @@
 
 import Foundation
 import SwiftUI
+import Firebase
+
+private extension String {
+    static let authID = "authVerificationID"
+}
 
 // MARK: - LoginView+Form
 
@@ -55,11 +60,42 @@ extension LoginView {
         }
 
         func phoneNumberDoneButtonDidTap() {
-            nextPage(.verificationCode)
+            // TODO: доставать номер телефона из формы
+            // Тестовый номер. Можно добавть через консоль firebase 
+            let phoneNumber = "+1 650-555-3434"
+            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { [weak self] verificationID, error in
+                if let error = error {
+                    print("verifyError:", error.localizedDescription)
+                    return
+                }
+                UserDefaults.standard.set(verificationID, forKey: .authID)
+                self?.nextPage(.verificationCode)
+            }
         }
+
+        private var wasHere = false
 
         func verificationCodeDidSubmit() {
             nextPage(.name)
+            // какой-то баг на экране. Эта функция вызывается ~20 раз.
+            guard !wasHere else {
+                return
+            }
+            wasHere = true
+
+            guard let verificationID = UserDefaults.standard.string(forKey: .authID) else { return }
+            // TODO: доставать код верификации из формы
+            let verificationCode = "123456"
+            let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID,
+                                                                     verificationCode: verificationCode)
+            Auth.auth().signIn(with: credential) { authResult, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                print("user is signed in")
+                print(authResult?.user.phoneNumber as Any)
+            }
         }
 
         func nameDidSubmit() {
