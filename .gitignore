@@ -1,8 +1,13 @@
 ## General
 .DS_Store
 
-## xcodeproj file can be excluded because of XcodeGen usage
+## can be excluded because of XcodeGen usage
 **/*.xcodeproj/
+**/*.xcworkspace/
+**/WineUp/Info.plist
 
 ## R.swift generated file
 **/R.generated.swift
+
+## Cocoapods
+**/Pods/
