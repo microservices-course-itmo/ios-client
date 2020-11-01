@@ -45,6 +45,33 @@ settings:
 
 targets:
   WineUp:
+    info:
+      path: WineUp/Info.plist
+      properties:
+        CFBundlePackageType: $(PRODUCT_BUNDLE_PACKAGE_TYPE)
+        LSRequiresIPhoneOS: YES
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: YES
+        UIApplicationSupportsIndirectInputEvents: Yes
+        UIRequiredDeviceCapabilities:
+          - armv7
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UILaunchScreen:
+          -
+        UIBackgroundModes: [remote-notification]
+        CFBundleURLTypes: 
+          - CFBundleTypeRole: Editor
+            # REVERSED_CLIENT_ID from GoogleService-Info.plist
+            CFBundleURLSchemes: [com.googleusercontent.apps.243423113529-qo9p1ttnb4kji40n4fc7t6chsr40f66p]
+        
     type: application
     platform: iOS
     deploymentTarget: 14.0
