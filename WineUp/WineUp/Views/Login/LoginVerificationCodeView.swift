@@ -50,7 +50,6 @@ extension LoginVerificationCodeView {
         @Published var isResendInProgress = false
         @Published var isSubmitInProgress = false
         @Published var code: FormattableContainer<String>!
-        @Published var phoneNumber = ""
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
@@ -66,10 +65,14 @@ extension LoginVerificationCodeView {
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.tick()
             }
-            self.code = .init("", formatter: ViewModel.format, onChange: self.codeDidChange(code:))
+            self.code = .init("", formatter: ViewModel.format)
 
             cancelBag.collect {
-                container.appState.bind(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber)
+                container.appState.bindDisplayValue(\.userData.loginForm.verificationCode, to: self, by: \.code.value)
+                $code.map { $0!.value }.toInputtable(of: container.appState, at: \.value.userData.loginForm.verificationCode)
+                container.appState.map { $0.userData.loginForm.verificationCode.value }.sink { [weak self] in
+                    self?.codeDidChange(code: $0 ?? "")
+                }
             }
         }
 

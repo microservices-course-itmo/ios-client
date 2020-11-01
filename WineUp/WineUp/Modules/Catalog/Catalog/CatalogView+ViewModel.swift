@@ -22,14 +22,22 @@ extension CatalogView {
     final class ViewModel: ObservableObject {
 
         @Published var catalogItems: [WinePosition] = []
+        @Published var selectedCatalogItemId: UUID?
         @Published var filtersBarItems: [CatalogFiltersBarView.Item] = []
         @Published var presentedFiltersBarItem: CatalogFiltersBarView.Item?
         @Published var searchText: String = ""
 
         private let container: DIContainer
+        private let cancelBag = CancelBag()
 
         init(container: DIContainer) {
             self.container = container
+
+            cancelBag.collect {
+                container.appState.bind(\.routing.catalog.winePositionId, to: self, by: \.selectedCatalogItemId)
+                $selectedCatalogItemId.bind(to: container.appState, by: \.value.routing.catalog.winePositionId)
+            }
+
             initWithMockData()
         }
 
@@ -63,6 +71,10 @@ extension CatalogView {
 
         var wineColorFilterViewModel: WineColorFilter.ViewModel {
             .init()
+        }
+
+        func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
+            .init(container: container, winePosition: winePosition)
         }
 
         // MARK: Helpers

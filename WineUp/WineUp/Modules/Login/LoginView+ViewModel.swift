@@ -12,8 +12,8 @@ import SwiftUI
 
 extension LoginView {
     struct Form: Equatable {
-        var phoneNumber = ""
-        var verificationCode = ""
+        var phoneNumber = Inputtable(placeholder: "")
+        var verificationCode = Inputtable(placeholder: "")
         var name = Inputtable(placeholder: "")
         var birthday = Inputtable(placeholder: Date.maxBirthday)
         var city = Inputtable(placeholder: "")

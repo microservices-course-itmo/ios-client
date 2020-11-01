@@ -17,8 +17,8 @@ extension AppState {
     struct Routing: Equatable {
         var didLogin = true
         var selectedTab = ApplicationMenuView.Tab.main
-        var catalogView = CatalogView.Routing()
-        var favoritesView = FavoritesView.Routing()
+        var catalog = CatalogView.Routing()
+        var favorites = FavoritesView.Routing()
     }
 }
 
