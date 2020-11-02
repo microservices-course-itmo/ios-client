@@ -10,38 +10,47 @@ import SwiftUI
 // MARK: - Constants
 
 private extension LocalizedStringKey {
-    static let suggestionsListTitleFirst = LocalizedStringKey("Мы подобрали для вас")
-    static let suggestionsListTitleSecond = LocalizedStringKey("схожие вина:")
+    static let suggestionsListTitle = LocalizedStringKey("Мы подобрали для вас\nсхожие вина:")
+
     static let leftArrow = LocalizedStringKey("\u{2190}")
     static let rightArrow = LocalizedStringKey("\u{2192}")
 }
+
+private extension Font {
+    static let suggestionsListTitle: Font = .system(size: 25)
+    static let arrow: Font = .system(size: 40)
+}
+
 // MARK: - View
 
 extension WinePositionDetailsView {
     struct SuggestionsList: View {
+
         let winePosition: WinePosition
         let details: WinePosition.Details
-        let textFont: Font = .system(size: 25)
-        let arrowFont: Font = .system(size: 40)
 
         var body: some View {
+            
             VStack(alignment: .center) {
-                VStack(alignment: .center) {
-                    Text(LocalizedStringKey.suggestionsListTitleFirst)
-                        .font(textFont)
-                    Text(LocalizedStringKey.suggestionsListTitleSecond)
-                        .font(textFont)
-                }.padding(.top, -20)
+                Text(LocalizedStringKey.suggestionsListTitle)
+                    .font(.suggestionsListTitle)
+                    .multilineTextAlignment(.center)
+                    .padding()
 
                 WinePositionView(item: winePosition)
 
                 HStack(alignment: .center, spacing: 30) {
-                    Button(action: {}){
-                        Text(LocalizedStringKey.leftArrow).font(arrowFont)
-                    }.buttonStyle(CircleButtonStyle())
-                    Button(action: {}){
-                        Text(LocalizedStringKey.rightArrow).font(arrowFont)
-                    }.buttonStyle(CircleButtonStyle())
+                    Button(action: {}) {
+                        Text(LocalizedStringKey.leftArrow)
+                            .font(.arrow)
+                    }
+                    .circleStyled()
+
+                    Button(action: {}) {
+                        Text(LocalizedStringKey.rightArrow)
+                            .font(.arrow)
+                    }
+                    .circleStyled()
                 }
             }
         }

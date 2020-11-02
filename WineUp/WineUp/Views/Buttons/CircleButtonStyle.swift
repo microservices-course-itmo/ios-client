@@ -17,12 +17,23 @@ private extension Color {
 
 struct CircleButtonStyle: ButtonStyle {
 
-    func makeBody(configuration: Self.Configuration) -> some View {
+    let color: Color
+
+    func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .frame(width: 75, height: 75)
             .foregroundColor(Color.white)
-            .background(Color.discountColor)
+            .background(color)
             .clipShape(Circle())
+    }
+}
+
+// MARK: - Helpers
+
+extension Button {
+    func circleStyled(color: Color = .discountColor) -> some View {
+        self
+            .buttonStyle(CircleButtonStyle(color: color))
     }
 }
 
@@ -31,10 +42,9 @@ struct CircleButtonStyle: ButtonStyle {
 #if DEBUG
 struct CircleButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
-
-            Button("Title", action: {})
-                .buttonStyle(CircleButtonStyle())
-        .previewLayout(.fixed(width: 414, height: 120))
+        Button("Title", action: {})
+            .circleStyled()
+            .previewLayout(.fixed(width: 414, height: 120))
     }
 }
 #endif
