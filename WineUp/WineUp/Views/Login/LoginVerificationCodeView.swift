@@ -25,6 +25,7 @@ struct LoginVerificationCodeView: View {
                 .lineLimit(1)
                 .multilineTextAlignment(.center)
                 .keyboardType(.decimalPad)
+                .onChange(of: viewModel.code.value, perform: viewModel.codeDidChange(code:))
         }, actionLabel: { () -> AnyView in
             if viewModel.canResendCode {
                 return Button(action: viewModel.resendButtonDidTap) {
@@ -72,9 +73,6 @@ extension LoginVerificationCodeView {
             cancelBag.collect {
                 container.appState.bindDisplayValue(\.userData.loginForm.verificationCode, to: self, by: \.code.value)
                 $code.map { $0!.value }.toInputtable(of: container.appState, at: \.value.userData.loginForm.verificationCode)
-                container.appState.map { $0.userData.loginForm.verificationCode.value }.onChange { [weak self] in
-                    self?.codeDidChange(code: $0 ?? "")
-                }
             }
         }
 
@@ -97,20 +95,7 @@ extension LoginVerificationCodeView {
             }
         }
 
-        // MARK: Private Methods
-
-        private func tick() {
-            if secondsToResendCode > 0 {
-                secondsToResendCode -= 1
-                updateUI()
-            }
-        }
-
-        private func updateUI() {
-            canResendCode = secondsToResendCode == 0 && !isResendInProgress && !isSubmitInProgress
-        }
-
-        private func codeDidChange(code: String) {
+        func codeDidChange(code: String) {
             guard code.count == 6 else { return }
 
             isSubmitInProgress = true
@@ -128,6 +113,19 @@ extension LoginVerificationCodeView {
                     self.onSubmit?()
                 }
             }
+        }
+
+        // MARK: Private Methods
+
+        private func tick() {
+            if secondsToResendCode > 0 {
+                secondsToResendCode -= 1
+                updateUI()
+            }
+        }
+
+        private func updateUI() {
+            canResendCode = secondsToResendCode == 0 && !isResendInProgress && !isSubmitInProgress
         }
 
         private func submitVerificationCode(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
