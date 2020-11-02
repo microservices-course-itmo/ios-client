@@ -9,14 +9,13 @@ import SwiftUI
 
 // MARK: - Constants
 
-private extension Font {
-    static let priceWithDiscount: Font = .system(size: 24, weight: .medium)
-    static let originalPrice: Font = .system(size: 12, weight: .medium)
-    static let itemPrice: Font = .system(size: 20, weight: .regular)
+private extension CGFloat {
+    static let discountOffset: CGFloat = -10.0
 }
 
-private extension Color {
-    static let discountPercents: Color = .red
+private extension Font {
+    static let priceWithDiscount: Font = .system(size: 24, weight: .medium)
+    static let originalPrice: Font = .system(size: 12, weight: .light)
 }
 
 // MARK: - View
@@ -28,24 +27,24 @@ extension WinePositionView {
         let item: WinePosition
 
         var body: some View {
-            VStack(alignment: .trailing) {
+            VStack(alignment: .leading) {
                 HStack {
-                    Text(originalPriceRubText)
-                        .font(.originalPrice)
-                        .strikethrough()
+                    if originalPriceRubText != priceWithDiscountText {
+                        Text(originalPriceRubText)
+                            .font(.originalPrice)
+                            .foregroundColor(.gray)
+                            .strikethrough()
+                            .italic()
+                    }
                 }
+                .padding(.leading, .discountOffset)
                 HStack {
-                    Text("Стоимость:")
-                        .font(.itemPrice)
-
-                    Spacer()
-
                     Text(priceWithDiscountText)
                         .font(.priceWithDiscount)
+                        .italic()
                 }
             }
         }
-
         // MARK: Helpers
 
         private var priceWithDiscountText: String {

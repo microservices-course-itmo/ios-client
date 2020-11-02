@@ -11,6 +11,7 @@ import SwiftUI
 
 private extension CGFloat {
     static let rootVStackSpacing: CGFloat = 0
+    static let wineCardsSpacing: CGFloat = 10
 }
 
 private extension LocalizedStringKey {
@@ -49,17 +50,25 @@ struct CatalogView: View {
 
             ScrollView(.vertical, showsIndicators: true) {
                 VStack {
+
                     ForEach(viewModel.catalogItems) { item in
                         NavigationLink(
                             destination: WinePositionDetailsView(
                                 viewModel: viewModel.winePositionDetailsViewModelFor(item)),
                             tag: item.id,
                             selection: $viewModel.selectedCatalogItemId, label: {
+                                ZStack {
+                                    Rectangle().fill(Color .white).cornerRadius(15.0).shadow(radius: 3 )
                                 WinePositionView(item: item)
                                     .foregroundColor(.black)
                                     .padding()
+
+                                }
+                                .padding(.wineCardsSpacing)
+
                             }
                         )
+
                     }
                 }
             }
