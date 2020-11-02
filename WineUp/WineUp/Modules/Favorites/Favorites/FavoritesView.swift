@@ -80,17 +80,11 @@ struct FavoritesView: View {
                             viewModel: viewModel.winePositionDetailsViewModelFor(item)),
                         tag: item.id,
                         selection: $viewModel.selectedFavoriteItemId, label: {
-                            ZStack {
-                                Rectangle()
-                                    .fill(Color.white)
-                                    .cornerRadius(15.0)
-                                    .shadow(radius: 3)
-
-                                WinePositionView(item: item)
-                                    .foregroundColor(.black)
-                                    .padding()
-                            }
-                            .padding(.wineCardsSpacing)
+                            WinePositionView(item: item)
+                                .foregroundColor(.black)
+                                .padding()
+                                .cardStyled()
+                                .padding(.wineCardsSpacing)
                         }
                     )
                 }
