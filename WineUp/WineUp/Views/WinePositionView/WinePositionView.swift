@@ -28,15 +28,18 @@ struct WinePositionView: View {
         VStack(spacing: .itemsSpacing) {
             HStack {
                 TopInformationView(item: item)
-                
-            }.padding(.leading, .CompatibilityOffset)
+            }
+            .padding(.leading, .CompatibilityOffset)
+
             PreviewImageView(item: item)
                 .frame(
                     width: .previewWidth,
                     height: .previewHeight,
                     alignment: .center
                 )
+
             RatingView(item: item)
+
             InfoView(item: item)
         }
     }

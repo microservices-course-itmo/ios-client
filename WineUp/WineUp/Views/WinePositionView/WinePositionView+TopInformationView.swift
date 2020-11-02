@@ -52,6 +52,7 @@ extension WinePositionView {
         }
 
         // MARK: Helpers
+
         private var compatibilityText: LocalizedStringKey {
             return .compatibilityDescription(percentage: Int(item.chemistry))
         }
@@ -64,10 +65,11 @@ extension WinePositionView {
 // MARK: - Preview
 
 #if DEBUG
-struct CatalogRowViewTopInformationViewPreviews: PreviewProvider {
+struct CatalogRowViewTopInformationView_Previews: PreviewProvider {
+    private static let item = WinePosition.mockedData[0]
+
     static var previews: some View {
-        let item = WinePosition.mockedData[0]
-        return WinePositionView.TopInformationView(item: item)
+        WinePositionView.TopInformationView(item: item)
             .previewLayout(.fixed(width: 600, height: 30))
     }
 }

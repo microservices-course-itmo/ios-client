@@ -24,7 +24,7 @@ private extension Font {
     static let wineDescription: Font = .system(size: 18, weight: .light)
 }
 
-private extension LocalizedStringKey {    
+private extension LocalizedStringKey {
     static let extraParametersText = LocalizedStringKey("Дополнительные параметры")
 
     static func wineTitleDescription(title: String, year: String) -> LocalizedStringKey {
@@ -50,16 +50,26 @@ extension WinePositionView {
 
         var body: some View {
             VStack(alignment: .center, spacing: .itemsSpacing) {
-                Text(itemTittleText).font(.itemTitle)
+                Text(itemTittleText)
+                    .font(.itemTitle)
                     .multilineTextAlignment(.center)
-                Text(characteristicsTextFull).font(.wineDescription)
-                Text(.extraParametersText).underline().font(.wineDescription)
+
+                Text(characteristicsTextFull)
+                    .font(.wineDescription)
+
+                Text(.extraParametersText)
+                    .underline()
+                    .font(.wineDescription)
+
                 HStack {
-                    WinePositionView.DiscountView(item: item).horizontallySpanned(alignment: .leading)
+                    WinePositionView.DiscountView(item: item)
+                        .horizontallySpanned(alignment: .leading)
+
                     HStack {
                         Image.shopIcon
                             .resizable()
                             .frame(width: .shopIconWidth, height: .shopIconHeight)
+
                         Text(retailerText)
                             .font(.wineDescription)
                     }

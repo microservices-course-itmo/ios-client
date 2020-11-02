@@ -38,6 +38,7 @@ extension WinePositionView {
                     }
                 }
                 .padding(.leading, .discountOffset)
+
                 HStack {
                     Text(priceWithDiscountText)
                         .font(.priceWithDiscount)
@@ -45,6 +46,7 @@ extension WinePositionView {
                 }
             }
         }
+
         // MARK: Helpers
 
         private var priceWithDiscountText: String {
