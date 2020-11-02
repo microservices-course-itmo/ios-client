@@ -11,6 +11,7 @@ import SwiftUI
 
 private extension CGFloat {
     static let rootVStackSpacing: CGFloat = 0
+    static let wineCardsSpacing: CGFloat = 10
 }
 
 private extension LocalizedStringKey {
@@ -58,6 +59,8 @@ struct CatalogView: View {
                                 WinePositionView(item: item)
                                     .foregroundColor(.black)
                                     .padding()
+                                    .cardStyled()
+                                    .padding(.wineCardsSpacing)
                             }
                         )
                     }
