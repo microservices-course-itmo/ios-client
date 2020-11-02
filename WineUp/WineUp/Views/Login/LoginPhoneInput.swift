@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Firebase
 
 // MARK: - Constants
 
@@ -20,14 +21,16 @@ struct LoginPhoneInput: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
 
-    let onNextButtonTap: () -> Void
+    let onSubmit: () -> Void
 
     var body: some View {
         LoginOneButtonContainer(
             title: "Введите ваш номер телефона",
             isButtonActive: viewModel.isNextButtonActive,
             buttonTitle: "Далее",
-            onButtonTap: onNextButtonTap,
+            onButtonTap: {
+                viewModel.nextButtonDidTap(onSubmit: onSubmit)
+            },
             label: {
                 TextField("+7 (XXX) XXX-XX-XX", text: $viewModel.phoneNumber.value)
                     .multilineTextAlignment(.center)
@@ -35,6 +38,7 @@ struct LoginPhoneInput: View {
                     .keyboardType(.phonePad)
             }
         )
+        .activity(hasActivity: viewModel.hasActivity)
     }
 }
 
@@ -45,6 +49,7 @@ extension LoginPhoneInput {
 
         // MARK: Variables
 
+        @Published var hasActivity = false
         @Published var isNextButtonActive = false
         @Published var phoneNumber = FormattableContainer("", formatter: ViewModel.formatRuPhoneNumber(phone:))
 
@@ -65,6 +70,25 @@ extension LoginPhoneInput {
 
         func continueWithoutAuthButtonDidTap() {
 
+        }
+
+        func nextButtonDidTap(onSubmit: @escaping () -> Void) {
+            guard let phoneNumber = container.appState.value.userData.loginForm.phoneNumber.value else {
+                return
+            }
+
+            assert(!hasActivity)
+            hasActivity = true
+
+            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { [weak self] verificationID, error in
+                if let error = error {
+                    print("verifyError: ", error.localizedDescription)
+                    return
+                }
+                self?.container.appState.value.userData.loginForm.verificationId = verificationID
+                self?.hasActivity = false
+                onSubmit()
+            }
         }
 
         // MARK: Private Methods
@@ -109,7 +133,7 @@ extension LoginPhoneInput.ViewModel {
 
 struct LoginPhoneInput_Previews: PreviewProvider {
     static var previews: some View {
-        LoginPhoneInput(viewModel: .preview, onNextButtonTap: {})
+        LoginPhoneInput(viewModel: .preview, onSubmit: {})
     }
 }
 #endif

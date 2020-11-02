@@ -17,6 +17,9 @@ extension LoginView {
         var name = Inputtable(placeholder: "")
         var birthday = Inputtable(placeholder: Date.maxBirthday)
         var city = Inputtable(placeholder: "")
+
+        var verificationId: String?
+        var token: String?
     }
 }
 
@@ -54,7 +57,7 @@ extension LoginView {
             nextPage(.ageRestriction)
         }
 
-        func phoneNumberDoneButtonDidTap() {
+        func phoneNumberDidSubmit() {
             nextPage(.verificationCode)
         }
 

@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct WineUpApp: App {
+    // swiftlint:disable weak_delegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let environment: AppEnvironment
     private let container: DIContainer
 
