@@ -10,8 +10,8 @@ import SwiftUI
 // MARK: - Constants
 
 private extension CGFloat {
-    static let ratingTitleTop: CGFloat = 10
     static let starsRowBottom: CGFloat = 10
+    static let starsSpacing: CGFloat = 2
 }
 
 private extension Image {
@@ -19,18 +19,12 @@ private extension Image {
     static let star = Image(systemName: "star")
 }
 
-private extension LocalizedStringKey {
-    static let ratingTitle = LocalizedStringKey("ОЦЕНКА ЭКСПЕРТОВ")
-}
-
 private extension Color {
-    static let backgroundVeil = Color(white: 1, opacity: 0.6)
     static let burningStar: Color = .yellow
 }
 
 private extension Font {
-    static let ratingTitle: Font = .system(size: 11, weight: .light)
-    static let star: Font = .system(size: 11)
+    static let star: Font = .system(size: 14)
 }
 
 // MARK: - View
@@ -44,19 +38,14 @@ extension WinePositionView {
         var body: some View {
             ZStack {
                 HStack {
-                    HStack(spacing: 2) {
+                    HStack(spacing: .starsSpacing) {
                         ForEach(1..<6) { index in
                             image(forIndex: index)
                                 .font(.star)
                                 .foregroundColor(.burningStar)
                         }
                     }
-                    .padding(.vertical)
-
-                    Text(LocalizedStringKey.ratingTitle)
-                        .font(.ratingTitle)
-                        .foregroundColor(.gray)
-                        .padding(.top, 2.0)
+                    .padding(.bottom, .starsRowBottom)
                 }
             }
         }

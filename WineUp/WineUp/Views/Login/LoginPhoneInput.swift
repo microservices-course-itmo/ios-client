@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Firebase
 
 // MARK: - Constants
 
@@ -20,14 +21,16 @@ struct LoginPhoneInput: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
 
-    var body: some View {
-        print("Render, phoneNumber: \(viewModel.phoneNumber)")
+    let onSubmit: () -> Void
 
-        return LoginOneButtonContainer(
+    var body: some View {
+        LoginOneButtonContainer(
             title: "Введите ваш номер телефона",
             isButtonActive: viewModel.isNextButtonActive,
             buttonTitle: "Далее",
-            onButtonTap: viewModel.loginButtonDidTap,
+            onButtonTap: {
+                viewModel.nextButtonDidTap(onSubmit: onSubmit)
+            },
             label: {
                 TextField("+7 (XXX) XXX-XX-XX", text: $viewModel.phoneNumber.value)
                     .multilineTextAlignment(.center)
@@ -35,6 +38,7 @@ struct LoginPhoneInput: View {
                     .keyboardType(.phonePad)
             }
         )
+        .activity(hasActivity: viewModel.hasActivity)
     }
 }
 
@@ -45,34 +49,49 @@ extension LoginPhoneInput {
 
         // MARK: Variables
 
+        @Published var hasActivity = false
         @Published var isNextButtonActive = false
-        @Published var phoneNumber = FormattableContainer("", formatter: ViewModel.formatRuPhoneNumber(phone:)) {
-            didSet {
-                phoneNumberDidSet()
-            }
-        }
+        @Published var phoneNumber = FormattableContainer("", formatter: ViewModel.formatRuPhoneNumber(phone:))
 
-        let onNextButtonTap: () -> Void
+        private let container: DIContainer
+        private let cancelBag = CancelBag()
 
         // MARK: Public Methods
 
-        init(onNextButtonTap: @escaping () -> Void) {
-            self.onNextButtonTap = onNextButtonTap
-        }
+        init(container: DIContainer) {
+            self.container = container
 
-        func loginButtonDidTap() {
-            onNextButtonTap()
+            cancelBag.collect {
+                container.appState.bindDisplayValue(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber.value)
+                $phoneNumber.map(\.value).toInputtable(of: container.appState, at: \.value.userData.loginForm.phoneNumber)
+                container.appState.map { $0.userData.loginForm.phoneNumber.value?.count == 18 }.bind(to: self, by: \.isNextButtonActive)
+            }
         }
 
         func continueWithoutAuthButtonDidTap() {
 
         }
 
-        // MARK: Private Methods
+        func nextButtonDidTap(onSubmit: @escaping () -> Void) {
+            guard let phoneNumber = container.appState.value.userData.loginForm.phoneNumber.value else {
+                return
+            }
 
-        private func phoneNumberDidSet() {
-            isNextButtonActive = phoneNumber.value.count == 18
+            assert(!hasActivity)
+            hasActivity = true
+
+            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { [weak self] verificationID, error in
+                if let error = error {
+                    print("verifyError: ", error.localizedDescription)
+                    return
+                }
+                self?.container.appState.value.userData.loginForm.verificationId = verificationID
+                self?.hasActivity = false
+                onSubmit()
+            }
         }
+
+        // MARK: Private Methods
 
         private static func formatRuPhoneNumber(phone: String) -> String {
             return format(mask: "+X (XXX) XXX-XX-XX", phone: phone)
@@ -108,9 +127,13 @@ extension LoginPhoneInput {
 // MARK: - Preview
 
 #if DEBUG
+extension LoginPhoneInput.ViewModel {
+    static let preview = LoginPhoneInput.ViewModel(container: .preview)
+}
+
 struct LoginPhoneInput_Previews: PreviewProvider {
     static var previews: some View {
-        LoginPhoneInput(viewModel: .init(onNextButtonTap: {}))
+        LoginPhoneInput(viewModel: .preview, onSubmit: {})
     }
 }
 #endif

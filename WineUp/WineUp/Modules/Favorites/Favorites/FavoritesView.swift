@@ -11,6 +11,7 @@ import SwiftUI
 
 private extension CGFloat {
     static let rootVStackSpacing: CGFloat = 0
+    static let wineCardsSpacing: CGFloat = 10
 }
 
 private extension LocalizedStringKey {
@@ -74,8 +75,18 @@ struct FavoritesView: View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack {
                 ForEach(viewModel.favoritesItems) { item in
-                    WinePositionView(item: item)
-                        .padding()
+                    NavigationLink(
+                        destination: WinePositionDetailsView(
+                            viewModel: viewModel.winePositionDetailsViewModelFor(item)),
+                        tag: item.id,
+                        selection: $viewModel.selectedFavoriteItemId, label: {
+                            WinePositionView(item: item)
+                                .foregroundColor(.black)
+                                .padding()
+                                .cardStyled()
+                                .padding(.wineCardsSpacing)
+                        }
+                    )
                 }
             }
         }
@@ -161,7 +172,7 @@ struct FavoritesView_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            FavoritesView(viewModel: .init())
+            FavoritesView(viewModel: .preview)
         }
     }
 }

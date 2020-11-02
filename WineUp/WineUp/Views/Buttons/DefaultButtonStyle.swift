@@ -58,7 +58,8 @@ private extension DefaultButtonStyle {
 extension Button {
     /// Applies default style to button and toggles its interaction flag
     func defaultStyled(isDisabled: Bool) -> some View {
-        buttonStyle(DefaultButtonStyle(isDisabled: isDisabled))
+        self
+            .buttonStyle(DefaultButtonStyle(isDisabled: isDisabled))
             .disabled(isDisabled)
     }
 }

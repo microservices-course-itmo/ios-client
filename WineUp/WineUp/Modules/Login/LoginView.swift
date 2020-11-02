@@ -51,15 +51,24 @@ struct LoginView: View {
         case .ageRestriction:
             return LoginAgeRestrictionView().anyView
         case .phoneNumber:
-            return LoginPhoneInput(viewModel: viewModel.loginPhoneInputViewModel()).anyView
+            return LoginPhoneInput(
+                viewModel: viewModel.loginPhoneInputViewModel,
+                onSubmit: viewModel.phoneNumberDidSubmit
+            ).anyView
         case .verificationCode:
-            return LoginVerificationCodeView(viewModel: viewModel.loginVerificationCodeViewModel()).anyView
+            return LoginVerificationCodeView(
+                viewModel: viewModel.loginVerificationCodeViewModel,
+                onSubmit: viewModel.verificationCodeDidSubmit
+            ).anyView
         case .name:
-            return LoginNameInput(viewModel: viewModel.loginNameInputViewModel()).anyView
+            return LoginNameInput(viewModel: viewModel.loginNameInputViewModel, onSubmit: viewModel.nameDidSubmit).anyView
         case .birthday:
-            return LoginBirthdayInput(viewModel: viewModel.loginBirthdayInputViewModel()).anyView
+            return LoginBirthdayInput(
+                viewModel: viewModel.loginBirthdayInputViewModel,
+                onSubmit: viewModel.birthdayDidSubmit
+            ).anyView
         case .city:
-            return LoginCityInput(viewModel: viewModel.loginCityInputViewModel()).anyView
+            return LoginCityInput(viewModel: viewModel.loginCityInputViewModel, onSubmit: viewModel.cityDidSubmit).anyView
         case .personalDataConcent:
             return LoginPersonalDataConcentView(onConcent: viewModel.personalDataDidConcent).anyView
         }
@@ -71,7 +80,7 @@ struct LoginView: View {
 #if DEBUG
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(viewModel: .init())
+        LoginView(viewModel: .preview)
     }
 }
 #endif

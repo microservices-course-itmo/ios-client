@@ -26,7 +26,7 @@ struct FavoritesRootView: View {
 #if DEBUG
 struct FavoritesRootView_Previews: PreviewProvider {
     static var previews: some View {
-        FavoritesRootView(viewModel: .init())
+        FavoritesRootView(viewModel: .preview)
     }
 }
 #endif

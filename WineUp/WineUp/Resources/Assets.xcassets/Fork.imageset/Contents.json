@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "Fork@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Fork@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "iconstar.png",
+      "filename" : "Fork@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

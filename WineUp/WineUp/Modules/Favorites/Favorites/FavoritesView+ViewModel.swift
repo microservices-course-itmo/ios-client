@@ -8,15 +8,34 @@
 import UIKit
 import Combine
 
+// MARK: - Routing
+
+extension FavoritesView {
+    struct Routing: Equatable {
+        var winePositionId: UUID?
+    }
+}
+
 // MARK: - FavoritesView+ViewModel
 
 extension FavoritesView {
     final class ViewModel: ObservableObject {
 
         @Published var favoritesItems: [WinePosition] = []
+        @Published var selectedFavoriteItemId: UUID?
         @Published var searchText: String = ""
 
-        init() {
+        private let container: DIContainer
+        private let cancelBag = CancelBag()
+
+        init(container: DIContainer) {
+            self.container = container
+
+            cancelBag.collect {
+                container.appState.bind(\.routing.favorites.winePositionId, to: self, by: \.selectedFavoriteItemId)
+                $selectedFavoriteItemId.bind(to: container.appState, by: \.value.routing.favorites.winePositionId)
+            }
+
             initWithMockData()
         }
 
@@ -30,6 +49,10 @@ extension FavoritesView {
             .init()
         }
 
+        func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
+            .init(container: container, winePosition: winePosition)
+        }
+
         // MARK: Helpers
 
         private func initWithMockData() {
@@ -37,3 +60,9 @@ extension FavoritesView {
         }
     }
 }
+
+#if DEBUG
+extension FavoritesView.ViewModel {
+    static let preview = FavoritesView.ViewModel(container: .preview)
+}
+#endif

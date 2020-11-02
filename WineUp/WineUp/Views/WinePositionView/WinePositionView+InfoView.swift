@@ -9,35 +9,34 @@ import SwiftUI
 
 // MARK: - Constants
 
+private extension CGFloat {
+    static let shopIconWidth: CGFloat = 23.0
+    static let shopIconHeight: CGFloat = 25.0
+    static let itemsSpacing: CGFloat = 20.0
+}
+
 private extension Image {
-    static let heartFill = Image(systemName: "suit.heart.fill")
-    static let compatibilityIcon = Image("iconstar")
     static let shopIcon = Image("iconshop")
-    static let wineIcon = Image("iconwine")
 }
 
 private extension Font {
-    static let itemTitle: Font = .system(size: 17, weight: .black)
-    static let heart: Font = .system(size: 25)
-    static let wineDescription: Font = .system(size: 15)
-}
-
-private extension Color {
-    static let heartLiked = Color(red: 145 / 255, green: 22 / 255, blue: 52 / 255)
-    static let heartNotLiked: Color = .gray
+    static let itemTitle: Font = .system(size: 25, weight: .black)
+    static let wineDescription: Font = .system(size: 18, weight: .light)
 }
 
 private extension LocalizedStringKey {
-    static func compatibilityDescription(percentage: Int) -> LocalizedStringKey {
-        return "Подходит вам на \(percentage)%"
+    static let extraParametersText = LocalizedStringKey("Дополнительные параметры")
+
+    static func wineTitleDescription(title: String, year: String) -> LocalizedStringKey {
+        return "\(title) \n\(String(year)) г."
     }
 
-    static func wineDescription(description: String) -> LocalizedStringKey {
+    static func wineShopDescription(description: String) -> LocalizedStringKey {
         return "\(description)"
     }
 
-    static func wineCharacteristicsDescription(color: String, wineAstringency: String) -> LocalizedStringKey {
-        return "\(color), \(wineAstringency)"
+    static func wineDescriptionFull(color: String, wineAstringency: String, country: String, quantity: Float) -> LocalizedStringKey {
+        return "\(country), \(String(wineAstringency).lowercased()), \(String(color).lowercased()), \(String(format: "%.2f", quantity)) л."
     }
 }
 
@@ -50,101 +49,47 @@ extension WinePositionView {
         let item: WinePosition
 
         var body: some View {
-            VStack(alignment: .leading) {
-                //TODO вынести в отдельный view
+            VStack(alignment: .center, spacing: .itemsSpacing) {
+                Text(itemTittleText)
+                    .font(.itemTitle)
+                    .multilineTextAlignment(.center)
 
-                Image.heartFill
-                    .foregroundColor(heartColor)
-                    .font(.heart)
-                    .horizontallySpanned(alignment: .trailing)
+                Text(characteristicsTextFull)
+                    .font(.wineDescription)
 
-                VStack(alignment: .leading) {
-                    VStack(alignment: .leading) {
-                        WinePositionView.RatingView(item: item)
-                            .padding(.vertical)
-                            .frame(width: 200.0, height: 10.0)
-                    }
-                    .padding(.trailing)
+                Text(.extraParametersText)
+                    .underline()
+                    .font(.wineDescription)
 
-                    Text("\(item.title), \(String(format: "%.2f", item.quantityLiters))л")
-                        .font(.itemTitle)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(4)
-                        .padding(.trailing, 15.0)
-                }
-
-                Divider()
-
-                //TODO Вынести в отдельный view
-                VStack(alignment: .leading, spacing: 4.0) {
-                    HStack {
-                        Image(item.country)
-                            .resizable()
-                            .frame(width: 25.0, height: 16.0)
-
-                        Text(countryText)
-                            .font(.wineDescription)
-                            .foregroundColor(.gray)
-                    }
-                    HStack {
-                        Image.wineIcon
-                            .resizable()
-                            .frame(width: 25.0, height: 25.0)
-
-                        Text(characteristicsText)
-                            .font(.wineDescription)
-                            .foregroundColor(.gray)
-                    }
-                    HStack {
-                        Image.compatibilityIcon
-                            .resizable()
-                            .frame(width: 25.0, height: 25.0)
-
-                        Text(compatibilityText)
-                            .font(.wineDescription)
-                            .foregroundColor(.gray)
-                    }
+                HStack {
+                    WinePositionView.DiscountView(item: item)
+                        .horizontallySpanned(alignment: .leading)
 
                     HStack {
                         Image.shopIcon
                             .resizable()
-                            .frame(width: 25.0, height: 25.0)
+                            .frame(width: .shopIconWidth, height: .shopIconHeight)
 
                         Text(retailerText)
                             .font(.wineDescription)
-                            .foregroundColor(.gray)
                     }
                 }
-
-                WinePositionView.DiscountView(item: item)
+                .padding(.all)
             }
         }
 
         // MARK: Helpers
 
-        private var heartColor: Color {
-            return item.isLiked ? .heartLiked : .heartNotLiked
-        }
-
-        private var compatibilityText: LocalizedStringKey {
-            return .compatibilityDescription(percentage: Int(item.chemistry))
+        private var itemTittleText: LocalizedStringKey {
+            return .wineTitleDescription(title: item.title, year: item.year)
         }
 
         private var retailerText: LocalizedStringKey {
-            return .wineDescription(description: item.retailerName)
+            return .wineShopDescription(description: item.retailerName)
         }
 
-        private var countryText: LocalizedStringKey {
-            return .wineDescription(description: item.country)
-        }
-
-        private var characteristicsText: LocalizedStringKey {
-            return .wineCharacteristicsDescription(color: item.color.name,
-                                                   wineAstringency: item.wineAstringency.name)
-
-        }
-        private var shopText: LocalizedStringKey {
-            return .compatibilityDescription(percentage: Int(item.chemistry))
+        private var characteristicsTextFull: LocalizedStringKey {
+            return .wineDescriptionFull(color: item.color.name, wineAstringency: item.wineAstringency.name, country: item.country, quantity: item.quantityLiters)
         }
     }
 }
@@ -154,8 +99,8 @@ extension WinePositionView {
 #if DEBUG
 struct CatalogRowViewInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        WinePositionView.InfoView(item: WinePosition.mockedData[1])
-            .previewLayout(.fixed(width: 274, height: 430))
+        WinePositionView.InfoView(item: WinePosition.mockedData[0])
+            .previewLayout(.fixed(width: 200, height: 430))
     }
 }
 #endif

@@ -12,8 +12,18 @@ import SwiftUI
 private extension CGFloat {
     static let titleImageWidth: CGFloat = 220
     static let titleImageHeight: CGFloat = 260
-    static let ratingViewWidth: CGFloat = 110
-    static let ratingViewHeight: CGFloat = 50
+    static let discountFlagTextWidth: CGFloat = 50
+    static let discountFlagTextHeight: CGFloat = 10
+    static let discountFlagOffset: CGFloat = 145
+
+}
+
+private extension Image {
+    static let discount = Image(systemName: "bookmark.fill")
+}
+
+private extension Font {
+    static let bookmark: Font = .system(size: 75)
 }
 
 private extension Color {
@@ -29,33 +39,32 @@ extension WinePositionView {
         let item: WinePosition
 
         var body: some View {
-            VStack(alignment: .center, spacing: 2.0) {
-                ZStack(alignment: .leading) {
-                    Image(uiImage: item.titleImage)
-                        .resizable()
-                        .frame(
-                            width: .titleImageWidth,
-                            height: .titleImageHeight,
-                            alignment: .center
-                        )
-                        .aspectRatio(contentMode: .fit)
+            ZStack(alignment: .leading) {
 
-                    Text("-\(String(Int(item.discountPercents)))%")
+                if item.originalPriceRub != item.priceWithDiscount {
+                    Text("-\(String(Int(item.discountPercents)))% ")
                         .italic()
+                        .bold()
                         .foregroundColor(.white)
-                        .rotationEffect(.degrees(-5))
-                        .frame(width: 50, height: 50, alignment: .center)
+                        .rotationEffect(.degrees(-3))
+                        .frame(width: .discountFlagTextWidth, height: .discountFlagTextHeight, alignment: .leading)
                         .background(
-                            Circle()
-                                .fill(Color.discountColor)
+                            Image.discount .font(.bookmark)
+                                .foregroundColor(Color .discountColor).rotationEffect(.degrees(270))
                         )
-                        .offset(x: 55)
+                        .offset(x: .discountFlagOffset)
                 }
-                Text("\(item.year) г.")
-                    .multilineTextAlignment(.trailing)
-                    .padding(.horizontal, 1.0)
 
+                Image(uiImage: item.titleImage)
+                    .resizable()
+                    .frame(
+                        width: .titleImageWidth,
+                        height: .titleImageHeight,
+                        alignment: .center
+                    )
+                    .aspectRatio(contentMode: .fit)
             }
+            .padding(.vertical)
         }
     }
 }
@@ -65,7 +74,7 @@ extension WinePositionView {
 #if DEBUG
 struct CatalogRowViewPreviewImageView_Previews: PreviewProvider {
     static var previews: some View {
-        return WinePositionView.PreviewImageView(item: WinePosition.mockedData[0])
+        return WinePositionView.PreviewImageView(item: WinePosition.mockedData[1])
             .previewLayout(.fixed(width: 260, height: 260))
     }
 }

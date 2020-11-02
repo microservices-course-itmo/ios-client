@@ -8,6 +8,29 @@
 import Foundation
 import SwiftUI
 
+// MARK: - LoginView+Form
+
+extension LoginView {
+    struct Form: Equatable {
+        var phoneNumber = Inputtable(placeholder: "")
+        var verificationCode = Inputtable(placeholder: "")
+        var name = Inputtable(placeholder: "")
+        var birthday = Inputtable(placeholder: Date.maxBirthday)
+        var city = Inputtable(placeholder: "")
+
+        var verificationId: String?
+        var token: String?
+    }
+}
+
+// MARK: - LoginView+Page
+
+extension LoginView {
+    enum Page {
+        case ageQuestion, ageRestriction, phoneNumber, verificationCode, name, birthday, city, personalDataConcent
+    }
+}
+
 // MARK: - LoginView+ViewModel
 
 extension LoginView {
@@ -18,7 +41,13 @@ extension LoginView {
         @Published var currentPage: Int = 0
         @Published var pages: [Page] = [.ageQuestion]
 
+        private let container: DIContainer
+
         // MARK: Public
+
+        init(container: DIContainer) {
+            self.container = container
+        }
 
         func olderThan18ButtonDidTap() {
             nextPage(.phoneNumber)
@@ -28,7 +57,7 @@ extension LoginView {
             nextPage(.ageRestriction)
         }
 
-        func phoneNumberDoneButtonDidTap() {
+        func phoneNumberDidSubmit() {
             nextPage(.verificationCode)
         }
 
@@ -52,24 +81,24 @@ extension LoginView {
             finish()
         }
 
-        func loginPhoneInputViewModel() -> LoginPhoneInput.ViewModel {
-            return .init(onNextButtonTap: self.phoneNumberDoneButtonDidTap)
+        var loginPhoneInputViewModel: LoginPhoneInput.ViewModel {
+            .init(container: container)
         }
 
-        func loginVerificationCodeViewModel() -> LoginVerificationCodeView.ViewModel {
-            return .init(onSubmit: self.verificationCodeDidSubmit)
+        var loginVerificationCodeViewModel: LoginVerificationCodeView.ViewModel {
+            .init(container: container)
         }
 
-        func loginNameInputViewModel() -> LoginNameInput.ViewModel {
-            return .init(onSubmit: self.nameDidSubmit)
+        var loginNameInputViewModel: LoginNameInput.ViewModel {
+            .init(container: container)
         }
 
-        func loginBirthdayInputViewModel() -> LoginBirthdayInput.ViewModel {
-            return .init(onSubmit: self.birthdayDidSubmit)
+        var loginBirthdayInputViewModel: LoginBirthdayInput.ViewModel {
+            .init(container: container)
         }
 
-        func loginCityInputViewModel() -> LoginCityInput.ViewModel {
-            return .init(onSubmit: self.cityDidSubmit)
+        var loginCityInputViewModel: LoginCityInput.ViewModel {
+            .init(container: container)
         }
 
         // MARK: Private
@@ -87,15 +116,38 @@ extension LoginView {
         }
 
         private func finish() {
+            let form = container.appState.value.userData.loginForm
+            guard let name = form.name.value,
+                  let birthday = form.birthday.value,
+                  let city = form.city.value else {
+                assertionFailure()
+                return
+            }
 
+            print("""
+            Finish login of user
+                name: \(name)
+                birthday: \(birthday)
+                city: \(city)
+            """)
+
+            container.appState.value.routing.didLogin = true
         }
     }
 }
 
-// MARK: - LoginView+Page
+// MARK: - Helpers
 
-extension LoginView {
-    enum Page {
-        case ageQuestion, ageRestriction, phoneNumber, verificationCode, name, birthday, city, personalDataConcent
+private extension Date {
+    static var maxBirthday: Date {
+        Date().plus(DateComponents(year: -18))
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+extension LoginView.ViewModel {
+    static let preview = LoginView.ViewModel(container: .preview)
+}
+#endif
