@@ -53,7 +53,7 @@ struct LoginView: View {
         case .phoneNumber:
             return LoginPhoneInput(
                 viewModel: viewModel.loginPhoneInputViewModel,
-                onNextButtonTap: viewModel.phoneNumberDoneButtonDidTap
+                onSubmit: viewModel.phoneNumberDidSubmit
             ).anyView
         case .verificationCode:
             return LoginVerificationCodeView(
