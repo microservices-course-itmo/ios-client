@@ -64,7 +64,9 @@ extension LoginPhoneInput {
             cancelBag.collect {
                 container.appState.bindDisplayValue(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber.value)
                 $phoneNumber.map(\.value).toInputtable(of: container.appState, at: \.value.userData.loginForm.phoneNumber)
-                container.appState.map { $0.userData.loginForm.phoneNumber.value?.count == 18 }.bind(to: self, by: \.isNextButtonActive)
+                container.appState
+                    .map { $0.userData.loginForm.phoneNumber.value?.count == 18 }
+                    .bind(to: self, by: \.isNextButtonActive)
             }
         }
 

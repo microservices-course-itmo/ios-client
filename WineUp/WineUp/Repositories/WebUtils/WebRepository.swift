@@ -22,7 +22,10 @@ extension WebRepository {
     }
 
     /// Executes URLRequest and decodes JSON from body
-    func request<Value>(endpoint: APICall, httpCodes: HTTPCodes = .success) -> AnyPublisher<Value, Error> where Value: Decodable {
+    func request<Value>(
+        endpoint: APICall,
+        httpCodes: HTTPCodes = .success
+    ) -> AnyPublisher<Value, Error> where Value: Decodable {
         do {
             return try dataTask(to: endpoint, httpCodes: httpCodes)
                 .request(httpCodes: httpCodes)
