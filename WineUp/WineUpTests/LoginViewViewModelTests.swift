@@ -14,7 +14,7 @@ class LoginViewViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        viewModel = .init()
+        viewModel = .init(container: .preview)
     }
 
     func testPagesLogicYounger18() {
@@ -30,7 +30,7 @@ class LoginViewViewModelTests: XCTestCase {
         viewModel.olderThan18ButtonDidTap()
         XCTAssertEqual(currentPage, .phoneNumber)
 
-        viewModel.phoneNumberDoneButtonDidTap()
+        viewModel.phoneNumberDidSubmit()
         XCTAssertEqual(currentPage, .verificationCode)
 
         viewModel.verificationCodeDidSubmit()
