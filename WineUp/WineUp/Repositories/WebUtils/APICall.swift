@@ -10,13 +10,13 @@ import Foundation
 struct APICall {
     var path: String
     var method: String
-    var headers: [String: String]?
+    var headers: HTTPHeaders?
     var body: () throws -> Data?
 
     init(
         path: String,
         method: String,
-        headers: [String: String]? = nil,
+        headers: HTTPHeaders? = nil,
         body: @autoclosure @escaping () throws -> Data? = nil
     ) {
         self.path = path
@@ -28,7 +28,7 @@ struct APICall {
     init<Value>(
         path: String,
         method: String,
-        headers: [String: String]? = nil,
+        headers: HTTPHeaders? = nil,
         value: @autoclosure @escaping () throws -> Value
     ) where Value: Encodable {
         self.path = path

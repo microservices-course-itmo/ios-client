@@ -61,22 +61,22 @@ final class RealWineWebRepository: WineWebRepository {
 
 private extension APICall {
     static func createWine(_ form: WineJson.CreateForm) -> APICall {
-        APICall(path: "/wine", method: "POST", value: form)
+        APICall(path: "/wine", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
     }
 
     static func deleteWine(by id: String) -> APICall {
-        APICall(path: "/wine/\(id)", method: "DELETE")
+        APICall(path: "/wine/\(id)", method: "DELETE", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
     static func getAllWines() -> APICall {
-        APICall(path: "/wine", method: "GET")
+        APICall(path: "/wine", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
     static func getWine(by id: String) -> APICall {
-        APICall(path: "/wine/\(id)", method: "GET")
+        APICall(path: "/wine/\(id)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
     static func updateWine(by id: String, with form: WineJson.UpdateForm) -> APICall {
-        APICall(path: "/wine/\(id)", method: "PUT", value: form)
+        APICall(path: "/wine/\(id)", method: "PUT", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
     }
 }
