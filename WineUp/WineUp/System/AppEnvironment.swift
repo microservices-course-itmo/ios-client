@@ -39,7 +39,10 @@ extension AppEnvironment {
     }
 
     private static func configuredWebRepositories(session: URLSession) -> DIContainer.WebRepositories {
-        return .init()
+        return .init(
+            // TODO: Put real `baseUrl`
+            wineRepository: RealWineWebRepository(session: session, baseURL: "")
+        )
     }
 
     private static func configuredDBRepositories(appState: Store<AppState>) -> DIContainer.DBRepositories {
@@ -57,7 +60,7 @@ extension AppEnvironment {
 
 extension DIContainer {
     struct WebRepositories {
-
+        var wineRepository: WineWebRepository
     }
 
     struct DBRepositories {

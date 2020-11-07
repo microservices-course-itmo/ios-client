@@ -89,7 +89,12 @@ extension WinePositionView {
         }
 
         private var characteristicsTextFull: LocalizedStringKey {
-            return .wineDescriptionFull(color: item.color.name, wineAstringency: item.wineAstringency.name, country: item.country, quantity: item.quantityLiters)
+            return .wineDescriptionFull(
+                color: item.color.name,
+                wineAstringency: item.wineAstringency.name,
+                country: item.country,
+                quantity: item.quantityLiters
+            )
         }
     }
 }

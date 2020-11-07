@@ -22,7 +22,7 @@ class WineUpPhoneNumberFormatterTest: XCTestCase {
     }
 
     private func runPhoneFormatterTest(withRawPhone phone: String, andResult expectedResult: String) {
-        let loginChecker = LoginPhoneInput.ViewModel(onNextButtonTap: {})
+        let loginChecker = LoginPhoneInput.ViewModel(container: .preview)
         loginChecker.phoneNumber.value = phone
         XCTAssertEqual(loginChecker.phoneNumber.value, expectedResult)
     }
