@@ -17,10 +17,9 @@ extension WinePositionDetailsView {
         let details: WinePosition.Details
 
         var body: some View {
-            // TODO: Missing implementation
-            Color.green
-                .frame(width: UIScreen.main.bounds.width, height: 400, alignment: .center)
-                .overlay(Text("Reviews"))
+            List(details.reviews) { item in
+                WineReviewCardView(review: item)
+            }
         }
     }
 }
