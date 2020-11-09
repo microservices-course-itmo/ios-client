@@ -33,12 +33,6 @@ struct WineReviewCardView: View {
 
     let review: WinePosition.Details.Review
 
-    // MARK: - Lifecycle
-
-    init(review: WinePosition.Details.Review) {
-        self.review = review
-    }
-
     // MARK: - View
 
     var body: some View {
