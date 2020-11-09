@@ -8,7 +8,7 @@
 import Foundation
 
 struct ProducerJson: Decodable {
-    var ProducerId: String
+    var id: String
     var name: String
 }
 
