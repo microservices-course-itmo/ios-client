@@ -8,7 +8,7 @@
 import Foundation
 
 struct GrapeJson: Decodable {
-    var GrapeId: String
+    var id: String
     var name: String
 }
 
