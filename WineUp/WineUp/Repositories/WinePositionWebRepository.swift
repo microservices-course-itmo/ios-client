@@ -52,11 +52,11 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
         request(endpoint: .getAllWinePosition())
     }
 
-    func getAllWinePosition1() -> AnyPublisher<[WinePositionJson], Error> {
-        request(endpoint: .getAllWinePosition1())
+    func getAllWinePositionWithSettings(parameters: String) -> AnyPublisher<[WinePositionJson], Error> {
+        request(endpoint: .getAllWinePositionWithSettings(parameters: parameters))
     }
-    func getAllWinePositionWithParameters(parameters: String) -> AnyPublisher<[WinePositionJson], Error> {
-        request(endpoint: .getAllWinePositionWithParameters())
+    func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error> {
+        request(endpoint: .getAllWinePositionByName(name: name))
     }
 
     func getWinePosition(by id: String) -> AnyPublisher<WinePositionJson, Error> {
@@ -71,7 +71,7 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
 // MARK: - Helpers
 
 private extension APICall {
-    static func createWinePosition(_ form: WineJson.CreateForm) -> APICall {
+    static func createWinePosition(_ form: WinePositionJson.CreateForm) -> APICall {
         APICall(path: "/wine/position", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
     }
 
@@ -79,23 +79,23 @@ private extension APICall {
         APICall(path: "/wine/position/\(id)", method: "DELETE", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
-    static func getAllWinePosition() -> APICall {
+    static func getAllWinePositions() -> APICall {
         APICall(path: "/wine/position", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
-    static func getAllWinePosition1() -> APICall {
-        APICall(path: "/wine/position", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
+    static func getAllWinePositionWithSettings(parameters: String) -> APICall {
+        APICall(path: "/wine/position/getAllWithSettings/\(parameters)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
-    static func getAllWinePositionWithParameters(parameters: String) -> APICall {
-        APICall(path: "/wine/position/\(id)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
+    static func getAllWinePositionByName(name: String) -> APICall {
+        APICall(path: "/wine/position/\(name)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
     static func getWinePosition(by id: String) -> APICall {
         APICall(path: "/wine/position/\(id)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
-    static func updateWinePosition(by id: String, with form: WineJson.UpdateForm) -> APICall {
+    static func updateWinePosition(by id: String, with form: WinePositionJson.UpdateForm) -> APICall {
         APICall(path: "/wine/position/\(id)", method: "PUT", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
     }
 }
