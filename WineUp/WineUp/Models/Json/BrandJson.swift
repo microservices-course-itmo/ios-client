@@ -13,7 +13,10 @@ struct BrandJson: Decodable {
 }
 
 extension BrandJson {
-    struct CreateForm {
+    struct CreateForm: Encodable {
+        var name: String
+    }
+    struct UpdateForm: Encodable {
         var name: String
     }
 }

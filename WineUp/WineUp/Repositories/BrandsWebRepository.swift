@@ -42,8 +42,8 @@ final class RealBrandsWebRepository: BrandsWebRepository {
         request(endpoint: .getAllBrands())
     }
 
-    func getAllBrands1() -> AnyPublisher<[BrandJson], Error> {
-        request(endpoint: .getAllBrands1())
+    func updateBrands(by id: String, with form: BrandJson.UpdateForm) -> AnyPublisher<[BrandJson], Error> {
+        request(endpoint: .updateBrands(by: id, with: form))
     }
 
     func getBrandById(by id: String) -> AnyPublisher<BrandJson, Error> {
@@ -55,18 +55,18 @@ final class RealBrandsWebRepository: BrandsWebRepository {
 
 private extension APICall {
     static func createBrand(_ form: BrandJson.CreateForm) -> APICall {
-        APICall(path: "/brands", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
+        APICall(path: "/brand", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
+    }
+
+    static func updateBrands(by id: String, with form: BrandJson.UpdateForm) -> APICall {
+        APICall(path: "/brand/\(id)", method: "PUT", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
     static func getAllBrands() -> APICall {
-        APICall(path: "/brands", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
-    }
-
-    static func getAllBrands1() -> APICall {
-        APICall(path: "/brands", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
+        APICall(path: "/brand", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
     static func getBrandById(by id: String) -> APICall {
-        APICall(path: "/brands/\(id)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
+        APICall(path: "/brand/\(id)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 }
