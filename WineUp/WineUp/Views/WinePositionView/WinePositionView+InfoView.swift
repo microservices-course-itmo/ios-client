@@ -53,6 +53,7 @@ extension WinePositionView {
                 Text(itemTittleText)
                     .font(.itemTitle)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Text(characteristicsTextFull)
                     .font(.wineDescription)
