@@ -16,11 +16,11 @@ protocol WinePositionWebRepository: WebRepository {
     /// Delete wine position by id
     func deleteWinePosition(by id: String) -> AnyPublisher<Void, Error>
     /// Get list of all wine positions
-    func getAllWinePosition() -> AnyPublisher<[WinePositionJson], Error>
+    func getAllWinePositions() -> AnyPublisher<[WinePositionJson], Error>
     /// Get list of all wine positions
-    func getAllWinePosition1() -> AnyPublisher<[WinePositionJson], Error>
+    func getAllWinePositionWithSettings(parameters: String) -> AnyPublisher<[WinePositionJson], Error>
     /// Get list of all wine positions with parameters
-    func getAllWinePositionWithParameters(parameters: String) -> AnyPublisher<[WinePositionJson], Error>
+    func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error>
     /// Get wine position by id
     func getWinePosition(by id: String) -> AnyPublisher<WinePositionJson, Error>
     /// Update wine position by id with data from form
