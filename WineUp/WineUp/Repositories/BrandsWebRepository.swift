@@ -10,14 +10,14 @@ import Combine
 
 // MARK: BrandsWebRepository
 
-protocol BrandsWebRepository: WebRepository  {
+protocol BrandsWebRepository: WebRepository {
     /// Create brand with data from form
     func createBrand(from form: BrandJson.CreateForm) -> AnyPublisher<Void, Error>
     /// Get list of all brands
     func getAllBrands() -> AnyPublisher<[BrandJson], Error>
-    /// Get list of all brands1
-    func getAllBrands1() -> AnyPublisher<[BrandJson], Error>
-    /// Get brand by ID
+    /// Update brand by Id
+    func updateBrand(by id: String, with form: BrandJson.UpdateForm) -> AnyPublisher<[BrandJson], Error>
+    /// Get brand by Id
     func getBrandById(by id: String) -> AnyPublisher<BrandJson, Error>
 }
 
@@ -42,8 +42,8 @@ final class RealBrandsWebRepository: BrandsWebRepository {
         request(endpoint: .getAllBrands())
     }
 
-    func updateBrands(by id: String, with form: BrandJson.UpdateForm) -> AnyPublisher<[BrandJson], Error> {
-        request(endpoint: .updateBrands(by: id, with: form))
+    func updateBrand(by id: String, with form: BrandJson.UpdateForm) -> AnyPublisher<[BrandJson], Error> {
+        request(endpoint: .updateBrand(by: id, with: form))
     }
 
     func getBrandById(by id: String) -> AnyPublisher<BrandJson, Error> {
@@ -58,7 +58,7 @@ private extension APICall {
         APICall(path: "/brand", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
     }
 
-    static func updateBrands(by id: String, with form: BrandJson.UpdateForm) -> APICall {
+    static func updateBrand(by id: String, with form: BrandJson.UpdateForm) -> APICall {
         APICall(path: "/brand/\(id)", method: "PUT", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
