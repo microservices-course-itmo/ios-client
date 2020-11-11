@@ -8,41 +8,41 @@
 import Foundation
 
 struct WinePositionJson: Decodable {
-    var price: Float
+    var actualPrice: Float
     var description: String
     var gastronomy: String
     var image: String
-    var link: String
+    var linkToWine: String
     var price: Float
-    var shopID: String
+    var shopId: String
     var volume: Float
-    var wineID: String
-    var winePositionID: String
+    var wineId: String
+    var winePositionId: String
 }
 
 extension WinePositionJson {
 
     struct CreateForm: Encodable {
-        var price: Float
+        var actualPrice: Float
         var description: String
         var gastronomy: String
         var image: String
-        var link: String
+        var linkToWine: String
         var price: Float
-        var shopID: String
+        var shopId: String
         var volume: Float
-        var wineID: String
+        var wineId: String
     }
 
     struct UpdateForm: Encodable {
-        var price: Float
+        var actualPrice: Float
         var description: String
         var gastronomy: String
         var image: String
-        var link: String
+        var linkToWine: String
         var price: Float
-        var shopID: String
+        var shopId: String
         var volume: Float
-        var wineID: String
+        var wineId: String
     }
 }

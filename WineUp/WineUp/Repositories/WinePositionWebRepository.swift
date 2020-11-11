@@ -48,8 +48,8 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
         call(endpoint: .deleteWinePosition(by: id))
     }
 
-    func getAllWinePosition() -> AnyPublisher<[WinePositionJson], Error> {
-        request(endpoint: .getAllWinePosition())
+    func getAllWinePositions() -> AnyPublisher<[WinePositionJson], Error> {
+        request(endpoint: .getAllWinePositions())
     }
 
     func getAllWinePositionWithSettings(parameters: String) -> AnyPublisher<[WinePositionJson], Error> {
