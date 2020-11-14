@@ -9,17 +9,28 @@ import Foundation
 import Combine
 import Firebase
 
+typealias FirebaseToken = String
+typealias PhoneVerificationId = String
+
 protocol FirebaseService {
     /// Sends SMS with verification code to phone number, publisher returns verificationId
-    func sendVerificationCode(to phoneNumber: String) -> AnyPublisher<String, Error>
+    func sendVerificationCode(to phoneNumber: String) -> AnyPublisher<PhoneVerificationId, Error>
     /// Executes Firebase signIn method and returns token in publisher
-    func submitVerificationCode(_ code: String, verificationId: String) -> AnyPublisher<String, Error>
+    func submitVerificationCode(_ code: String, verificationId: PhoneVerificationId) -> AnyPublisher<FirebaseToken, Error>
+    /// Retrieves the Firebase authentication token, possibly refreshing it if it has expired or if `force` flag is `true`
+    func getToken(force: Bool) -> AnyPublisher<FirebaseToken, Error>
+
     /// Current Firebase user
     var currentUser: User? { get }
     var isAuthenticated: Bool { get }
 }
 
 extension FirebaseService {
+    /// Retrieves the Firebase authentication token, force refreshing it
+    func getToken() -> AnyPublisher<FirebaseToken, Error> {
+        getToken(force: false)
+    }
+
     var isAuthenticated: Bool {
         currentUser != nil
     }
