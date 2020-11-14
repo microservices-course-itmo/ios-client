@@ -1,0 +1,75 @@
+//
+//  AuthenticationService.swift
+//  WineUp
+//
+//  Created by Александр Пахомов on 14.11.2020.
+//
+
+import Foundation
+import Combine
+
+protocol AuthenticationService {
+    /// Retrieves firebase token and performs /login request. Saves refresh token locally
+    func login() -> AnyPublisher<Void, Error>
+    /// Retrieves locally saved refresh token and refreshes access token using it
+    func refreshSession() -> AnyPublisher<Void, Error>
+    /// Cleans locally saved credentials
+    func closeSession() -> AnyPublisher<Void, Error>
+    /// Closes session and cleans firebase context
+    func clean() -> AnyPublisher<Void, Error>
+    /// Currently authenticated user's headers
+    var authHeaders: HTTPHeaders? { get }
+}
+
+// MARK: - Implementation
+
+final class RealAuthenticationService: AuthenticationService {
+
+    private let firebaseService: FirebaseService
+    private let authWebRepository: AuthenticationWebRepository
+    private let authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository
+
+    init(firebaseService: FirebaseService,
+         authWebRepository: AuthenticationWebRepository,
+         authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository) {
+        self.firebaseService = firebaseService
+        self.authWebRepository = authWebRepository
+        self.authCredentialsPersistanceRepository = authCredentialsPersistanceRepository
+    }
+
+    func login() -> AnyPublisher<Void, Error> {
+        // Retrieve token from firebase, perform /login request and save new credentials
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    func refreshSession() -> AnyPublisher<Void, Error> {
+        // Retreive and check credentials, perform /refresh request and update saved credentials
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    func closeSession() -> AnyPublisher<Void, Error> {
+        // Remove credentials
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    func clean() -> AnyPublisher<Void, Error> {
+        // Close session and sign out in firebase client
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    var authHeaders: HTTPHeaders? {
+        authCredentialsPersistanceRepository.credentials?.authHeaders
+    }
+}
+
+// MARK: - Helpers
+
+extension Credentials {
+    var authHeaders: HTTPHeaders {
+        HTTPHeaders.empty.accessToken(accessToken)
+    }
+}
