@@ -24,6 +24,7 @@ extension UserJson {
     }
 
     struct RegistrationForm: Encodable {
+        // TODO: Datetime format is missing
         var birthday: Date
         var cityId: Int
         var fireBaseToken: FirebaseToken
