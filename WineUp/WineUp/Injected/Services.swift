@@ -9,8 +9,6 @@ import Foundation
 
 extension DIContainer {
     struct Services {
-        static var stub: Self {
-            .init()
-        }
+        let firebaseService: FirebaseService = RealFirebaseService()
     }
 }
