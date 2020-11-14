@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import Firebase
 
 // MARK: - View
@@ -100,22 +101,22 @@ extension LoginVerificationCodeView {
 
         func codeDidChange(code: String) {
             guard code.count == 6 else { return }
-
             isSubmitInProgress = true
-            submitVerificationCode(code) { [weak self] result in
-                guard let self = self else { return }
-                self.isSubmitInProgress = false
 
-                switch result {
-                case let .failure(error):
-                    self.isCodeWrong = true
-                    print("Phone verification error: \(error.localizedDescription)")
-                case let .success(token):
-                    print("Successful phone verification, token: \(token)")
-                    self.container.appState.value.userData.loginForm.token = token
-                    self.onSubmit?()
-                }
-            }
+            submitVerificationCode(code)
+                .sinkToResult { [weak self] result in
+                    self?.isSubmitInProgress = false
+
+                    switch result {
+                    case let .success(token):
+                        self?.container.appState.value.userData.loginForm.token = token
+                        self?.onSubmit?()
+                        print("Successful phone verification, token: \(token)")
+                    case let .failure(error):
+                        self?.isCodeWrong = true
+                        print("Phone verification error: \(error.localizedDescription)")
+                    }
+                }.store(in: cancelBag)
         }
 
         // MARK: Private Methods
@@ -131,16 +132,15 @@ extension LoginVerificationCodeView {
             canResendCode = secondsToResendCode == 0 && !isResendInProgress && !isSubmitInProgress
         }
 
-        private func submitVerificationCode(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        private func submitVerificationCode(_ code: String) -> AnyPublisher<String, Error> {
             guard let verificationId = container.appState.value.userData.loginForm.verificationId else {
-                completion(.failure(WineUpError.invalidAppState("Unable to extract verificationId from AppState")))
-                return
+                let error = WineUpError.invalidAppState("Unable to extract verificationId from AppState")
+                return Fail<String, Error>(error: error)
+                    .eraseToAnyPublisher()
             }
 
-            container.services.firebaseService
+            return container.services.firebaseService
                 .submitVerificationCode(code, verificationId: verificationId)
-                .sinkToResult(completion)
-                .store(in: cancelBag)
         }
 
         private static func format(_ rawValue: String) -> String {

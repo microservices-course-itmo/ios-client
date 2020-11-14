@@ -73,5 +73,7 @@ final class RealFirebaseService: FirebaseService {
         }.eraseToAnyPublisher()
     }
 
-    var currentUser: User?
+    var currentUser: User? {
+        Auth.auth().currentUser
+    }
 }
