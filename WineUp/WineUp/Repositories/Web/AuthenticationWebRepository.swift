@@ -36,17 +36,31 @@ final class RealAuthenticationWebRepository: AuthenticationWebRepository {
     }
 
     func login(with form: UserJson.LoginForm) -> AnyPublisher<UserJson.LoginResponse, Error> {
-        Fail<UserJson.LoginResponse, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        request(endpoint: .createLogin(form))
     }
 
     func refresh(token: FirebaseToken) -> AnyPublisher<UserJson.LoginResponse, Error> {
-        Fail<UserJson.LoginResponse, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        request(endpoint: .createRefresh(token))
     }
 
     func registration(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson.LoginResponse, Error> {
-        Fail<UserJson.LoginResponse, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        request(endpoint: .createRegistration(form))
+    }
+}
+
+// MARK: - Helpers
+
+private extension APICall {
+
+    static func createLogin(_ form: UserJson.LoginForm) -> APICall {
+        APICall(path: "/login", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
+    }
+
+    static func createRefresh(_ token: String) -> APICall {
+        APICall(path: "/refresh", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: token)
+    }
+
+    static func createRegistration(_ form: UserJson.RegistrationForm) -> APICall {
+        APICall(path: "/registration", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
     }
 }
