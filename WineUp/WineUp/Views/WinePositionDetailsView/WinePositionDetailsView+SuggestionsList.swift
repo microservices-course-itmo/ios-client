@@ -46,6 +46,7 @@ extension WinePositionDetailsView {
                 Text(LocalizedStringKey.suggestionsListTitle)
                     .font(.suggestionsListTitle)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding()
 
                 Pager(

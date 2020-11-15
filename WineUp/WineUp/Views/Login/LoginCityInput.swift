@@ -25,10 +25,14 @@ struct LoginCityInput: View {
             title: "Укажите ваш город",
             isButtonActive: viewModel.isDoneButtonActive,
             buttonTitle: "Далее",
-            onButtonTap: onSubmit, label: {
-                TextField("Москва", text: $viewModel.city)
-                    .multilineTextAlignment(.center)
-                    .font(.cityTextField)
+            onButtonTap: onSubmit,
+            label: {
+                Picker("", selection: $viewModel.city) {
+                    ForEach(City.displayCases) { city in
+                        Text(city.titleName)
+                            .tag(city)
+                    }
+                }
             }
         )
     }
@@ -41,7 +45,7 @@ extension LoginCityInput {
 
         // MARK: Variables
 
-        @Published var city = ""
+        @Published var city: City = .saintPetersburg
         @Published var isDoneButtonActive = false
 
         private let container: DIContainer
@@ -55,7 +59,7 @@ extension LoginCityInput {
             cancelBag.collect {
                 container.appState.bindDisplayValue(\.userData.loginForm.city, to: self, by: \.city)
                 $city.toInputtable(of: container.appState, at: \.value.userData.loginForm.city)
-                container.appState.map { $0.userData.loginForm.city.hasValue }.bind(to: self, by: \.isDoneButtonActive)
+                container.appState.map(\.userData.loginForm.city.hasValue).bind(to: self, by: \.isDoneButtonActive)
             }
         }
     }

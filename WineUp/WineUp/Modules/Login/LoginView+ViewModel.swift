@@ -16,7 +16,7 @@ extension LoginView {
         var verificationCode = Inputtable(placeholder: "")
         var name = Inputtable(placeholder: "")
         var birthday = Inputtable(placeholder: Date.maxBirthday)
-        var city = Inputtable(placeholder: "")
+        var city = Inputtable(initialValue: City.saintPetersburg, placeholder: .notSelected)
 
         var verificationId: String?
         var token: String?
