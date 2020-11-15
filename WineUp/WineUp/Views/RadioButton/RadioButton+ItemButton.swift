@@ -19,12 +19,37 @@ extension RadioButton {
         let item: Item
         /// HIdes the line at the very bottom
         let isLineHidden: Bool
+        /// Checked item image
+        let checkedImage: Image
+        /// Unchecked item image
+        let normalImage: Image
 
         @Binding var checkedItems: [Item]
 
+        init(
+            onTap: @escaping () -> Void,
+            item: Item,
+            isLineHidden: Bool,
+            checkedImage: Image = .checkedCheckbox,
+            normalImage: Image = .normalCheckbox,
+            checkedItems: Binding<[Item]>) {
+            self.onTap = onTap
+            self.item = item
+            self.isLineHidden = isLineHidden
+            self.checkedImage = checkedImage
+            self.normalImage = normalImage
+            self._checkedItems = checkedItems
+        }
+
         var body: some View {
             Button(action: onTap) {
-                RadioButton.ItemView(item: item, isLineHidden: isLineHidden, checkedItems: $checkedItems)
+                RadioButton.ItemView(
+                    item: item,
+                    isLineHidden: isLineHidden,
+                    checkedImage: checkedImage,
+                    normalImage: normalImage,
+                    checkedItems: $checkedItems
+                )
             }
         }
     }

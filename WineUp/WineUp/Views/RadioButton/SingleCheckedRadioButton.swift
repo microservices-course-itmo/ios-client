@@ -20,14 +20,27 @@ struct SingleCheckedRadioButton<Item: RadioButtonItem>: View {
     let isScrollable: Bool
     /// HIdes the line at the very bottom
     let isLineHidden: Bool
+    /// Checked item image
+    let checkedImage: Image
+    /// Unchecked item image
+    let normalImage: Image
 
     @Binding var checkedItem: Item?
 
-    init(spacing: CGFloat, items: [Item], isScrollable: Bool = false, isLineHidden: Bool = true, checkedItem: Binding<Item?>) {
+    init(
+        spacing: CGFloat,
+        items: [Item],
+        isScrollable: Bool = false,
+        isLineHidden: Bool = true,
+        checkedImage: Image = .largecircleFillCircle,
+        normalImage: Image = .circle,
+        checkedItem: Binding<Item?>) {
         self.spacing = spacing
         self.items = items
         self.isScrollable = isScrollable
         self.isLineHidden = isLineHidden
+        self.checkedImage = checkedImage
+        self.normalImage = normalImage
         self._checkedItem = checkedItem
     }
 
@@ -38,6 +51,8 @@ struct SingleCheckedRadioButton<Item: RadioButtonItem>: View {
             maxChecked: 1,
             isScrollable: isScrollable,
             isLineHidden: isLineHidden,
+            checkedImage: checkedImage,
+            normalImage: normalImage,
             checkedItems: checkedItems
         )
     }
