@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol WebRepository {
+protocol WebRepository: Repository {
     var session: URLSession { get }
     var baseURL: String { get }
     var bgQueue: DispatchQueue { get }

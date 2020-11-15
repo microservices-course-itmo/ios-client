@@ -18,8 +18,8 @@ extension LoginView {
         var birthday = Inputtable(placeholder: Date.maxBirthday)
         var city = Inputtable(initialValue: City.saintPetersburg, placeholder: .notSelected)
 
-        var verificationId: String?
-        var token: String?
+        var verificationId: PhoneVerificationId?
+        var token: FirebaseToken?
     }
 }
 

@@ -12,4 +12,6 @@ enum WineUpError: Error {
     case invalidAppState(_ description: String?)
     /// Unexpected flow
     case invalidState(_ description: String?)
+    /// Method not implemented
+    case notImplemented(_ file: String = #file, method: String = #function)
 }
