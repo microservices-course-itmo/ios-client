@@ -8,7 +8,7 @@
 import Foundation
 import SwiftKeychainWrapper
 
-/// Persistance repository which uses `KeychainWrapper` (secure persistant container) for storing data
+/// Persistance repository which uses `KeychainWrapper` (secure persistent container) for storing data
 protocol KeychainPersistanceRepository: PersistanceRepository {
     var key: String { get }
     var wrapper: KeychainWrapper { get }

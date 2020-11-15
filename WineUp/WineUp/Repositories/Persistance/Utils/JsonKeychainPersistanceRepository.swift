@@ -8,7 +8,7 @@
 import Foundation
 import SwiftKeychainWrapper
 
-/// Persistance repository which uses `KeychainWrapper` (secure persistant container) for storing single `Codable` value
+/// Persistance repository which uses `KeychainWrapper` (secure persistent container) for storing single `Codable` value
 class JsonKeychainPersistanceRepository<T: Codable>: KeychainPersistanceRepository {
 
     let key: String
@@ -26,16 +26,6 @@ class JsonKeychainPersistanceRepository<T: Codable>: KeychainPersistanceReposito
         set {
             set(value: newValue)
         }
-    }
-
-    /// To be overriden. Decodes object from data
-    func decode(data: Data) throws -> T {
-        try JSONDecoder().decode(T.self, from: data)
-    }
-
-    /// To be overriden. Encode object to data
-    func encode(_ value: T) throws -> Data {
-        try JSONEncoder().encode(value)
     }
 
     private func getValue() -> T? {
@@ -64,4 +54,13 @@ class JsonKeychainPersistanceRepository<T: Codable>: KeychainPersistanceReposito
             assertionFailure()
         }
     }
+
+    private func decode(data: Data) throws -> T {
+        try JSONDecoder().decode(T.self, from: data)
+    }
+
+    private func encode(_ value: T) throws -> Data {
+        try JSONEncoder().encode(value)
+    }
+
 }
