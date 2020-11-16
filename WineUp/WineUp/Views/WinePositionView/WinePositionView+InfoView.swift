@@ -53,6 +53,7 @@ extension WinePositionView {
                 Text(itemTittleText)
                     .font(.itemTitle)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Text(characteristicsTextFull)
                     .font(.wineDescription)
@@ -89,7 +90,12 @@ extension WinePositionView {
         }
 
         private var characteristicsTextFull: LocalizedStringKey {
-            return .wineDescriptionFull(color: item.color.name, wineAstringency: item.wineAstringency.name, country: item.country, quantity: item.quantityLiters)
+            return .wineDescriptionFull(
+                color: item.color.name,
+                wineAstringency: item.wineAstringency.name,
+                country: item.country,
+                quantity: item.quantityLiters
+            )
         }
     }
 }

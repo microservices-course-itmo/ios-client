@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import SwiftUI
 import Combine
 
@@ -19,7 +18,7 @@ struct DIContainer: EnvironmentKey {
 
     static var defaultValue: Self { Self.default }
 
-    private static let `default` = DIContainer(appState: AppState(), services: .stub)
+    private static let `default` = DIContainer(appState: AppState(), services: DIContainer.Services())
 
     init(appState: Store<AppState>, services: DIContainer.Services) {
         self.appState = appState
@@ -34,7 +33,7 @@ struct DIContainer: EnvironmentKey {
 #if DEBUG
 extension DIContainer {
     static var preview: Self {
-        .init(appState: AppState.preview, services: .stub)
+        .init(appState: AppState.preview, services: .init())
     }
 }
 #endif

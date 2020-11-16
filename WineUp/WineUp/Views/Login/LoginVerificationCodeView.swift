@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import Firebase
 
 // MARK: - View
@@ -81,38 +82,41 @@ extension LoginVerificationCodeView {
             assert(secondsToResendCode == 0 && canResendCode && !isResendInProgress && !isSubmitInProgress)
 
             isResendInProgress = true
-            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { [weak self] verificationID, error in
-                if let error = error {
-                    print("verifyError: ", error.localizedDescription)
-                    return
+            container.services.firebaseService
+                .sendVerificationCode(to: phoneNumber)
+                .sinkToResult { [weak self] result in
+                    switch result {
+                    case .success(let verificationID):
+                        self?.container.appState.value.userData.loginForm.verificationId = verificationID
+
+                        self?.isResendInProgress = false
+                        self?.secondsToResendCode = 60
+                        self?.updateUI()
+                    case .failure(let error):
+                        print("verifyError: ", error.localizedDescription)
+                    }
                 }
-
-                self?.container.appState.value.userData.loginForm.verificationId = verificationID
-
-                self?.isResendInProgress = false
-                self?.secondsToResendCode = 60
-                self?.updateUI()
-            }
+                .store(in: cancelBag)
         }
 
         func codeDidChange(code: String) {
             guard code.count == 6 else { return }
-
             isSubmitInProgress = true
-            submitVerificationCode(code) { [weak self] result in
-                guard let self = self else { return }
-                self.isSubmitInProgress = false
 
-                switch result {
-                case let .failure(error):
-                    self.isCodeWrong = true
-                    print("Phone verification error: \(error.localizedDescription)")
-                case let .success(token):
-                    print("Successful phone verification, token: \(token)")
-                    self.container.appState.value.userData.loginForm.token = token
-                    self.onSubmit?()
-                }
-            }
+            submitVerificationCode(code)
+                .sinkToResult { [weak self] result in
+                    self?.isSubmitInProgress = false
+
+                    switch result {
+                    case let .success(token):
+                        self?.container.appState.value.userData.loginForm.token = token
+                        self?.onSubmit?()
+                        print("Successful phone verification, token: \(token)")
+                    case let .failure(error):
+                        self?.isCodeWrong = true
+                        print("Phone verification error: \(error.localizedDescription)")
+                    }
+                }.store(in: cancelBag)
         }
 
         // MARK: Private Methods
@@ -128,41 +132,15 @@ extension LoginVerificationCodeView {
             canResendCode = secondsToResendCode == 0 && !isResendInProgress && !isSubmitInProgress
         }
 
-        private func submitVerificationCode(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        private func submitVerificationCode(_ code: String) -> AnyPublisher<String, Error> {
             guard let verificationId = container.appState.value.userData.loginForm.verificationId else {
-                completion(.failure(WineUpError.invalidAppState("Unable to extract verificationId from AppState")))
-                return
+                let error = WineUpError.invalidAppState("Unable to extract verificationId from AppState")
+                return Fail<String, Error>(error: error)
+                    .eraseToAnyPublisher()
             }
 
-            let credential = PhoneAuthProvider.provider().credential(
-                withVerificationID: verificationId,
-                verificationCode: code
-            )
-
-            Auth.auth().signIn(with: credential) { authResult, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-
-                guard let user = authResult?.user else {
-                    completion(.failure(WineUpError.invalidState("Unable to extract user from successful auth result")))
-                    return
-                }
-
-                user.getIDToken { token, error in
-                    if let error = error {
-                        completion(.failure(error))
-                    }
-
-                    guard let token = token else {
-                        completion(.failure(WineUpError.invalidState("Unable to extract token from successful auth result")))
-                        return
-                    }
-
-                    completion(.success(token))
-                }
-            }
+            return container.services.firebaseService
+                .submitVerificationCode(code, verificationId: verificationId)
         }
 
         private static func format(_ rawValue: String) -> String {

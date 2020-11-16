@@ -64,7 +64,9 @@ extension LoginPhoneInput {
             cancelBag.collect {
                 container.appState.bindDisplayValue(\.userData.loginForm.phoneNumber, to: self, by: \.phoneNumber.value)
                 $phoneNumber.map(\.value).toInputtable(of: container.appState, at: \.value.userData.loginForm.phoneNumber)
-                container.appState.map { $0.userData.loginForm.phoneNumber.value?.count == 18 }.bind(to: self, by: \.isNextButtonActive)
+                container.appState
+                    .map { $0.userData.loginForm.phoneNumber.value?.count == 18 }
+                    .bind(to: self, by: \.isNextButtonActive)
             }
         }
 
@@ -80,15 +82,19 @@ extension LoginPhoneInput {
             assert(!hasActivity)
             hasActivity = true
 
-            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { [weak self] verificationID, error in
-                if let error = error {
-                    print("verifyError: ", error.localizedDescription)
-                    return
+            container.services.firebaseService
+                .sendVerificationCode(to: phoneNumber)
+                .sinkToResult { [weak self] result in
+                    switch result {
+                    case .success(let verificationID):
+                        self?.container.appState.value.userData.loginForm.verificationId = verificationID
+                        self?.hasActivity = false
+                        onSubmit()
+                    case .failure(let error):
+                        print("verifyError: ", error.localizedDescription)
+                    }
                 }
-                self?.container.appState.value.userData.loginForm.verificationId = verificationID
-                self?.hasActivity = false
-                onSubmit()
-            }
+                .store(in: cancelBag)
         }
 
         // MARK: Private Methods

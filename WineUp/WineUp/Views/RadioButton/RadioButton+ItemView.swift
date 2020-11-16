@@ -19,11 +19,6 @@ private extension Color {
     static let itemText = Color(.label)
 }
 
-private extension Image {
-    static let checkedCheckbox = Image(systemName: "checkmark.square")
-    static let normalCheckbox = Image(systemName: "square")
-}
-
 // MARK: - View
 
 extension RadioButton {
@@ -34,8 +29,24 @@ extension RadioButton {
         let item: Item
         /// HIdes the line at the very bottom
         let isLineHidden: Bool
+        /// Checked item image
+        let checkedImage: Image
+        /// Unchecked item image
+        let normalImage: Image
 
         @Binding var checkedItems: [Item]
+
+        init(item: Item,
+             isLineHidden: Bool,
+             checkedImage: Image = .checkedCheckbox,
+             normalImage: Image = .normalCheckbox,
+             checkedItems: Binding<[Item]>) {
+            self.item = item
+            self.isLineHidden = isLineHidden
+            self.checkedImage = checkedImage
+            self.normalImage = normalImage
+            self._checkedItems = checkedItems
+        }
 
         var body: some View {
             VStack(spacing: 0) {
@@ -57,10 +68,11 @@ extension RadioButton {
                 }
             }
         }
+
         // MARK: Helpers
 
         private var checkboxImage: Image {
-            isChecked ? .checkedCheckbox : .normalCheckbox
+            isChecked ? checkedImage : normalImage
         }
 
         private var checkboxColor: Color {

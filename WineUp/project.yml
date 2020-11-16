@@ -19,6 +19,9 @@ packages:
   Rswift:
     from: 5.2.0
     url: https://github.com/mac-cain13/R.swift.Library
+  SwiftKeychainWrapper:
+    from: 4.0.0
+    url: https://github.com/jrendel/SwiftKeychainWrapper
 
 settings:
   base:
@@ -79,6 +82,7 @@ targets:
       - path: WineUp
     dependencies:
       - package: Rswift
+      - package: SwiftKeychainWrapper
     settings:
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
