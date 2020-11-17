@@ -28,3 +28,18 @@ extension WineAstringency {
         }
     }
 }
+
+extension WineJson.Sugar {
+    var astringency: WineAstringency {
+        switch self {
+        case .dry:
+            return .dry
+        case .semiDry:
+            return .semiDry
+        case .semiSweet:
+            return .semiSweet
+        case .sweet:
+            return .sweet
+        }
+    }
+}
