@@ -19,7 +19,7 @@ struct WinePosition: Identifiable, Equatable {
     /// Production year
     var year: String
     /// Wine astringency (dry/semi-dry/semi-sweet/sweet)
-    var wineAstringency: WineAstringency
+    var wineSugar: WineSugar
     /// Quantity of bottle in liters
     var quantityLiters: Float
     /// Is offer liked by the user

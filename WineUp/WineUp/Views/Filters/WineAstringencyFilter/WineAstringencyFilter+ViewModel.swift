@@ -1,5 +1,5 @@
 //
-//  WineAstringencyFilter+ViewModel.swift
+//  WineSugarFilter+ViewModel.swift
 //  WineUp
 //
 //  Created by Александр Пахомов on 09.10.2020.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - WineAstringencyFilter+ViewModel
+// MARK: - WineSugarFilter+ViewModel
 
-extension WineAstringencyFilter {
+extension WineSugarFilter {
     final class ViewModel: ObservableObject {
 
         @Published var items: [Item] = []
@@ -23,19 +23,19 @@ extension WineAstringencyFilter {
 
         private func initStaticItems() {
             items = [
-                .init(wineAstringency: .dry),
-                .init(wineAstringency: .semiDry),
-                .init(wineAstringency: .semiSweet),
-                .init(wineAstringency: .sweet)
+                .init(wineSugar: .dry),
+                .init(wineSugar: .semiDry),
+                .init(wineSugar: .semiSweet),
+                .init(wineSugar: .sweet)
             ]
         }
     }
 }
 
-// MARK: - WineAstringencyFilter+Item
+// MARK: - WineSugarFilter+Item
 
-extension WineAstringencyFilter {
+extension WineSugarFilter {
     struct Item: Equatable {
-        var wineAstringency: WineAstringency
+        var wineSugar: WineSugar
     }
 }

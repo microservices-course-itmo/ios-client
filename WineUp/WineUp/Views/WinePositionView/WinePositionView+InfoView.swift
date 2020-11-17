@@ -35,8 +35,8 @@ private extension LocalizedStringKey {
         return "\(description)"
     }
 
-    static func wineDescriptionFull(color: String, wineAstringency: String, country: String, quantity: Float) -> LocalizedStringKey {
-        return "\(country), \(String(wineAstringency).lowercased()), \(String(color).lowercased()), \(String(format: "%.2f", quantity)) л."
+    static func wineDescriptionFull(color: String, wineSugar: String, country: String, quantity: Float) -> LocalizedStringKey {
+        return "\(country), \(String(wineSugar).lowercased()), \(String(color).lowercased()), \(String(format: "%.2f", quantity)) л."
     }
 }
 
@@ -92,7 +92,7 @@ extension WinePositionView {
         private var characteristicsTextFull: LocalizedStringKey {
             return .wineDescriptionFull(
                 color: item.color.name,
-                wineAstringency: item.wineAstringency.name,
+                wineSugar: item.wineSugar.name,
                 country: item.country,
                 quantity: item.quantityLiters
             )

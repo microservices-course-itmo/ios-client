@@ -89,9 +89,9 @@ struct CatalogView: View {
                 CountryFilterView(viewModel: viewModel.countryFilterViewModel),
                 title: "Страна"
             )
-        case .wineAstringency:
+        case .wineSugar:
             return wrapFilter(
-                WineAstringencyFilter(viewModel: viewModel.wineAstringencyFilterViewModel),
+                WineSugarFilter(viewModel: viewModel.wineSugarFilterViewModel),
                 title: "Сахар"
             )
         case .wineColor:

@@ -65,7 +65,7 @@ extension CatalogView {
             .init()
         }
 
-        var wineAstringencyFilterViewModel: WineAstringencyFilter.ViewModel {
+        var wineSugarFilterViewModel: WineSugarFilter.ViewModel {
             .init()
         }
 
