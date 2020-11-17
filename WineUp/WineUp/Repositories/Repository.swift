@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol Repository {
-    
+protocol Repository: AnyObject {
+
 }

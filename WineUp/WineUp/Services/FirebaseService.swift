@@ -12,7 +12,7 @@ import Firebase
 typealias FirebaseToken = String
 typealias PhoneVerificationId = String
 
-protocol FirebaseService {
+protocol FirebaseService: Service {
     /// Sends SMS with verification code to phone number, publisher returns verificationId
     func sendVerificationCode(to phoneNumber: String) -> AnyPublisher<PhoneVerificationId, Error>
     /// Executes Firebase signIn method and returns token in publisher
