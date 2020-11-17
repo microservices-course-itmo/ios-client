@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol AuthenticationService {
+protocol AuthenticationService: Service {
     /// Retrieves firebase token and performs /login request. Saves refresh token locally
     func login() -> AnyPublisher<Void, Error>
     /// Retrieves locally saved refresh token and refreshes access token using it
@@ -17,6 +17,8 @@ protocol AuthenticationService {
     func closeSession() -> AnyPublisher<Void, Error>
     /// Closes session and cleans firebase context
     func clean() -> AnyPublisher<Void, Error>
+    /// Register new user and login
+    func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error>
     /// Currently authenticated user's headers
     var authHeaders: HTTPHeaders? { get }
 }
@@ -61,8 +63,22 @@ final class RealAuthenticationService: AuthenticationService {
             .eraseToAnyPublisher()
     }
 
+    func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error> {
+        authWebRepository.registration(with: form)
+            .map { loginResponse in
+                self.saveCredentialsFrom(loginResponse: loginResponse)
+                return loginResponse.user
+            }
+            .eraseToAnyPublisher()
+    }
+
     var authHeaders: HTTPHeaders? {
         authCredentialsPersistanceRepository.credentials?.authHeaders
+    }
+
+    private func saveCredentialsFrom(loginResponse response: UserJson.LoginResponse) {
+        let cred = Credentials(accessToken: response.accessToken, refreshToken: response.refreshToken)
+        authCredentialsPersistanceRepository.credentials = cred
     }
 }
 
