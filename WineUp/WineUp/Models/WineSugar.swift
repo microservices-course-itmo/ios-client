@@ -30,7 +30,7 @@ extension WineSugar {
 }
 
 extension WineJson.Sugar {
-    var astringency: WineSugar {
+    var sugar: WineSugar {
         switch self {
         case .dry:
             return .dry

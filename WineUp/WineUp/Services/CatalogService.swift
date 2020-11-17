@@ -62,7 +62,7 @@ final class RealCatalogService: CatalogService {
                 country: "\(wine.regionId)", // Region needed
                 color: wine.color.wineColor,
                 year: "\(wine.year)",
-                wineSugar: wine.sugar.astringency,
+                wineSugar: wine.sugar.sugar,
                 quantityLiters: -1, // Unknown
                 isLiked: Bool.random(), // Unknown
                 chemistry: -1, // Unknown
