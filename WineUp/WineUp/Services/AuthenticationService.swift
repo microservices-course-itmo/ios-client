@@ -89,3 +89,37 @@ extension Credentials {
         HTTPHeaders.empty.accessToken(accessToken)
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+final class StubAuthenticationService: AuthenticationService {
+    func login() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func refreshSession() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func closeSession() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func clean() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
+    }
+
+    var authHeaders: HTTPHeaders? {
+        nil
+    }
+
+    static var preview: AuthenticationService {
+        StubAuthenticationService()
+    }
+}
+#endif

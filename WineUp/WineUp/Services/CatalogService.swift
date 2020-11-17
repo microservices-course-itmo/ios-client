@@ -78,3 +78,17 @@ final class RealCatalogService: CatalogService {
         return result
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+final class StubCatalogService: CatalogService {
+    func load(winePositions: LoadableSubject<[WinePosition]>) {
+        winePositions.wrappedValue = .loaded(WinePosition.mockedData)
+    }
+
+    static var preview: CatalogService {
+        StubCatalogService()
+    }
+}
+#endif
