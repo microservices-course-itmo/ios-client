@@ -80,13 +80,12 @@ struct WineReviewCardView: View {
 }
 
 // MARK: - View config
-
+#if DEBUG
 struct WineReviewCardView_Previews: PreviewProvider {
     static var previews: some View {
-        WineReviewCardView(review: WinePosition.Details.Review(
-                            reviewerFullName: "name",
-                            rating: 4,
-                            review: "Review text",
-                            timestamp: Date()))
+        let object = WinePosition.mockedData.first?.details.reviews.first
+        guard let objectValue = object else { fatalError() }
+        return  WineReviewCardView(review: objectValue)
     }
 }
+#endif
