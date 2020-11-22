@@ -10,6 +10,7 @@ import Combine
 
 // MARK: WineWebRepository
 
+// swiftlint:disable identifier_name
 protocol WinePositionWebRepository: WebRepository {
     /// Create wine position with data from form
     func createWinePosition(from form: WinePositionJson.CreateForm) -> AnyPublisher<Void, Error>
@@ -18,7 +19,10 @@ protocol WinePositionWebRepository: WebRepository {
     /// Get list of all wine positions
     func getAllWinePositions() -> AnyPublisher<[WinePositionJson], Error>
     /// Get list of all wine positions
-    func getAllWinePositionWithSettings(parameters: String) -> AnyPublisher<[WinePositionJson], Error>
+    func getAllWinePositionWithSettings(from: Int,
+                                        to: Int,
+                                        filters: [WinePositionFilters],
+                                        sortBy: [FilterSortBy]) -> AnyPublisher<[WinePositionJson], Error>
     /// Get list of all wine positions with parameters
     func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error>
     /// Get wine position by id
@@ -34,6 +38,7 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
     let session: URLSession
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
+    private let bodyBuilder = WinePositionWebRepositoryBodyBuidler()
 
     init(session: URLSession, baseURL: String) {
         self.session = session
@@ -52,8 +57,18 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
         request(endpoint: .getAllWinePositions())
     }
 
-    func getAllWinePositionWithSettings(parameters: String) -> AnyPublisher<[WinePositionJson], Error> {
-        request(endpoint: .getAllWinePositionWithSettings(parameters: parameters))
+    func getAllWinePositionWithSettings(from: Int,
+                                        to: Int,
+                                        filters: [WinePositionFilters],
+                                        sortBy: [FilterSortBy]) -> AnyPublisher<[WinePositionJson], Error> {
+
+        // example filters
+//        let filters: [WinePositionFilters] =
+//            [.value(.init(criterion: .price, operation: .less, value: "1000")),
+//             .separator(.or),
+//             .value(.init(criterion: .volume, operation: .less, value: "0.5"))]
+        let body = bodyBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
+        return request(endpoint: .getAllWinePositionWithSettings(body: body))
     }
     func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error> {
         request(endpoint: .getAllWinePositionByName(name: name))
@@ -82,9 +97,12 @@ private extension APICall {
     static func getAllWinePositions() -> APICall {
         APICall(path: "/wine/position", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
-
-    static func getAllWinePositionWithSettings(parameters: String) -> APICall {
-        APICall(path: "/wine/position/getAllWithSettings/\(parameters)", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
+    
+    static func getAllWinePositionWithSettings(body: WinePositionWebRepositoryBodyBuidler.FiltersBody) -> APICall {
+        APICall(path: "/wine/position/getAllWithSettings",
+                method: "GET",
+                headers: HTTPHeaders.empty.mockedAccessToken(),
+                value: body)
     }
 
     static func getAllWinePositionByName(name: String) -> APICall {
