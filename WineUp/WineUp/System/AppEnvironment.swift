@@ -51,6 +51,7 @@ extension AppEnvironment {
             producer: RealProducerWebRepository(session: session, baseURL: catalogServiceBaseUrl),
             user: RealUserWebRepository(session: session, baseURL: userServiceBaseUrl),
             winePosition: RealWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
+            truwWinePosition: RealTrueWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
             shop: RealShopWebRepository(session: session, baseURL: catalogServiceBaseUrl)
         )
     }
@@ -68,9 +69,7 @@ extension AppEnvironment {
         let firebaseService = RealFirebaseService()
 
         let catalogService = RealCatalogService(
-            wineWebRepository: webRepositories.wine,
-            winePositionWebRepository: webRepositories.winePosition,
-            shopWebRepository: webRepositories.shop
+            winePositionWebRepository: webRepositories.truwWinePosition
         )
 
         let authenticationService = RealAuthenticationService(
@@ -96,6 +95,7 @@ extension DIContainer {
         let producer: ProducerWebRepository
         let user: UserWebRepository
         let winePosition: WinePositionWebRepository
+        let truwWinePosition: TrueWinePositionWebRepository
         let shop: ShopWebRepository
     }
 

@@ -21,7 +21,7 @@ extension CatalogView {
 extension CatalogView {
     final class ViewModel: ObservableObject {
 
-        @Published var catalogItems: [WinePosition] = []
+        @Published var catalogItems: Loadable<[WinePosition]> = .notRequested
         @Published var selectedCatalogItemId: UUID?
         @Published var filtersBarItems: [CatalogFiltersBarView.Item] = []
         @Published var presentedFiltersBarItem: CatalogFiltersBarView.Item?
@@ -38,10 +38,14 @@ extension CatalogView {
                 $selectedCatalogItemId.bind(to: container.appState, by: \.value.routing.catalog.winePositionId)
             }
 
-            initWithMockData()
+            initStaticData()
         }
 
         // MARK: Public Methods
+
+        func loadCatalogItems() {
+            container.services.catalogService.load(winePositions: loadableSubject(\.catalogItems))
+        }
 
         func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
             assert(filtersBarItems.contains(item) && presentedFiltersBarItem == nil)
@@ -79,9 +83,14 @@ extension CatalogView {
 
         // MARK: Helpers
 
-        private func initWithMockData() {
-            catalogItems = WinePosition.mockedData
-            filtersBarItems = CatalogFiltersBarView.Item.mockedData
+        private func initStaticData() {
+            filtersBarItems = [
+                .recomendation,
+                .price,
+                .country,
+                .wineColor,
+                .wineSugar
+            ]
         }
     }
 }
