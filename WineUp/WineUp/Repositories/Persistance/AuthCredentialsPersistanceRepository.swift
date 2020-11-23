@@ -13,8 +13,8 @@ protocol AuthCredentialsPersistanceRepository: KeychainPersistanceRepository {
 }
 
 struct Credentials: Codable {
-    var accessToken: String
-    var refreshToken: String
+    var accessToken: AccessToken
+    var refreshToken: RefreshToken
 }
 
 // MARK: - Implementation

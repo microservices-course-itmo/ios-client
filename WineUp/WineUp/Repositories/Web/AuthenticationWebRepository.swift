@@ -8,11 +8,14 @@
 import Foundation
 import Combine
 
+typealias RefreshToken = String
+typealias AccessToken = String
+
 protocol AuthenticationWebRepository: WebRepository {
     /// Login user with LoginForm
     func login(with form: UserJson.LoginForm) -> AnyPublisher<UserJson.LoginResponse, Error>
     /// Refresh access token with refresh token
-    func refresh(token: FirebaseToken) -> AnyPublisher<UserJson.LoginResponse, Error>
+    func refresh(token: RefreshToken) -> AnyPublisher<UserJson.LoginResponse, Error>
     /// Register new user with form
     func registration(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson.LoginResponse, Error>
 }
@@ -39,7 +42,7 @@ final class RealAuthenticationWebRepository: AuthenticationWebRepository {
         request(endpoint: .createLogin(form))
     }
 
-    func refresh(token: FirebaseToken) -> AnyPublisher<UserJson.LoginResponse, Error> {
+    func refresh(token: RefreshToken) -> AnyPublisher<UserJson.LoginResponse, Error> {
         request(endpoint: .createRefresh(token))
     }
 
@@ -56,7 +59,7 @@ private extension APICall {
         APICall(path: "/login", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
     }
 
-    static func createRefresh(_ token: String) -> APICall {
+    static func createRefresh(_ token: RefreshToken) -> APICall {
         APICall(path: "/refresh", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: token)
     }
 

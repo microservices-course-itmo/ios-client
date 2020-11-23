@@ -41,25 +41,42 @@ final class RealAuthenticationService: AuthenticationService {
 
     func login() -> AnyPublisher<Void, Error> {
         // Retrieve token from firebase, perform /login request and save new credentials
-        Fail<Void, Error>(error: WineUpError.notImplemented())
+        firebaseService
+            .getToken()
+            .flatMap { token in
+                self.authWebRepository.login(with: token)
+            }
+            .map { loginResponse -> Void in
+                self.saveCredentialsFrom(loginResponse: loginResponse)
+            }
             .eraseToAnyPublisher()
     }
 
     func refreshSession() -> AnyPublisher<Void, Error> {
         // Retreive and check credentials, perform /refresh request and update saved credentials
-        Fail<Void, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        if let credentials = authCredentialsPersistanceRepository.credentials {
+            return authWebRepository
+                .refresh(token: credentials.refreshToken)
+                .map { loginResponse -> Void in
+                    self.saveCredentialsFrom(loginResponse: loginResponse)
+                }
+                .eraseToAnyPublisher()
+        } else {
+            return Fail<Void, Error>(error: WineUpError.invalidAppState("Unable to extract credentials from persistance"))
+                .eraseToAnyPublisher()
+        }
     }
 
     func closeSession() -> AnyPublisher<Void, Error> {
-        // Remove credentials
-        Fail<Void, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        authCredentialsPersistanceRepository.credentials = nil
+        return Just<Void>.withErrorType(Error.self).eraseToAnyPublisher()
     }
 
     func clean() -> AnyPublisher<Void, Error> {
-        // Close session and sign out in firebase client
-        Fail<Void, Error>(error: WineUpError.notImplemented())
+        closeSession()
+            .flatMap {
+                self.firebaseService.signOut()
+            }
             .eraseToAnyPublisher()
     }
 
