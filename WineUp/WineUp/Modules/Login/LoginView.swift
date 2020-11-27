@@ -25,19 +25,32 @@ struct LoginView: View {
     @State private var currentPage: Int = 0
 
     var body: some View {
-            VStack(alignment: .center, spacing: .rootVStackSpacing) {
-                Spacer()
-                Text("WineUp")
-                    .font(.wineUp)
-                    .padding()
+        switch viewModel.registration {
+        case .notRequested:
+            return pagesContent().anyView
+        case .isLoading:
+            return pagesContent().activity(hasActivity: true).anyView
+        case let .failed(error):
+            return Text("Authentication error: \(error.localizedDescription)").anyView
+        case .loaded:
+            return Text("Success!").anyView
+        }
+    }
 
-                LazyPager(
-                    pageCount: viewModel.pages.count,
-                    currentIndex: $viewModel.currentPage,
-                    content: self.pageFor(index:)
-                )
-                Spacer()
-            }
+    private func pagesContent() -> some View {
+        VStack(alignment: .center, spacing: .rootVStackSpacing) {
+            Spacer()
+            Text("WineUp")
+                .font(.wineUp)
+                .padding()
+
+            LazyPager(
+                pageCount: viewModel.pages.count,
+                currentIndex: $viewModel.currentPage,
+                content: self.pageFor(index:)
+            )
+            Spacer()
+        }
     }
 
     private func pageFor(index: Int) -> AnyView {

@@ -10,9 +10,9 @@ import Combine
 
 protocol AuthenticationService: Service {
     /// Retrieves firebase token and performs /login request. Saves refresh token locally
-    func login() -> AnyPublisher<Void, Error>
+    func login() -> AnyPublisher<UserJson, Error>
     /// Retrieves locally saved refresh token and refreshes access token using it
-    func refreshSession() -> AnyPublisher<Void, Error>
+    func refreshSession() -> AnyPublisher<UserJson, Error>
     /// Cleans locally saved credentials
     func closeSession() -> AnyPublisher<Void, Error>
     /// Closes session and cleans firebase context
@@ -21,6 +21,8 @@ protocol AuthenticationService: Service {
     func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error>
     /// Currently authenticated user's headers
     var authHeaders: HTTPHeaders? { get }
+    /// Currently authenticated user
+    var user: UserJson? { get }
 }
 
 // MARK: - Implementation
@@ -39,36 +41,33 @@ final class RealAuthenticationService: AuthenticationService {
         self.authCredentialsPersistanceRepository = authCredentialsPersistanceRepository
     }
 
-    func login() -> AnyPublisher<Void, Error> {
+    func login() -> AnyPublisher<UserJson, Error> {
         // Retrieve token from firebase, perform /login request and save new credentials
         firebaseService
             .getToken()
             .flatMap { token in
                 self.authWebRepository.login(with: token)
             }
-            .map { loginResponse -> Void in
-                self.saveCredentialsFrom(loginResponse: loginResponse)
-            }
+            .map(handleLoginResponse(_:))
             .eraseToAnyPublisher()
     }
 
-    func refreshSession() -> AnyPublisher<Void, Error> {
+    func refreshSession() -> AnyPublisher<UserJson, Error> {
         // Retreive and check credentials, perform /refresh request and update saved credentials
         if let credentials = authCredentialsPersistanceRepository.credentials {
             return authWebRepository
                 .refresh(token: credentials.refreshToken)
-                .map { loginResponse -> Void in
-                    self.saveCredentialsFrom(loginResponse: loginResponse)
-                }
+                .map(handleLoginResponse(_:))
                 .eraseToAnyPublisher()
         } else {
-            return Fail<Void, Error>(error: WineUpError.invalidAppState("Unable to extract credentials from persistance"))
+            return Fail<UserJson, Error>(error: WineUpError.invalidAppState("Unable to extract credentials from persistance"))
                 .eraseToAnyPublisher()
         }
     }
 
     func closeSession() -> AnyPublisher<Void, Error> {
         authCredentialsPersistanceRepository.credentials = nil
+        user = nil
         return Just<Void>.withErrorType(Error.self).eraseToAnyPublisher()
     }
 
@@ -82,15 +81,20 @@ final class RealAuthenticationService: AuthenticationService {
 
     func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error> {
         authWebRepository.registration(with: form)
-            .map { loginResponse in
-                self.saveCredentialsFrom(loginResponse: loginResponse)
-                return loginResponse.user
-            }
+            .map(handleLoginResponse(_:))
             .eraseToAnyPublisher()
     }
 
     var authHeaders: HTTPHeaders? {
         authCredentialsPersistanceRepository.credentials?.authHeaders
+    }
+
+    var user: UserJson?
+
+    private func handleLoginResponse(_ loginResponse: UserJson.LoginResponse) -> UserJson {
+        saveCredentialsFrom(loginResponse: loginResponse)
+        user = loginResponse.user
+        return loginResponse.user
     }
 
     private func saveCredentialsFrom(loginResponse response: UserJson.LoginResponse) {
@@ -111,12 +115,12 @@ extension Credentials {
 
 #if DEBUG
 final class StubAuthenticationService: AuthenticationService {
-    func login() -> AnyPublisher<Void, Error> {
-        Just<Void>.withErrorType(Error.self)
+    func login() -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
     }
 
-    func refreshSession() -> AnyPublisher<Void, Error> {
-        Just<Void>.withErrorType(Error.self)
+    func refreshSession() -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
     }
 
     func closeSession() -> AnyPublisher<Void, Error> {
@@ -132,7 +136,11 @@ final class StubAuthenticationService: AuthenticationService {
     }
 
     var authHeaders: HTTPHeaders? {
-        nil
+        HTTPHeaders.empty.mockedAccessToken()
+    }
+
+    var user: UserJson? {
+        UserJson.mockedData[0]
     }
 
     static var preview: AuthenticationService {

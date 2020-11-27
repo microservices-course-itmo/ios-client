@@ -56,14 +56,14 @@ final class RealAuthenticationWebRepository: AuthenticationWebRepository {
 private extension APICall {
 
     static func createLogin(_ form: UserJson.LoginForm) -> APICall {
-        APICall(path: "/login", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
+        APICall(path: "/login", method: "POST", value: form, encodingStratagy: .useDefaultKeys)
     }
 
     static func createRefresh(_ token: RefreshToken) -> APICall {
-        APICall(path: "/refresh", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: token)
+        APICall(path: "/refresh", method: "POST", parameters: ["refreshToken": token])
     }
 
     static func createRegistration(_ form: UserJson.RegistrationForm) -> APICall {
-        APICall(path: "/registration", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), value: form)
+        APICall(path: "/registration", method: "POST", value: form, encodingStratagy: .useDefaultKeys)
     }
 }

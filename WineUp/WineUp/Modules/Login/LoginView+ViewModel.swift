@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 // MARK: - LoginView+Form
 
@@ -40,8 +41,10 @@ extension LoginView {
 
         @Published var currentPage: Int = 0
         @Published var pages: [Page] = [.ageQuestion]
+        @Published var registration: Loadable<Void> = .notRequested
 
         private let container: DIContainer
+        private let bag = CancelBag()
 
         // MARK: Public
 
@@ -62,7 +65,18 @@ extension LoginView {
         }
 
         func verificationCodeDidSubmit() {
-            nextPage(.name)
+            container.services.authenticationService
+                .login()
+                .sinkToResult { result in
+                    switch result {
+                    case let .failure(error):
+                        print("Login error: \(error.localizedDescription)")
+                        self.nextPage(.name)
+                    case .success:
+                        self.container.appState.value.routing.didLogin = .loaded(true)
+                    }
+                }
+                .store(in: bag)
         }
 
         func nameDidSubmit() {
@@ -117,6 +131,7 @@ extension LoginView {
 
         private func finish() {
             let form = container.appState.value.userData.loginForm
+
             guard let name = form.name.value,
                   let birthday = form.birthday.value,
                   let city = form.city.value else {
@@ -124,14 +139,33 @@ extension LoginView {
                 return
             }
 
-            print("""
-            Finish login of user
-                name: \(name)
-                birthday: \(birthday)
-                city: \(city)
-            """)
+            let bag = CancelBag()
+            registration.setIsLoading(cancelBag: bag)
 
-            container.appState.value.routing.didLogin = true
+            container.services.firebaseService
+                .getToken()
+                .flatMap { token -> AnyPublisher<UserJson, Error> in
+                    let form = UserJson.RegistrationForm(
+                        birthday: birthday,
+                        cityId: city.id,
+                        fireBaseToken: token,
+                        name: name
+                    )
+
+                    return self.container.services.authenticationService.register(with: form)
+                }
+                .sinkToResult { result in
+                    switch result {
+                    case let .failure(error):
+                        print("Login error: \(error.localizedDescription)")
+                        self.registration = .failed(error)
+                    case let .success(user):
+                        print("Finish login of user \(user)")
+                        self.container.appState.value.routing.didLogin = .loaded(true)
+                        self.registration = .loaded(())
+                    }
+                }
+                .store(in: bag)
         }
     }
 }
