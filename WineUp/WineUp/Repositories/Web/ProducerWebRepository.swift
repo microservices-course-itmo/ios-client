@@ -23,7 +23,7 @@ protocol ProducerWebRepository: WebRepository {
 
 // MARK: - Implementation
 
-final class RealproducerWebRepository: ProducerWebRepository {
+final class RealProducerWebRepository: ProducerWebRepository {
 
     let session: URLSession
     let baseURL: String

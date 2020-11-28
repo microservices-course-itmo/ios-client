@@ -34,6 +34,7 @@ struct LoginContainer<ViewLabel: View, ActionLabel: View>: View {
                     .font(.containerTitle)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 viewLabel()
                     .frame(minHeight: UIScreen.main.bounds.height * 0.075)

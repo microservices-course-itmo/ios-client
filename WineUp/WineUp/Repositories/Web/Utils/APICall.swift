@@ -11,17 +11,20 @@ struct APICall {
     var path: String
     var method: String
     var headers: HTTPHeaders?
+    var parameters: QueryParameters
     var body: () throws -> Data?
 
     init(
         path: String,
         method: String,
         headers: HTTPHeaders? = nil,
+        parameters: QueryParameters = [:],
         body: @autoclosure @escaping () throws -> Data? = nil
     ) {
         self.path = path
         self.method = method
         self.headers = headers
+        self.parameters = parameters
         self.body = body
     }
 
@@ -29,35 +32,34 @@ struct APICall {
         path: String,
         method: String,
         headers: HTTPHeaders? = nil,
-        value: @autoclosure @escaping () throws -> Value
+        parameters: QueryParameters = [:],
+        value: @autoclosure @escaping () throws -> Value,
+        encodingStratagy: JSONEncoder.KeyEncodingStrategy = .convertToSnakeCase
     ) where Value: Encodable {
         self.path = path
         self.method = method
-        self.headers = headers
+        self.headers = (headers ?? [:]).jsonContentType()
+        self.parameters = parameters
         self.body = {
             let value = try value()
-            return try JSONEncoder.snakeCaseCompatible().encode(value)
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = encodingStratagy
+            return try encoder.encode(value)
         }
     }
 }
 
 extension APICall {
     func urlRequest(baseURL: String) throws -> URLRequest {
-        guard let url = URL(string: baseURL + path) else {
+        let parameters = self.parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+        guard let url = URLComponents(string: baseURL + path, queryItems: parameters)?.url else {
             throw APIError.invalidURL
         }
+
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.allHTTPHeaderFields = headers
         request.httpBody = try body()
         return request
-    }
-}
-
-private extension JSONEncoder {
-    static func snakeCaseCompatible() -> JSONEncoder {
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        return encoder
     }
 }

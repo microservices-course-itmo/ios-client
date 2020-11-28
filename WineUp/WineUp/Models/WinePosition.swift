@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 
 struct WinePosition: Identifiable, Equatable {
-    var id = UUID()
+    var id: String = UUID().uuidString
     /// Title name of wine
     var title: String
     /// The country of manufacture
@@ -19,7 +19,7 @@ struct WinePosition: Identifiable, Equatable {
     /// Production year
     var year: String
     /// Wine astringency (dry/semi-dry/semi-sweet/sweet)
-    var wineAstringency: WineAstringency
+    var wineSugar: WineSugar
     /// Quantity of bottle in liters
     var quantityLiters: Float
     /// Is offer liked by the user
@@ -45,7 +45,7 @@ struct WinePosition: Identifiable, Equatable {
 extension WinePosition {
     struct Details: Equatable {
         /// Id of corresponding wine position
-        var winePositionId: UUID
+        var winePositionId: String
         /// Description of wine taste
         var tasteDescription: String
         /// Text with suggestion which food to combine the wine with

@@ -28,6 +28,9 @@ struct CatalogView: View {
     var body: some View {
         ZStack {
             content()
+                .navigationTitle(.navigationTitle)
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarHidden(false)
 
             if let item = viewModel.presentedFiltersBarItem {
                 wrappedFilterViewFor(item: item)
@@ -39,6 +42,23 @@ struct CatalogView: View {
     // MARK: Helpers
 
     private func content() -> some View {
+        switch viewModel.catalogItems {
+        case let .failed(error):
+            return Text(error.localizedDescription).anyView
+        case .isLoading:
+            return Text("Loading").anyView
+        case .notRequested:
+            return Text("Waiting")
+                .onAppear {
+                    viewModel.loadCatalogItems()
+                }
+                .anyView
+        case let .loaded(winePositions):
+            return winePositionsContent(winePositions: winePositions).anyView
+        }
+    }
+
+    private func winePositionsContent(winePositions: [WinePosition]) -> some View {
         VStack(spacing: .rootVStackSpacing) {
             SearchBarView(text: $viewModel.searchText)
 
@@ -50,7 +70,7 @@ struct CatalogView: View {
 
             ScrollView(.vertical, showsIndicators: true) {
                 VStack {
-                    ForEach(viewModel.catalogItems) { item in
+                    ForEach(winePositions) { item in
                         NavigationLink(
                             destination: WinePositionDetailsView(
                                 viewModel: viewModel.winePositionDetailsViewModelFor(item)),
@@ -67,9 +87,7 @@ struct CatalogView: View {
                 }
             }
         }
-        .navigationTitle(.navigationTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
+
     }
 
     private func wrappedFilterViewFor(item: CatalogFiltersBarView.Item) -> some View {
@@ -89,9 +107,9 @@ struct CatalogView: View {
                 CountryFilterView(viewModel: viewModel.countryFilterViewModel),
                 title: "Страна"
             )
-        case .wineAstringency:
+        case .wineSugar:
             return wrapFilter(
-                WineAstringencyFilter(viewModel: viewModel.wineAstringencyFilterViewModel),
+                WineSugarFilter(viewModel: viewModel.wineSugarFilterViewModel),
                 title: "Сахар"
             )
         case .wineColor:

@@ -18,8 +18,8 @@ extension UserJson {
     }
 
     struct LoginResponse: Decodable {
-        var accessToken: String
-        var refreshToken: String
+        var accessToken: AccessToken
+        var refreshToken: RefreshToken
         var user: UserJson
     }
 
