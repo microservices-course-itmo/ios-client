@@ -36,6 +36,6 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
 
 private extension APICall {
     static func getAllTrueWinePositions() -> APICall {
-        APICall(path: "/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), body: nil)
+        APICall(path: "/position/true/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 }

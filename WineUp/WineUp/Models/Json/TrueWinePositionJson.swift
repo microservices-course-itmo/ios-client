@@ -25,10 +25,10 @@ struct TrueWineJson: Decodable {
     var avg: Float
     var brand: BrandJson
     var color: WineJson.Color
-    var grape: GrapeJson
+    var grape: [GrapeJson]
     var name: String
     var producer: ProducerJson
-    var region: RegionJson
+    var region: [RegionJson]
     var sugar: WineJson.Sugar
     var year: Int
 }

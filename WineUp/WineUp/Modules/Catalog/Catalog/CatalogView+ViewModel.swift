@@ -12,7 +12,7 @@ import Combine
 
 extension CatalogView {
     struct Routing: Equatable {
-        var winePositionId: UUID?
+        var winePositionId: String?
     }
 }
 
@@ -22,7 +22,7 @@ extension CatalogView {
     final class ViewModel: ObservableObject {
 
         @Published var catalogItems: Loadable<[WinePosition]> = .notRequested
-        @Published var selectedCatalogItemId: UUID?
+        @Published var selectedCatalogItemId: String?
         @Published var filtersBarItems: [CatalogFiltersBarView.Item] = []
         @Published var presentedFiltersBarItem: CatalogFiltersBarView.Item?
         @Published var searchText: String = ""
