@@ -16,6 +16,7 @@ private extension Image {
 
 private extension Font {
     static let star: Font = .system(size: 14)
+    static let review: Font = .system(size: 16)
 }
 
 private extension CGFloat {
@@ -40,8 +41,7 @@ struct WineReviewCardView: View {
             VStack {
                 HStack {
                     Text(review.reviewerFullName)
-                        .bold()
-                        .font(.title2)
+                        .font(.title3)
                     Spacer()
                     HStack(spacing: .starsSpacing) {
                         ForEach(1..<6) { index in
@@ -53,8 +53,11 @@ struct WineReviewCardView: View {
                 }
                 .padding(.bottom, 8)
                 HStack {
-                    Text("'" + "\(review.review)" + "'")
+                    Text("«" + "\(review.review)" + "»")
                         .italic()
+                        .foregroundColor(Color(white: 0.33))
+                        .font(.review)
+                        .fixedSize(horizontal: false, vertical: true)
                     Spacer()
                 }
                 .padding(.bottom, 8)
@@ -63,13 +66,14 @@ struct WineReviewCardView: View {
                     Spacer()
                     Text(review.timestamp.getDate() ?? "")
                         .foregroundColor(Color(.secondaryLabel))
+                        .font(.caption)
                 }
             }
             .padding()
         }
         .background(Color.white)
-        .cornerRadius(10)
-        .shadow(radius: 10)
+        // Card style with no shadow
+        .cardStyled(shadowColor: Color.clear)
     }
 
     // MARK: - Private Methods

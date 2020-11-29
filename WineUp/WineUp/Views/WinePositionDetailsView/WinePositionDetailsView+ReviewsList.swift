@@ -17,8 +17,21 @@ extension WinePositionDetailsView {
         let details: WinePosition.Details
 
         var body: some View {
-            List(details.reviews) { item in
-                WineReviewCardView(review: item)
+            VStack(spacing: 25) {
+                Text("Отзывы")
+                    .font(.system(size: 25))
+
+                VStack(spacing: 16) {
+                    ForEach(details.reviews) { review in
+                        WineReviewCardView(review: review)
+                            .padding(.horizontal, 16)
+                    }
+                }
+
+                Button(action: {}, label: {
+                    Text("Больше отзывов")
+                })
+                .defaultStyled(isDisabled: false)
             }
         }
     }
