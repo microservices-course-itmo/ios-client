@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class WinePositionWebRepositoryBodyBuidler {
+final class WinePositionWebRepositoryURLQueryBuidler {
     // swiftlint:disable identifier_name
 
     // Nested
@@ -18,12 +18,14 @@ final class WinePositionWebRepositoryBodyBuidler {
         let sortBy: [FilterSortBy]
     }
 
-    func build(from: Int, to: Int, filters: [WinePositionFilters], sortBy: [FilterSortBy]) -> FiltersBody {
-        .init(from: from,
-              to: to,
-              searchParameters: buildSearchParameters(for: filters),
-              sortBy: sortBy)
+    func build(from: Int, to: Int, filters: [WinePositionFilters], sortBy: [FilterSortBy]) -> [URLQueryItem] {
+        [URLQueryItem(name: "from", value: from.description),
+         URLQueryItem(name: "to", value: to.description),
+         URLQueryItem(name: "searchParameters", value: buildSearchParameters(for: filters)),
+         URLQueryItem(name: "sortByPair", value: "avg%26desc")]
     }
+
+    // MARK: - Private
 
     private func buildSearchParameters(for filters: [WinePositionFilters]) -> String {
         return filters.reduce(into: "") { res, filter in

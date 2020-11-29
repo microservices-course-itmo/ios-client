@@ -38,7 +38,7 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
     let session: URLSession
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
-    private let bodyBuilder = WinePositionWebRepositoryBodyBuidler()
+    private let bodyBuilder = WinePositionWebRepositoryURLQueryBuidler()
 
     init(session: URLSession, baseURL: String) {
         self.session = session
@@ -67,8 +67,8 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
 //            [.value(.init(criterion: .price, operation: .less, value: "1000")),
 //             .separator(.or),
 //             .value(.init(criterion: .volume, operation: .less, value: "0.5"))]
-        let body = bodyBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
-        return request(endpoint: .getAllWinePositionWithSettings(body: body))
+        let queryItems = bodyBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
+        return request(endpoint: .getAllWinePositionWithSettings(queryItems: queryItems))
     }
     func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error> {
         request(endpoint: .getAllWinePositionByName(name: name))
@@ -97,12 +97,12 @@ private extension APICall {
     static func getAllWinePositions() -> APICall {
         APICall(path: "/wine/position", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
-    
-    static func getAllWinePositionWithSettings(body: WinePositionWebRepositoryBodyBuidler.FiltersBody) -> APICall {
-        APICall(path: "/wine/position/getAllWithSettings",
+
+    static func getAllWinePositionWithSettings(queryItems: [URLQueryItem]) -> APICall {
+        APICall(path: "/position/true",
                 method: "GET",
                 headers: HTTPHeaders.empty.mockedAccessToken(),
-                value: body)
+                queryItems: queryItems)
     }
 
     static func getAllWinePositionByName(name: String) -> APICall {
