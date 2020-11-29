@@ -38,7 +38,7 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
     let session: URLSession
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
-    private let bodyBuilder = WinePositionWebRepositoryURLQueryBuidler()
+    private let bodyBuilder = WinePositionWebRepositoryQueryParametersBuidler()
 
     init(session: URLSession, baseURL: String) {
         self.session = session
@@ -61,14 +61,8 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
                                         to: Int,
                                         filters: [WinePositionFilters],
                                         sortBy: [FilterSortBy]) -> AnyPublisher<[WinePositionJson], Error> {
-
-        // example filters
-//        let filters: [WinePositionFilters] =
-//            [.value(.init(criterion: .price, operation: .less, value: "1000")),
-//             .separator(.or),
-//             .value(.init(criterion: .volume, operation: .less, value: "0.5"))]
         let queryItems = bodyBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
-        return request(endpoint: .getAllWinePositionWithSettings(queryItems: queryItems))
+        return request(endpoint: .getAllWinePositionWithSettings(parameters: queryItems))
     }
 
     func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error> {
@@ -99,11 +93,11 @@ private extension APICall {
         APICall(path: "/wine/position", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 
-    static func getAllWinePositionWithSettings(queryItems: [URLQueryItem]) -> APICall {
+    static func getAllWinePositionWithSettings(parameters: QueryParameters) -> APICall {
         APICall(path: "/position/true",
                 method: "GET",
                 headers: HTTPHeaders.empty.mockedAccessToken(),
-                queryItems: queryItems)
+                parameters: parameters)
     }
 
     static func getAllWinePositionByName(name: String) -> APICall {

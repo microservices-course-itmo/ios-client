@@ -60,7 +60,7 @@ private extension APICall {
     }
 
     static func createRefresh(_ token: RefreshToken) -> APICall {
-        APICall(path: "/refresh", method: "POST", queryItems: [.init(name: "refreshToken", value: token)])
+        APICall(path: "/refresh", method: "POST", parameters: ["refreshToken": token])
     }
 
     static func createRegistration(_ form: UserJson.RegistrationForm) -> APICall {

@@ -8,15 +8,6 @@
 import Foundation
 
 final class WinePositionWebRepositoryQueryParametersBuidler {
-    // swiftlint:disable identifier_name
-
-    // Nested
-    struct FiltersBody: Encodable {
-        let from: Int
-        let to: Int
-        let searchParameters: String
-        let sortBy: [FilterSortBy]
-    }
 
     func build(from: Int, to: Int, filters: [WinePositionFilters], sortBy: [FilterSortBy]) -> QueryParameters {
         ["from": from.description,
