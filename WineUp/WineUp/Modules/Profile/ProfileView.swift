@@ -12,12 +12,25 @@ import SwiftUI
 struct ProfileView: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
+    @State private var showingAlert = false
 
     var body: some View {
-        Button(action: viewModel.logoutButtonDidTap, label: {
-            Text("Logout")
-        })
-        .defaultStyled(isDisabled: false)
+        VStack {
+
+            Button(action: viewModel.logoutButtonDidTap, label: {
+                Text("Logout")
+            })
+            .defaultStyled(isDisabled: false)
+            Button(action: {
+                self.showingAlert = true
+            })
+            {
+                Text("Show APNS ID")
+            }
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text("APNS"), message: Text(UserDefaults.standard.string(forKey: "APNSID") ?? "error"), dismissButton: .default(Text("OK")))
+            }
+        }
     }
 }
 
