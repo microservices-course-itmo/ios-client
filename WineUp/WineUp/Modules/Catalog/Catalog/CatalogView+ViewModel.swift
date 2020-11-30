@@ -37,6 +37,14 @@ extension CatalogView {
                 container.appState.bind(\.routing.catalog.winePositionId, to: self, by: \.selectedCatalogItemId)
                 $selectedCatalogItemId.bind(to: container.appState, by: \.value.routing.catalog.winePositionId)
             }
+
+            filtersBarItems = [
+                .recomendation,
+                .price,
+                .country,
+                .wineColor,
+                .wineSugar
+            ]
         }
 
         // MARK: Public Methods
