@@ -12,7 +12,7 @@ struct TrueWinePositionJson: Decodable {
     var actualPrice: Float
     var description: String
     var gastronomy: String
-    var image: String
+//    var image: String
     var linkToWine: String
     var price: Float
     var shop: ShopJson
