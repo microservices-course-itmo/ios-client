@@ -70,6 +70,7 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
         let queryItems = bodyBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
         return request(endpoint: .getAllWinePositionWithSettings(queryItems: queryItems))
     }
+
     func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error> {
         request(endpoint: .getAllWinePositionByName(name: name))
     }
