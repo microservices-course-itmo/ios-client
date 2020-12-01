@@ -91,7 +91,7 @@ extension LoginPhoneInput {
                         self?.hasActivity = false
                         onSubmit()
                     case .failure(let error):
-                        print("verifyError: ", error.localizedDescription)
+                        print("verifyError: ", error.description)
                     }
                 }
                 .store(in: cancelBag)

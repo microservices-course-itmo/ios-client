@@ -70,7 +70,7 @@ extension LoginView {
                 .sinkToResult { result in
                     switch result {
                     case let .failure(error):
-                        print("Login error: \(error.localizedDescription)")
+                        print("Login error: \(error.description)")
                         self.nextPage(.name)
                     case .success:
                         self.container.appState.value.routing.didLogin = .loaded(true)
@@ -157,7 +157,7 @@ extension LoginView {
                 .sinkToResult { result in
                     switch result {
                     case let .failure(error):
-                        print("Login error: \(error.localizedDescription)")
+                        print("Login error: \(error.description)")
                         self.registration = .failed(error)
                     case let .success(user):
                         print("Finish login of user \(user)")

@@ -46,6 +46,9 @@ final class RealCatalogService: CatalogService {
                 self.winePositions = $0
             }
             .sinkToLoadable {
+                if case let .failed(error) = $0 {
+                    print("Loading catalog error: \(error.description)")
+                }
                 winePositions.wrappedValue = $0
             }
             .store(in: bag)
