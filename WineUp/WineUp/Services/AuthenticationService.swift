@@ -8,17 +8,21 @@
 import Foundation
 import Combine
 
-protocol AuthenticationService {
+protocol AuthenticationService: Service {
     /// Retrieves firebase token and performs /login request. Saves refresh token locally
-    func login() -> AnyPublisher<Void, Error>
+    func login() -> AnyPublisher<UserJson, Error>
     /// Retrieves locally saved refresh token and refreshes access token using it
-    func refreshSession() -> AnyPublisher<Void, Error>
+    func refreshSession() -> AnyPublisher<UserJson, Error>
     /// Cleans locally saved credentials
     func closeSession() -> AnyPublisher<Void, Error>
     /// Closes session and cleans firebase context
     func clean() -> AnyPublisher<Void, Error>
+    /// Register new user and login
+    func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error>
     /// Currently authenticated user's headers
     var authHeaders: HTTPHeaders? { get }
+    /// Currently authenticated user
+    var user: UserJson? { get }
 }
 
 // MARK: - Implementation
@@ -37,32 +41,65 @@ final class RealAuthenticationService: AuthenticationService {
         self.authCredentialsPersistanceRepository = authCredentialsPersistanceRepository
     }
 
-    func login() -> AnyPublisher<Void, Error> {
+    func login() -> AnyPublisher<UserJson, Error> {
         // Retrieve token from firebase, perform /login request and save new credentials
-        Fail<Void, Error>(error: WineUpError.notImplemented())
+        firebaseService
+            .getToken()
+            .flatMap { token in
+                self.authWebRepository.login(with: token)
+            }
+            .map(handleLoginResponse(_:))
             .eraseToAnyPublisher()
     }
 
-    func refreshSession() -> AnyPublisher<Void, Error> {
+    func refreshSession() -> AnyPublisher<UserJson, Error> {
         // Retreive and check credentials, perform /refresh request and update saved credentials
-        Fail<Void, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        if let credentials = authCredentialsPersistanceRepository.credentials {
+            return authWebRepository
+                .refresh(token: credentials.refreshToken)
+                .map(handleLoginResponse(_:))
+                .eraseToAnyPublisher()
+        } else {
+            return Fail<UserJson, Error>(error: WineUpError.invalidAppState("Unable to extract credentials from persistance"))
+                .eraseToAnyPublisher()
+        }
     }
 
     func closeSession() -> AnyPublisher<Void, Error> {
-        // Remove credentials
-        Fail<Void, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        authCredentialsPersistanceRepository.credentials = nil
+        user = nil
+        return Just<Void>.withErrorType(Error.self).eraseToAnyPublisher()
     }
 
     func clean() -> AnyPublisher<Void, Error> {
-        // Close session and sign out in firebase client
-        Fail<Void, Error>(error: WineUpError.notImplemented())
+        closeSession()
+            .flatMap {
+                self.firebaseService.signOut()
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error> {
+        authWebRepository.registration(with: form)
+            .map(handleLoginResponse(_:))
             .eraseToAnyPublisher()
     }
 
     var authHeaders: HTTPHeaders? {
         authCredentialsPersistanceRepository.credentials?.authHeaders
+    }
+
+    var user: UserJson?
+
+    private func handleLoginResponse(_ loginResponse: UserJson.LoginResponse) -> UserJson {
+        saveCredentialsFrom(loginResponse: loginResponse)
+        user = loginResponse.user
+        return loginResponse.user
+    }
+
+    private func saveCredentialsFrom(loginResponse response: UserJson.LoginResponse) {
+        let cred = Credentials(accessToken: response.accessToken, refreshToken: response.refreshToken)
+        authCredentialsPersistanceRepository.credentials = cred
     }
 }
 
@@ -73,3 +110,41 @@ extension Credentials {
         HTTPHeaders.empty.accessToken(accessToken)
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+final class StubAuthenticationService: AuthenticationService {
+    func login() -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
+    }
+
+    func refreshSession() -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
+    }
+
+    func closeSession() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func clean() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
+    }
+
+    var authHeaders: HTTPHeaders? {
+        HTTPHeaders.empty.mockedAccessToken()
+    }
+
+    var user: UserJson? {
+        UserJson.mockedData[0]
+    }
+
+    static var preview: AuthenticationService {
+        StubAuthenticationService()
+    }
+}
+#endif

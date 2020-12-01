@@ -12,7 +12,7 @@ import Firebase
 typealias FirebaseToken = String
 typealias PhoneVerificationId = String
 
-protocol FirebaseService {
+protocol FirebaseService: Service {
     /// Sends SMS with verification code to phone number, publisher returns verificationId
     func sendVerificationCode(to phoneNumber: String) -> AnyPublisher<PhoneVerificationId, Error>
     /// Executes Firebase signIn method and returns token in publisher
@@ -121,3 +121,33 @@ final class RealFirebaseService: FirebaseService {
         Auth.auth().currentUser
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+final class StubFirebaseService: FirebaseService {
+    func sendVerificationCode(to phoneNumber: String) -> AnyPublisher<PhoneVerificationId, Error> {
+        Just<PhoneVerificationId>.withErrorType("id", Error.self)
+    }
+
+    func submitVerificationCode(_ code: String, verificationId: PhoneVerificationId) -> AnyPublisher<FirebaseToken, Error> {
+        Just<FirebaseToken>.withErrorType("token", Error.self)
+    }
+
+    func signOut() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func getToken(force: Bool) -> AnyPublisher<FirebaseToken, Error> {
+        Just<FirebaseToken>.withErrorType("token", Error.self)
+    }
+
+    var currentUser: User? {
+        nil
+    }
+
+    static var preview: FirebaseService {
+        StubFirebaseService()
+    }
+}
+#endif

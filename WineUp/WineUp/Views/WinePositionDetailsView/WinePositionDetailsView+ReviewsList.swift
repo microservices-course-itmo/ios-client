@@ -17,10 +17,22 @@ extension WinePositionDetailsView {
         let details: WinePosition.Details
 
         var body: some View {
-            // TODO: Missing implementation
-            Color.green
-                .frame(width: UIScreen.main.bounds.width, height: 400, alignment: .center)
-                .overlay(Text("Reviews"))
+            VStack(spacing: 25) {
+                Text("Отзывы")
+                    .font(.system(size: 25))
+
+                VStack(spacing: 16) {
+                    ForEach(details.reviews) { review in
+                        WineReviewCardView(review: review)
+                            .padding(.horizontal, 16)
+                    }
+                }
+
+                Button(action: {}, label: {
+                    Text("Больше отзывов")
+                })
+                .defaultStyled(isDisabled: false)
+            }
         }
     }
 }

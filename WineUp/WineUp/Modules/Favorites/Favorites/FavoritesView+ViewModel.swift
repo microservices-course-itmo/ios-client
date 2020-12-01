@@ -12,7 +12,7 @@ import Combine
 
 extension FavoritesView {
     struct Routing: Equatable {
-        var winePositionId: UUID?
+        var winePositionId: String?
     }
 }
 
@@ -22,7 +22,7 @@ extension FavoritesView {
     final class ViewModel: ObservableObject {
 
         @Published var favoritesItems: [WinePosition] = []
-        @Published var selectedFavoriteItemId: UUID?
+        @Published var selectedFavoriteItemId: String?
         @Published var searchText: String = ""
 
         private let container: DIContainer

@@ -1,5 +1,5 @@
 //
-//  WineAstringencyFilter.swift
+//  WineSugarFilter.swift
 //  WineUp
 //
 //  Created by Александр Пахомов on 09.10.2020.
@@ -15,7 +15,7 @@ private extension Font {
 
 // MARK: - View
 
-struct WineAstringencyFilter: View {
+struct WineSugarFilter: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
 
@@ -34,23 +34,23 @@ struct WineAstringencyFilter: View {
 
 // MARK: - RadioButtonItem
 
-extension WineAstringencyFilter.Item: RadioButtonItem {
-    var id: WineAstringency {
-        wineAstringency
+extension WineSugarFilter.Item: RadioButtonItem {
+    var id: WineSugar {
+        wineSugar
     }
 
     var textRepresentation: LocalizedStringKey {
-        .init(wineAstringency.name)
+        .init(wineSugar.name)
     }
 }
 
 // MARK: - Preview
 
 #if DEBUG
-struct WineAstringencyFilter_Previews: PreviewProvider {
+struct WineSugarFilter_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            WineAstringencyFilter(viewModel: .init())
+            WineSugarFilter(viewModel: .init())
         }
         .previewLayout(.fixed(width: 400, height: 250))
     }

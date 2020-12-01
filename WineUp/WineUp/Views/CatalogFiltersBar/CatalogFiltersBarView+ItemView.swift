@@ -42,7 +42,7 @@ extension CatalogFiltersBarView {
                 return "Страна"
             case .wineColor:
                 return "Цвет"
-            case .wineAstringency:
+            case .wineSugar:
                 return "Сахар"
             }
         }

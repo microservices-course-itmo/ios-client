@@ -14,6 +14,8 @@ extension ProfileView {
 
         // MARK: Variables
 
+        @Published var logout: Loadable<Void> = .notRequested
+
         private let container: DIContainer
 
         // MARK: Public
@@ -23,7 +25,18 @@ extension ProfileView {
         }
 
         func logoutButtonDidTap() {
-            container.appState.value.routing.didLogin = false
+            let bag = CancelBag()
+            logout.setIsLoading(cancelBag: bag)
+            container.services.authenticationService
+                .clean()
+                .pass { _ in
+                    self.container.appState.value.routing.didLogin = .loaded(false)
+                }
+                .sinkToLoadable {
+                    self.logout = $0
+                }
+                .store(in: bag)
+
         }
     }
 }

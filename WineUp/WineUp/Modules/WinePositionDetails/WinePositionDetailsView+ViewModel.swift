@@ -29,7 +29,9 @@ extension WinePositionDetailsView {
 // MARK: - WinePosition+Details+Review
 
 extension WinePosition.Details {
-    struct Review: Equatable {
+    struct Review: Equatable, Identifiable {
+        /// Unique random id of instance
+        var id = UUID()
         /// Full name (surname and first name) of the reviewer
         var reviewerFullName: String
         /// Rating in [0; 5] interval

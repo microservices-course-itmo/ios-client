@@ -12,7 +12,7 @@ import Foundation
 extension ApplicationRootView {
     final class ViewModel: ObservableObject {
 
-        @Published var showLogin = true
+        @Published var didLogin: Loadable<Bool> = .notRequested
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
@@ -21,7 +21,7 @@ extension ApplicationRootView {
             self.container = container
 
             cancelBag.collect {
-                container.appState.map(\.routing.didLogin).toggle().bind(to: self, by: \.showLogin)
+                container.appState.map(\.routing.didLogin).bind(to: self, by: \.didLogin)
             }
         }
     }
@@ -30,6 +30,21 @@ extension ApplicationRootView {
 // MARK: - Public Methods
 
 extension ApplicationRootView.ViewModel {
+    func appDidLoad() {
+        container.services.authenticationService
+            .refreshSession()
+            .sinkToResult { result in
+                switch result {
+                case let .failure(error):
+                    print("Error refreshing session: \(error.localizedDescription)")
+                    self.container.appState.value.routing.didLogin = .loaded(false)
+                case .success:
+                    self.container.appState.value.routing.didLogin = .loaded(true)
+                }
+            }
+            .store(in: cancelBag)
+    }
+
     var loginViewModel: LoginView.ViewModel {
         .init(container: container)
     }

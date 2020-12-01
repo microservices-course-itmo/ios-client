@@ -59,7 +59,7 @@ struct CatalogFiltersBarView: View {
 
 extension CatalogFiltersBarView {
     enum Item: Identifiable, Hashable {
-        case recomendation, price, wineAstringency, wineColor, country
+        case recomendation, price, wineSugar, wineColor, country
 
         var id: Int {
             hashValue

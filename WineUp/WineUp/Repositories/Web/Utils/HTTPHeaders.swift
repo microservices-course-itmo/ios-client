@@ -18,6 +18,14 @@ extension HTTPHeaders {
         updateValueWithCopy(accessToken, forKey: .accessTokenHeader)
     }
 
+    func contentType(_ contentType: String) -> HTTPHeaders {
+        updateValueWithCopy(contentType, forKey: .contentType)
+    }
+
+    func jsonContentType() -> HTTPHeaders {
+        contentType("application/json")
+    }
+
     // TODO: Remove when real auth is intriduced
     func mockedAccessToken() -> HTTPHeaders {
         accessToken("123")
@@ -36,4 +44,5 @@ private extension Dictionary {
 
 private extension String {
     static let accessTokenHeader = "accessToken"
+    static let contentType = "Content-Type"
 }

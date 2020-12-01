@@ -29,7 +29,6 @@ struct LoginYoNButtonsContainer<Label: View>: View {
         LoginContainer(title: title, viewLabel: label, actionLabel: {
             HStack(alignment: .center, spacing: .buttonsSpacing) {
                 Spacer()
-                Spacer()
 
                 Button(action: onYesButtonTap) {
                     Text(yesButtonTitle)
@@ -43,7 +42,6 @@ struct LoginYoNButtonsContainer<Label: View>: View {
                 }
                 .defaultStyled(isDisabled: false)
 
-                Spacer()
                 Spacer()
             }
         })

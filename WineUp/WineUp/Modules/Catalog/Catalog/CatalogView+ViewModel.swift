@@ -12,7 +12,7 @@ import Combine
 
 extension CatalogView {
     struct Routing: Equatable {
-        var winePositionId: UUID?
+        var winePositionId: String?
     }
 }
 
@@ -21,8 +21,8 @@ extension CatalogView {
 extension CatalogView {
     final class ViewModel: ObservableObject {
 
-        @Published var catalogItems: [WinePosition] = []
-        @Published var selectedCatalogItemId: UUID?
+        @Published var catalogItems: Loadable<[WinePosition]> = .notRequested
+        @Published var selectedCatalogItemId: String?
         @Published var filtersBarItems: [CatalogFiltersBarView.Item] = []
         @Published var presentedFiltersBarItem: CatalogFiltersBarView.Item?
         @Published var searchText: String = ""
@@ -38,10 +38,20 @@ extension CatalogView {
                 $selectedCatalogItemId.bind(to: container.appState, by: \.value.routing.catalog.winePositionId)
             }
 
-            initWithMockData()
+            filtersBarItems = [
+                .recomendation,
+                .price,
+                .country,
+                .wineColor,
+                .wineSugar
+            ]
         }
 
         // MARK: Public Methods
+
+        func loadCatalogItems() {
+            container.services.catalogService.load(winePositions: loadableSubject(\.catalogItems))
+        }
 
         func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
             assert(filtersBarItems.contains(item) && presentedFiltersBarItem == nil)
@@ -65,7 +75,7 @@ extension CatalogView {
             .init()
         }
 
-        var wineAstringencyFilterViewModel: WineAstringencyFilter.ViewModel {
+        var wineSugarFilterViewModel: WineSugarFilter.ViewModel {
             .init()
         }
 
@@ -75,13 +85,6 @@ extension CatalogView {
 
         func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
             .init(container: container, winePosition: winePosition)
-        }
-
-        // MARK: Helpers
-
-        private func initWithMockData() {
-            catalogItems = WinePosition.mockedData
-            filtersBarItems = CatalogFiltersBarView.Item.mockedData
         }
     }
 }

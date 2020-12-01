@@ -8,7 +8,7 @@
 import Foundation
 
 struct BrandJson: Decodable {
-    var brandId: String
+    var id: String
     var name: String
 }
 
