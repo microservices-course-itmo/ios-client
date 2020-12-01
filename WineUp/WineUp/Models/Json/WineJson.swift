@@ -22,16 +22,16 @@ struct WineJson: Decodable {
 
 extension WineJson {
     enum Color: String, Codable {
-        case red
-        case white
-        case rose
+        case red = "RED"
+        case white = "WHITE"
+        case rose = "ROSE"
     }
 
     enum Sugar: String, Codable {
-        case dry
-        case semiDry
-        case semiSweet
-        case sweet
+        case dry = "DRY"
+        case semiDry = "MEDIUM_DRY"
+        case semiSweet = "MEDIUM_SWEET"
+        case sweet = "SWEET"
     }
 
     struct CreateForm: Encodable {

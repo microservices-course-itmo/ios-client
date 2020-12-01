@@ -38,7 +38,13 @@ extension CatalogView {
                 $selectedCatalogItemId.bind(to: container.appState, by: \.value.routing.catalog.winePositionId)
             }
 
-            initStaticData()
+            filtersBarItems = [
+                .recomendation,
+                .price,
+                .country,
+                .wineColor,
+                .wineSugar
+            ]
         }
 
         // MARK: Public Methods
@@ -79,18 +85,6 @@ extension CatalogView {
 
         func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
             .init(container: container, winePosition: winePosition)
-        }
-
-        // MARK: Helpers
-
-        private func initStaticData() {
-            filtersBarItems = [
-                .recomendation,
-                .price,
-                .country,
-                .wineColor,
-                .wineSugar
-            ]
         }
     }
 }

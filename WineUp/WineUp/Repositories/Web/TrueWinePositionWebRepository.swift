@@ -11,7 +11,10 @@ import Combine
 // MARK: - TrueWinePositionWebRepository
 
 protocol TrueWinePositionWebRepository: WebRepository {
-    func getAllTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
+    func getAllTrueWinePositions(from: Int,
+                                 to: Int,
+                                 filters: [WinePositionFilters],
+                                 sortBy: [FilterSortBy]) -> AnyPublisher<[TrueWinePositionJson], Error>
 }
 
 // MARK: - Implementation
@@ -22,20 +25,26 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
 
+    private let queryParamsBuilder = WinePositionWebRepositoryQueryParametersBuidler()
+
     init(session: URLSession, baseURL: String) {
         self.session = session
         self.baseURL = baseURL
     }
 
-    func getAllTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
-        request(endpoint: .getAllTrueWinePositions())
+    func getAllTrueWinePositions(from: Int,
+                                 to: Int,
+                                 filters: [WinePositionFilters],
+                                 sortBy: [FilterSortBy]) -> AnyPublisher<[TrueWinePositionJson], Error> {
+        let parameters = queryParamsBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
+        return request(endpoint: .getAllTrueWinePositions(parameters: parameters))
     }
 }
 
 // MARK: - Helpers
 
 private extension APICall {
-    static func getAllTrueWinePositions() -> APICall {
-        APICall(path: "/position/true/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
+    static func getAllTrueWinePositions(parameters: QueryParameters) -> APICall {
+        APICall(path: "/position/true/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
     }
 }

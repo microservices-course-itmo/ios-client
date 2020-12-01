@@ -7,7 +7,7 @@ options:
   minimumXcodeGenVersion: 2.17.0
   deploymentTarget:
     iOS: 14.0
-  bundleIdPrefix: com.wineup
+  bundleIdPrefix: ru.ifmo.wineup
   usesTabs: false
   indentWidth: 4
   tabWidth: 4
@@ -73,7 +73,7 @@ targets:
         CFBundleURLTypes: 
           - CFBundleTypeRole: Editor
             # REVERSED_CLIENT_ID from GoogleService-Info.plist
-            CFBundleURLSchemes: [com.googleusercontent.apps.243423113529-qo9p1ttnb4kji40n4fc7t6chsr40f66p]
+            CFBundleURLSchemes: [com.googleusercontent.apps.243423113529-a3k7jhrag91nqdugjvh5b1c0psl544eq]
         
     type: application
     platform: iOS
@@ -89,7 +89,7 @@ targets:
         CODE_SIGN_IDENTITY: Apple Development
         DEFINES_MODULE: NO
         INFOPLIST_FILE: WineUp/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: com.wineup
+        PRODUCT_BUNDLE_IDENTIFIER: ru.ifmo.wineup
         TARGETED_DEVICE_FAMILY: 1
         XCODEGEN_STATE: YES
     scheme:

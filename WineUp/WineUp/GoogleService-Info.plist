@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>243423113529-qo9p1ttnb4kji40n4fc7t6chsr40f66p.apps.googleusercontent.com</string>
+	<string>243423113529-a3k7jhrag91nqdugjvh5b1c0psl544eq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.243423113529-qo9p1ttnb4kji40n4fc7t6chsr40f66p</string>
+	<string>com.googleusercontent.apps.243423113529-a3k7jhrag91nqdugjvh5b1c0psl544eq</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>243423113529-rm9kqbfqsn51m9t6tbtbqs5dsc6bggo4.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC3e2FU6ev4iXPK5Cp3jERLDUOtvupo5fI</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.wine</string>
+	<string>ru.ifmo.wineup</string>
 	<key>PROJECT_ID</key>
 	<string>testfire-1bc2f</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:243423113529:ios:32e2965b2d7b8bad7bf8e8</string>
+	<string>1:243423113529:ios:ac3ddafe9103b3a67bf8e8</string>
 	<key>DATABASE_URL</key>
 	<string>https://testfire-1bc2f.firebaseio.com</string>
 </dict>
