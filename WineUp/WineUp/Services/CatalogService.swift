@@ -12,6 +12,12 @@ import UIKit
 protocol CatalogService: Service {
     /// Fetch wine positions from server
     func load(winePositions: LoadableSubject<[WinePosition]>)
+    /// Fetch favorite wine positions from server
+    func load(favoriteWinePositions: LoadableSubject<[WinePosition]>)
+
+    func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
+
+    func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
 }
 
 // MARK: - Implementation
@@ -54,6 +60,25 @@ final class RealCatalogService: CatalogService {
             .store(in: bag)
     }
 
+    func load(favoriteWinePositions: LoadableSubject<[WinePosition]>) {
+        // Ожидаемая реализация:
+        // Сервис должен уметь кэшировать избранные винные позиции
+        // Сервис должен хранить список избранных винных позиций и менять его при добавлении в избранное и удалении оттуда
+        // Сервис должен вычислять `isLiked` поле у винной позиции, исходя из наличия её Id в сохранённом списке избранных
+        // Для скачивания и модицикации списка избранных на сервере можно использовать FavoritesWebRepository
+        // Для скачивания списка винных позиций по их Id можно использовать метод у TrueWinePositionWebRepository
+    }
+
+    func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
     private func transform(json: [TrueWinePositionJson]) -> [WinePosition] {
         json.map { json in
             let wine = json.wine
@@ -92,6 +117,18 @@ private extension String {
 final class StubCatalogService: CatalogService {
     func load(winePositions: LoadableSubject<[WinePosition]>) {
         winePositions.wrappedValue = .loaded(WinePosition.mockedData)
+    }
+
+    func load(favoriteWinePositions: LoadableSubject<[WinePosition]>) {
+        favoriteWinePositions.wrappedValue = .loaded(WinePosition.mockedData)
+    }
+
+    func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
     }
 
     static var preview: CatalogService {
