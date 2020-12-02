@@ -18,6 +18,8 @@ protocol CatalogService: Service {
     func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
+
+    func clearFavorites() -> AnyPublisher<Void, Error>
 }
 
 // MARK: - Implementation
@@ -67,6 +69,7 @@ final class RealCatalogService: CatalogService {
         // Сервис должен вычислять `isLiked` поле у винной позиции, исходя из наличия её Id в сохранённом списке избранных
         // Для скачивания и модицикации списка избранных на сервере можно использовать FavoritesWebRepository
         // Для скачивания списка винных позиций по их Id можно использовать метод у TrueWinePositionWebRepository
+        favoriteWinePositions.wrappedValue = .failed(WineUpError.notImplemented())
     }
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
@@ -75,6 +78,11 @@ final class RealCatalogService: CatalogService {
     }
 
     func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    func clearFavorites() -> AnyPublisher<Void, Error> {
         Fail<Void, Error>(error: WineUpError.notImplemented())
             .eraseToAnyPublisher()
     }
@@ -128,6 +136,10 @@ final class StubCatalogService: CatalogService {
     }
 
     func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func clearFavorites() -> AnyPublisher<Void, Error> {
         Just<Void>.withErrorType(Error.self)
     }
 
