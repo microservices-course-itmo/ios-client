@@ -15,6 +15,8 @@ protocol TrueWinePositionWebRepository: WebRepository {
                                  to: Int,
                                  filters: [WinePositionFilters],
                                  sortBy: [FilterSortBy]) -> AnyPublisher<[TrueWinePositionJson], Error>
+
+    func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
 }
 
 // MARK: - Implementation
@@ -38,6 +40,11 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
                                  sortBy: [FilterSortBy]) -> AnyPublisher<[TrueWinePositionJson], Error> {
         let parameters = queryParamsBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
         return request(endpoint: .getAllTrueWinePositions(parameters: parameters))
+    }
+
+    func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error> {
+        Fail<[TrueWinePositionJson], Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
     }
 }
 
