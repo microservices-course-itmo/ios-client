@@ -36,18 +36,22 @@ final class RealFavoritesWebRepository: FavoritesWebRepository {
 
     func getAllFavoriteWinePositions() -> AnyPublisher<FavoriteWinePositionJson, Error> {
         Fail<FavoriteWinePositionJson, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
     }
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
         Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
     }
 
     func deleteWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
         Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
     }
 
     func clearFavorites() -> AnyPublisher<Void, Error> {
         Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
     }
 }
 
