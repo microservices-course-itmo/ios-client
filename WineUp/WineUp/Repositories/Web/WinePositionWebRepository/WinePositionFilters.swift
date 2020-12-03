@@ -75,7 +75,12 @@ enum WinePositionSortableCriteries: String, Encodable {
 }
 
 struct FilterSortBy: Encodable {
-    let attribute_name: WinePositionSortableCriteries
+    
+    enum CodingKey: String, CodingKeys {
+        case attributeName = "attribute_name"
+    }
+
+    let attributeName: WinePositionSortableCriteries
     let order: Order
 }
 
