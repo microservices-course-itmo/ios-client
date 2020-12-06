@@ -38,6 +38,7 @@ struct APICall {
     ) where Value: Encodable {
         self.path = path
         self.method = method
+        self.parameters = parameters
         self.headers = (headers ?? [:]).jsonContentType()
         self.parameters = parameters
         self.body = {

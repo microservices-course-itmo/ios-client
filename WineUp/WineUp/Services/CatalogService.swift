@@ -33,8 +33,12 @@ final class RealCatalogService: CatalogService {
             winePositions.wrappedValue = .loaded(cachedWinePositions)
         }
 
+        let filters: [WinePositionFilters] =
+            [.value(.init(criterion: .price, operation: .more, value: "100"))]
+
         winePositionWebRepository
-            .getAllTrueWinePositions()
+            // TODO: подставлять параметры выбранные пользователем 
+            .getAllTrueWinePositions(from: 0, to: 5, filters: filters, sortBy: [.init(attribute_name: .avg, order: .desc)])
             .map {
                 self.transform(json: $0)
             }
@@ -60,7 +64,7 @@ final class RealCatalogService: CatalogService {
                 quantityLiters: json.volume,
                 isLiked: Bool.random(), // TODO: Missing data
                 chemistry: Float.random(in: 0..<100), // TODO: Missing data
-                titleImage: json.image.base64Image ?? .add, // TODO: Missing OnNil action
+                titleImage: .add, // TODO: Missing OnNil action
                 retailerName: json.shop.site, // TODO: Missing data
                 rating: Float.random(in: 0..<5), // TODO: Missing data
                 originalPriceRub: json.price,
