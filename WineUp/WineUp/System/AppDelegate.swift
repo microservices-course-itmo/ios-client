@@ -13,9 +13,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-
-        FirebaseApp.configure()
         registerForPushNotifications()
+        FirebaseApp.configure()
 
         return true
     }
@@ -34,17 +33,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     private func handleNotification(_ notification: [AnyHashable: Any]) {}
 
     func registerForPushNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
 
             print("Permission granted: \(granted)")
             guard granted else { return }
 
             self.getNotificationSettings()
+
         }
     }
 
     func getNotificationSettings() {
-        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
             print("Notification settings: \(settings)")
             guard settings.authorizationStatus == .authorized else { return }
 
@@ -55,14 +55,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-
-        let tokenParts = deviceToken.map { data -> String in
-            return String(format: "%02.2hhx", data)
-        }
-
-        let token = tokenParts.joined()
-
-        UserDefaults.standard.set("Device Token: \(token)", forKey: "APNSID")
+        Messaging.messaging().apnsToken = deviceToken
+        print("Device Token: \(deviceToken)")
+        UserDefaults.standard.set("Device Token: \(deviceToken)", forKey: "APNSID")
     }
 
     func application(_ application: UIApplication,

@@ -48,9 +48,14 @@ settings:
 
 targets:
   WineUp:
+    attributes:
+      SystemCapabilities:
+        com.apple.Push:
+          enabled: 1
     info:
       path: WineUp/Info.plist
       properties:
+        FirebaseAppDelegateProxyEnabled: NO
         CFBundlePackageType: $(PRODUCT_BUNDLE_PACKAGE_TYPE)
         LSRequiresIPhoneOS: YES
         UIApplicationSceneManifest:
