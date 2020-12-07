@@ -79,7 +79,12 @@ targets:
           - CFBundleTypeRole: Editor
             # REVERSED_CLIENT_ID from GoogleService-Info.plist
             CFBundleURLSchemes: [com.googleusercontent.apps.243423113529-a3k7jhrag91nqdugjvh5b1c0psl544eq]
-        
+    
+    entitlements:
+      path: WineUp/WineUp.entitlements
+      attributes:
+        - aps-environment: development
+
     type: application
     platform: iOS
     deploymentTarget: 14.0
