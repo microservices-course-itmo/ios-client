@@ -34,9 +34,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
     func registerForPushNotifications() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-
-            print("Permission granted: \(granted)")
-            guard granted else { return }
+            if let error = error {
+                print("Didnot grant permission: \(error.description)")
+                return
+            }
 
             self.getNotificationSettings()
 
@@ -56,13 +57,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
-        print("Device Token: \(deviceToken)")
-        UserDefaults.standard.set("Device Token: \(deviceToken)", forKey: "APNSID")
+        print("Device Token: \(deviceToken.hexString)")
+        UserDefaults.standard.set(deviceToken, forKey: "APNSID")
     }
 
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
     }
-
 }
+
+

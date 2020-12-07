@@ -15,20 +15,26 @@ struct ProfileView: View {
     @State private var showingAlert = false
 
     var body: some View {
-        VStack {
-
+        VStack(spacing: 32) {
             Button(action: viewModel.logoutButtonDidTap, label: {
                 Text("Logout")
             })
             .defaultStyled(isDisabled: false)
+            
             Button(action: {
                 self.showingAlert = true
+            }, label: {
+                Text("Show APNs Token")
             })
-            {
-                Text("Show APNS ID")
-            }
             .alert(isPresented: $showingAlert) {
-                Alert(title: Text("APNS"), message: Text(UserDefaults.standard.string(forKey: "APNSID") ?? "error"), dismissButton: .default(Text("OK")))
+                Alert(
+                    title: Text("APNs Token (hex representation)"),
+                    message: Text("Hex representation: \(viewModel.hexAPNSId ?? "#error")"),
+                    primaryButton: .default(Text("Copy to clipboard"), action: {
+                        UIPasteboard.general.string = viewModel.hexAPNSId
+                    }),
+                    secondaryButton: .default(Text("OK"))
+                )
             }
         }
     }
