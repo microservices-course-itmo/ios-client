@@ -75,7 +75,7 @@ enum WinePositionSortableCriteries: String, Encodable {
 }
 
 struct FilterSortBy: Encodable {
-    let attribute_name: WinePositionSortableCriteries
+    let attributeName: WinePositionSortableCriteries
     let order: Order
 }
 

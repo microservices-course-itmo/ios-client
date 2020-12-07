@@ -44,7 +44,7 @@ struct CatalogView: View {
     private func content() -> some View {
         switch viewModel.catalogItems {
         case let .failed(error):
-            return Text(error.localizedDescription).anyView
+            return Text(error.description).anyView
         case .isLoading:
             return Text("Loading").anyView
         case .notRequested:

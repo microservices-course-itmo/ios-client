@@ -12,6 +12,14 @@ import UIKit
 protocol CatalogService: Service {
     /// Fetch wine positions from server
     func load(winePositions: LoadableSubject<[WinePosition]>)
+    /// Fetch favorite wine positions from server
+    func load(favoriteWinePositions: LoadableSubject<[WinePosition]>)
+
+    func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
+
+    func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
+
+    func clearFavorites() -> AnyPublisher<Void, Error>
 }
 
 // MARK: - Implementation
@@ -38,7 +46,7 @@ final class RealCatalogService: CatalogService {
 
         winePositionWebRepository
             // TODO: подставлять параметры выбранные пользователем 
-            .getAllTrueWinePositions(from: 0, to: 5, filters: filters, sortBy: [.init(attribute_name: .avg, order: .desc)])
+            .getAllTrueWinePositions(from: 0, to: 5, filters: filters, sortBy: [.init(attributeName: .avg, order: .desc)])
             .map {
                 self.transform(json: $0)
             }
@@ -46,9 +54,37 @@ final class RealCatalogService: CatalogService {
                 self.winePositions = $0
             }
             .sinkToLoadable {
+                if case let .failed(error) = $0 {
+                    print("Loading catalog error: \(error.description)")
+                }
                 winePositions.wrappedValue = $0
             }
             .store(in: bag)
+    }
+
+    func load(favoriteWinePositions: LoadableSubject<[WinePosition]>) {
+        // Ожидаемая реализация:
+        // Сервис должен уметь кэшировать избранные винные позиции
+        // Сервис должен хранить список избранных винных позиций и менять его при добавлении в избранное и удалении оттуда
+        // Сервис должен вычислять `isLiked` поле у винной позиции, исходя из наличия её Id в сохранённом списке избранных
+        // Для скачивания и модицикации списка избранных на сервере можно использовать FavoritesWebRepository
+        // Для скачивания списка винных позиций по их Id можно использовать метод у TrueWinePositionWebRepository
+        favoriteWinePositions.wrappedValue = .failed(WineUpError.notImplemented())
+    }
+
+    func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
+    }
+
+    func clearFavorites() -> AnyPublisher<Void, Error> {
+        Fail<Void, Error>(error: WineUpError.notImplemented())
+            .eraseToAnyPublisher()
     }
 
     private func transform(json: [TrueWinePositionJson]) -> [WinePosition] {
@@ -89,6 +125,22 @@ private extension String {
 final class StubCatalogService: CatalogService {
     func load(winePositions: LoadableSubject<[WinePosition]>) {
         winePositions.wrappedValue = .loaded(WinePosition.mockedData)
+    }
+
+    func load(favoriteWinePositions: LoadableSubject<[WinePosition]>) {
+        favoriteWinePositions.wrappedValue = .loaded(WinePosition.mockedData)
+    }
+
+    func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+
+    func clearFavorites() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
     }
 
     static var preview: CatalogService {

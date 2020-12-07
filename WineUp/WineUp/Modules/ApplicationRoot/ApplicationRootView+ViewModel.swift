@@ -36,7 +36,7 @@ extension ApplicationRootView.ViewModel {
             .sinkToResult { result in
                 switch result {
                 case let .failure(error):
-                    print("Error refreshing session: \(error.localizedDescription)")
+                    print("Error refreshing session: \(error.description)")
                     self.container.appState.value.routing.didLogin = .loaded(false)
                 case .success:
                     self.container.appState.value.routing.didLogin = .loaded(true)

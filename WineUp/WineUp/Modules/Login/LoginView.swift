@@ -31,7 +31,7 @@ struct LoginView: View {
         case .isLoading:
             return pagesContent().activity(hasActivity: true).anyView
         case let .failed(error):
-            return Text("Authentication error: \(error.localizedDescription)").anyView
+            return Text("Authentication error: \(error.description)").anyView
         case .loaded:
             return Text("Success!").anyView
         }

@@ -5,6 +5,7 @@
 **/*.xcodeproj/
 **/*.xcworkspace/
 **/WineUp/Info.plist
+**/*.entitlements
 
 ## R.swift generated file
 **/R.generated.swift

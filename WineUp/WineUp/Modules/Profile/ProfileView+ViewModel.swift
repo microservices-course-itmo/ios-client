@@ -24,6 +24,10 @@ extension ProfileView {
             self.container = container
         }
 
+        var hexAPNSId: String? {
+            UserDefaults.standard.data(forKey: "APNSID")?.hexString
+        }
+
         func logoutButtonDidTap() {
             let bag = CancelBag()
             logout.setIsLoading(cancelBag: bag)

@@ -93,7 +93,7 @@ extension LoginVerificationCodeView {
                         self?.secondsToResendCode = 60
                         self?.updateUI()
                     case .failure(let error):
-                        print("verifyError: ", error.localizedDescription)
+                        print("verifyError: ", error.description)
                     }
                 }
                 .store(in: cancelBag)
@@ -114,7 +114,7 @@ extension LoginVerificationCodeView {
                         print("Successful phone verification, token: \(token)")
                     case let .failure(error):
                         self?.isCodeWrong = true
-                        print("Phone verification error: \(error.localizedDescription)")
+                        print("Phone verification error: \(error.description)")
                     }
                 }.store(in: cancelBag)
         }
