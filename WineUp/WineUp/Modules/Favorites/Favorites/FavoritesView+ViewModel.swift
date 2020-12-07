@@ -21,7 +21,7 @@ extension FavoritesView {
 extension FavoritesView {
     final class ViewModel: ObservableObject {
 
-        @Published var favoritesItems: [WinePosition] = []
+        @Published var favoritesItems: Loadable<[WinePosition]> = .notRequested
         @Published var selectedFavoriteItemId: String?
         @Published var searchText: String = ""
 
@@ -35,14 +35,25 @@ extension FavoritesView {
                 container.appState.bind(\.routing.favorites.winePositionId, to: self, by: \.selectedFavoriteItemId)
                 $selectedFavoriteItemId.bind(to: container.appState, by: \.value.routing.favorites.winePositionId)
             }
-
-            initWithMockData()
         }
 
         // MARK: Public Methods
 
         func clearFavorites() {
-            favoritesItems = []
+            container.services.catalogService.clearFavorites()
+                .sinkToResult {
+                    switch $0 {
+                    case let .failure(error):
+                        print("Error clearing favorites: \(error.description)")
+                    case .success:
+                        self.loadItems()
+                    }
+                }
+                .store(in: cancelBag)
+        }
+
+        func loadItems() {
+            container.services.catalogService.load(favoriteWinePositions: loadableSubject(\.favoritesItems))
         }
 
         var favoritesSortByViewModel: FavoritesSortByView.ViewModel {
@@ -51,12 +62,6 @@ extension FavoritesView {
 
         func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
             .init(container: container, winePosition: winePosition)
-        }
-
-        // MARK: Helpers
-
-        private func initWithMockData() {
-            favoritesItems = WinePosition.mockedData
         }
     }
 }

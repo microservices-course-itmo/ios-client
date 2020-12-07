@@ -58,12 +58,11 @@ struct FavoritesView: View {
                 }
             }
 
-            if viewModel.favoritesItems.isEmpty {
-                emptyFavoritesLabel()
-            } else {
-                Divider()
-                favoriteItemsList()
-            }
+            Spacer(minLength: 0)
+
+            winePositions()
+
+            Spacer(minLength: 0)
         }
         .actionSheet(isPresented: $showActionSheet, content: actionSheet)
         .navigationTitle(.navigationTitle)
@@ -71,10 +70,35 @@ struct FavoritesView: View {
         .navigationBarHidden(false)
     }
 
-    private func favoriteItemsList() -> some View {
+    private func winePositions() -> some View {
+        switch viewModel.favoritesItems {
+        case .notRequested:
+            return Text("Not requested")
+                .onAppear(perform: viewModel.loadItems)
+                .anyView
+        case .isLoading:
+            return Text("Loading")
+                .anyView
+        case let .failed(error):
+            return Text(error.description)
+                .anyView
+        case let .loaded(winePositions):
+            if winePositions.isEmpty {
+                return emptyFavoritesLabel()
+                    .anyView
+            } else {
+                return VStack(spacing: 0) {
+                    Divider()
+                    favoriteItemsList(winePositions: winePositions)
+                }.anyView
+            }
+        }
+    }
+
+    private func favoriteItemsList(winePositions: [WinePosition]) -> some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack {
-                ForEach(viewModel.favoritesItems) { item in
+                ForEach(winePositions) { item in
                     NavigationLink(
                         destination: WinePositionDetailsView(
                             viewModel: viewModel.winePositionDetailsViewModelFor(item)),

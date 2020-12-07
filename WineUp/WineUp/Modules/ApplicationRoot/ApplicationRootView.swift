@@ -24,7 +24,7 @@ struct ApplicationRootView: View {
                 ApplicationMenuView(viewModel: viewModel.applicationMenuViewModel)
             }
         case let .failed(error):
-            Text(error.localizedDescription)
+            Text(error.description)
         case .isLoading:
             EmptyView()
         }
