@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import struct Kingfisher.KFImage
 
 // MARK: - Constants
 
@@ -55,13 +56,8 @@ extension WinePositionView {
                         .offset(x: .discountFlagOffset)
                 }
 
-                Image(uiImage: item.titleImage)
+                KFImage(URL(string: item.titleImage))
                     .resizable()
-                    .frame(
-                        width: .titleImageWidth,
-                        height: .titleImageHeight,
-                        alignment: .center
-                    )
                     .aspectRatio(contentMode: .fit)
             }
             .padding(.vertical)

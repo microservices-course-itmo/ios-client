@@ -27,7 +27,7 @@ struct WinePosition: Identifiable, Equatable {
     /// Compatibility percentage
     var chemistry: Float
     /// Title image of wine
-    var titleImage: UIImage
+    var titleImage: String
     /// Retailer's logo
     var retailerName: String
     /// Rating of wine

@@ -1,5 +1,6 @@
 excluded:
   - WineUp/Resources
+  - Pods
 
 analyzer_rules:
   - unused_declaration

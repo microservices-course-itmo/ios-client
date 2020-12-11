@@ -4,6 +4,7 @@ platform :ios, '14.0'
 target 'WineUp' do
   pod 'Firebase/Auth'
   pod 'Firebase/Messaging'
+  pod 'Kingfisher/SwiftUI'
 
   target 'WineUpTests' do
     inherit! :search_paths
