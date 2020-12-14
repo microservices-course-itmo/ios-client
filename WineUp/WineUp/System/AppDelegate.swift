@@ -33,7 +33,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     private func handleNotification(_ notification: [AnyHashable: Any]) {}
 
     func registerForPushNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
             if let error = error {
                 print("Didnot grant permission: \(error.description)")
                 return
@@ -66,5 +66,3 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         print("Failed to register: \(error)")
     }
 }
-
-
