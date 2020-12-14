@@ -56,7 +56,7 @@ extension WinePositionView {
                         .offset(x: .discountFlagOffset)
                 }
 
-                KFImage(URL(string: item.titleImage))
+                KFImage.fromUniverseUrl(item.titleImageUrl)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
             }

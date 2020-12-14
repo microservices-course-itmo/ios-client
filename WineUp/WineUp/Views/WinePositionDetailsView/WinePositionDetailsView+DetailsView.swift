@@ -85,7 +85,7 @@ extension WinePositionDetailsView {
 
                     Spacer()
 
-                    KFImage(URL(string: winePosition.titleImage))
+                    KFImage.fromUniverseUrl(winePosition.titleImageUrl)
                         .resizable(resizingMode: .stretch)
                         .scaledToFill()
                         .frame(width: .bottleWidth)
