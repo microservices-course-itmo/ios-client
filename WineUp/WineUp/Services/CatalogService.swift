@@ -148,7 +148,7 @@ final class RealCatalogService: CatalogService {
         return favoritesWebRepository
             .getAllFavoriteWinePositions()
             .map { favoriteWinePositionJsons in
-                Set(favoriteWinePositionJsons.map { $0.itemId })
+                Set(favoriteWinePositionJsons.map { $0.id })
             }
             .pass {
                 self.favoritesId = $0
