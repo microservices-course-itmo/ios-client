@@ -59,6 +59,9 @@ PODS:
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.4.0)
+  - Kingfisher/Core (5.15.7)
+  - Kingfisher/SwiftUI (5.15.7):
+    - Kingfisher/Core
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
@@ -70,6 +73,7 @@ PODS:
 DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Messaging
+  - Kingfisher/SwiftUI
 
 SPEC REPOS:
   trunk:
@@ -83,6 +87,7 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - GTMSessionFetcher
+    - Kingfisher
     - nanopb
     - PromisesObjC
     - Protobuf
@@ -98,10 +103,11 @@ SPEC CHECKSUMS:
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
+  Kingfisher: 6e1a13523fcb1c86924ce53affe4ac957e544d59
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
 
-PODFILE CHECKSUM: 238bb0d1051459eb179d3c0239acbc2177a6f249
+PODFILE CHECKSUM: 9b00a699ee8f6ae63a9bd957d33b8ec4fb8720e7
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.9.3

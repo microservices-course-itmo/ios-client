@@ -20,7 +20,7 @@ struct ProfileView: View {
                 Text("Logout")
             })
             .defaultStyled(isDisabled: false)
-            
+
             Button(action: {
                 self.showingAlert = true
             }, label: {
