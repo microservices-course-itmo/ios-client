@@ -18,7 +18,7 @@ struct APICall {
         path: String,
         method: String,
         headers: HTTPHeaders? = nil,
-        parameters: QueryParameters = [:],
+        parameters: QueryParameters = [],
         body: @autoclosure @escaping () throws -> Data? = nil
     ) {
         self.path = path
@@ -32,7 +32,7 @@ struct APICall {
         path: String,
         method: String,
         headers: HTTPHeaders? = nil,
-        parameters: QueryParameters = [:],
+        parameters: QueryParameters = [],
         value: @autoclosure @escaping () throws -> Value,
         encodingStratagy: JSONEncoder.KeyEncodingStrategy = .convertToSnakeCase
     ) where Value: Encodable {
@@ -52,8 +52,7 @@ struct APICall {
 
 extension APICall {
     func urlRequest(baseURL: String) throws -> URLRequest {
-        let parameters = self.parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
-        guard let url = URLComponents(string: baseURL + path, queryItems: parameters)?.url else {
+        guard let url = URLComponents(string: baseURL + path, queryParameters: parameters)?.url else {
             throw APIError.invalidURL
         }
 

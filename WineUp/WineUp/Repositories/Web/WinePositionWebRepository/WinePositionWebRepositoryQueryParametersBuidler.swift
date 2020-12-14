@@ -10,11 +10,13 @@ import Foundation
 final class WinePositionWebRepositoryQueryParametersBuidler {
 
     func build(from: Int, to: Int, filters: [WinePositionFilters], sortBy: [FilterSortBy]) -> QueryParameters {
-        ["from": from.description,
-         "to": to.description,
-         "searchParameters": buildSearchParameters(for: filters),
-         // TODO: из тз не понятно как формировать несколько правил сортировки
-         "sortByPair": "avg&desc"]
+        [
+            ("from", from.description),
+            ("to", to.description),
+            ("searchParameters", buildSearchParameters(for: filters)),
+            // TODO: из тз не понятно как формировать несколько правил сортировки
+            ("sortByPair", "avg&desc")
+        ]
     }
 
     // MARK: - Private
