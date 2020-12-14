@@ -32,13 +32,16 @@ final class RealAuthenticationService: AuthenticationService {
     private let firebaseService: FirebaseService
     private let authWebRepository: AuthenticationWebRepository
     private let authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository
+    private let credentials: Store<Credentials?>
 
     init(firebaseService: FirebaseService,
          authWebRepository: AuthenticationWebRepository,
-         authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository) {
+         authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository,
+         credentials: Store<Credentials?>) {
         self.firebaseService = firebaseService
         self.authWebRepository = authWebRepository
         self.authCredentialsPersistanceRepository = authCredentialsPersistanceRepository
+        self.credentials = credentials
     }
 
     func login() -> AnyPublisher<UserJson, Error> {
@@ -67,6 +70,7 @@ final class RealAuthenticationService: AuthenticationService {
 
     func closeSession() -> AnyPublisher<Void, Error> {
         authCredentialsPersistanceRepository.credentials = nil
+        credentials.value = nil
         user = nil
         return Just<Void>.withErrorType(Error.self).eraseToAnyPublisher()
     }
@@ -100,6 +104,7 @@ final class RealAuthenticationService: AuthenticationService {
     private func saveCredentialsFrom(loginResponse response: UserJson.LoginResponse) {
         let cred = Credentials(accessToken: response.accessToken, refreshToken: response.refreshToken)
         authCredentialsPersistanceRepository.credentials = cred
+        credentials.value = cred
     }
 }
 

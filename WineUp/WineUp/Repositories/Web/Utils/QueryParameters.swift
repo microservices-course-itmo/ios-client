@@ -7,7 +7,8 @@
 
 import Foundation
 
-typealias QueryParameters = [String: String]
+typealias QueryParameter = (String, String)
+typealias QueryParameters = [QueryParameter]
 
 extension URLComponents {
     init?(string: String, queryItems: [URLQueryItem]) {
@@ -16,6 +17,6 @@ extension URLComponents {
     }
 
     init?(string: String, queryParameters: QueryParameters) {
-        self.init(string: string, queryItems: queryParameters.map { URLQueryItem(name: $0.key, value: $0.value) })
+        self.init(string: string, queryItems: queryParameters.map { URLQueryItem(name: $0.0, value: $0.1) })
     }
 }

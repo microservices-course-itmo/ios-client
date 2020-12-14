@@ -27,10 +27,14 @@ protocol CatalogService: Service {
 final class RealCatalogService: CatalogService {
 
     private let winePositionWebRepository: TrueWinePositionWebRepository
+    private let favoritesWebRepository: FavoritesWebRepository
     private var winePositions: [WinePosition]?
+    private var favoritesId: Set<String>?
 
-    init(winePositionWebRepository: TrueWinePositionWebRepository) {
+    init(winePositionWebRepository: TrueWinePositionWebRepository,
+         favoritesWebRepository: FavoritesWebRepository) {
         self.winePositionWebRepository = winePositionWebRepository
+        self.favoritesWebRepository = favoritesWebRepository
     }
 
     func load(winePositions: LoadableSubject<[WinePosition]>) {
@@ -69,27 +73,53 @@ final class RealCatalogService: CatalogService {
         // Сервис должен вычислять `isLiked` поле у винной позиции, исходя из наличия её Id в сохранённом списке избранных
         // Для скачивания и модицикации списка избранных на сервере можно использовать FavoritesWebRepository
         // Для скачивания списка винных позиций по их Id можно использовать метод у TrueWinePositionWebRepository
-        favoriteWinePositions.wrappedValue = .failed(WineUpError.notImplemented())
+        let bag = CancelBag()
+        favoriteWinePositions.wrappedValue.setIsLoading(cancelBag: bag)
+
+        favoritesIdPublisher()
+            .map { itemsId in
+                self.winePositionWebRepository.getTrueWinePositions(by: Array(itemsId))
+            }
+            .switchToLatest()
+            .map {
+                self.transform(json: $0)
+            }
+            .sinkToLoadable {
+                if case let .failed(error) = $0 {
+                    print("Loading catalog error: \(error.description)")
+                }
+
+                favoriteWinePositions.wrappedValue = $0
+            }
+            .store(in: bag)
     }
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
-        Fail<Void, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        favoritesWebRepository
+            .addWinePositionToFavorites(by: winePositionId)
+            .pass {
+                self.favoritesId?.insert(winePositionId)
+            }
     }
 
     func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
-        Fail<Void, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        favoritesWebRepository
+            .deleteWinePositionFromFavorites(by: winePositionId)
+            .pass {
+                self.favoritesId?.remove(winePositionId)
+            }
     }
 
     func clearFavorites() -> AnyPublisher<Void, Error> {
-        Fail<Void, Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        favoritesWebRepository.clearFavorites()
     }
+
+    // MARK: - Private
 
     private func transform(json: [TrueWinePositionJson]) -> [WinePosition] {
         json.map { json in
             let wine = json.wine
+            let isLiked = favoritesId?.contains(json.winePositionId) ?? false
             return WinePosition(
                 id: json.winePositionId,
                 title: json.wine.name,
@@ -98,7 +128,7 @@ final class RealCatalogService: CatalogService {
                 year: "\(wine.year)",
                 wineSugar: wine.sugar.sugar,
                 quantityLiters: json.volume,
-                isLiked: Bool.random(), // TODO: Missing data
+                isLiked: isLiked, // TODO: Missing data
                 chemistry: Float.random(in: 0..<100), // TODO: Missing data
                 titleImageUrl: json.image,
                 retailerName: json.shop.site, // TODO: Missing data
@@ -107,6 +137,23 @@ final class RealCatalogService: CatalogService {
                 discountPercents: (json.price - json.actualPrice) / json.price
             )
         }
+    }
+
+    private func favoritesIdPublisher() -> AnyPublisher<Set<String>, Error> {
+        if let favoritesId = self.favoritesId {
+            return Just(favoritesId)
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        return favoritesWebRepository
+            .getAllFavoriteWinePositions()
+            .map { favoriteWinePositionJsons in
+                Set(favoriteWinePositionJsons.map { $0.id })
+            }
+            .pass {
+                self.favoritesId = $0
+            }
+            .eraseToAnyPublisher()
     }
 }
 
