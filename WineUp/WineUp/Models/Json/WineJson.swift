@@ -25,12 +25,13 @@ extension WineJson {
         case red = "RED"
         case white = "WHITE"
         case rose = "ROSE"
+        case orange = "ORANGE"
     }
 
     enum Sugar: String, Codable {
         case dry = "DRY"
         case semiDry = "MEDIUM_DRY"
-        case semiSweet = "MEDIUM_SWEET"
+        case semiSweet = "MEDIUM"
         case sweet = "SWEET"
     }
 

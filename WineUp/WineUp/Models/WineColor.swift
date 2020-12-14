@@ -8,7 +8,7 @@
 import Foundation
 
 enum WineColor {
-    case red, white, rose
+    case red, white, rose, orange
 }
 
 // MARK: - Helpers
@@ -23,6 +23,8 @@ extension WineColor {
             return "Белое"
         case .rose:
             return "Розовое"
+        case .orange:
+            return "Оранжевое"
         }
     }
 }
@@ -36,6 +38,8 @@ extension WineJson.Color {
             return .white
         case .rose:
             return .rose
+        case .orange:
+            return .orange
         }
     }
 }

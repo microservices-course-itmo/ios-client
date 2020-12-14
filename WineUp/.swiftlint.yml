@@ -1,5 +1,6 @@
 excluded:
   - WineUp/Resources
+  - Pods
 
 analyzer_rules:
   - unused_declaration
@@ -73,11 +74,13 @@ opt_in_rules:
 
 disabled_rules:
   - todo
+  - file_name
 
 identifier_name:
   excluded:
     - id
     - to
+    - ns
 
 type_body_length:
   - 500 # warning

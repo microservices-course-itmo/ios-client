@@ -10,7 +10,6 @@ import Combine
 
 // MARK: WineWebRepository
 
-// swiftlint:disable identifier_name
 protocol WinePositionWebRepository: WebRepository {
     /// Create wine position with data from form
     func createWinePosition(from form: WinePositionJson.CreateForm) -> AnyPublisher<Void, Error>
