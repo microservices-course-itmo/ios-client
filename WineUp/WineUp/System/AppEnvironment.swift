@@ -52,7 +52,8 @@ extension AppEnvironment {
             user: RealUserWebRepository(session: session, baseURL: userServiceBaseUrl),
             winePosition: RealWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
             truwWinePosition: RealTrueWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            shop: RealShopWebRepository(session: session, baseURL: catalogServiceBaseUrl)
+            shop: RealShopWebRepository(session: session, baseURL: catalogServiceBaseUrl),
+            favoritesWebRepository: RealFavoritesWebRepository(session: session, baseURL: catalogServiceBaseUrl)
         )
     }
 
@@ -69,7 +70,8 @@ extension AppEnvironment {
         let firebaseService = RealFirebaseService()
 
         let catalogService = RealCatalogService(
-            winePositionWebRepository: webRepositories.truwWinePosition
+            winePositionWebRepository: webRepositories.truwWinePosition,
+            favoritesWebRepository: webRepositories.favoritesWebRepository
         )
 
         let authenticationService = RealAuthenticationService(
@@ -97,6 +99,7 @@ extension DIContainer {
         let winePosition: WinePositionWebRepository
         let truwWinePosition: TrueWinePositionWebRepository
         let shop: ShopWebRepository
+        let favoritesWebRepository: FavoritesWebRepository
     }
 
     struct PersistentRepositories {
