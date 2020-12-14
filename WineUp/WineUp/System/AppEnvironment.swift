@@ -17,12 +17,14 @@ extension AppEnvironment {
     static func bootstrap() -> AppEnvironment {
         let appState = Store<AppState>(AppState())
         let session = configuredURLSession()
-        let webRepositories = configuredWebRepositories(session: session)
+        let credentials = Store<Credentials?>(nil)
+        let webRepositories = configuredWebRepositories(session: session, credentials: credentials)
         let dbRepositories = configuredPersistentRepositories(appState: appState)
         let services = configuredServices(
             appState: appState,
             dbRepositories: dbRepositories,
-            webRepositories: webRepositories
+            webRepositories: webRepositories,
+            credentials: credentials
         )
         let diContainer = DIContainer(appState: appState, services: services)
         return AppEnvironment(container: diContainer)
@@ -39,7 +41,7 @@ extension AppEnvironment {
         return URLSession(configuration: configuration)
     }
 
-    private static func configuredWebRepositories(session: URLSession) -> DIContainer.WebRepositories {
+    private static func configuredWebRepositories(session: URLSession, credentials: Store<Credentials?>) -> DIContainer.WebRepositories {
         let userServiceBaseUrl = "http://77.234.215.138:48080/user-service"
         let catalogServiceBaseUrl = "http://77.234.215.138:48080/catalog-service"
 
@@ -53,7 +55,7 @@ extension AppEnvironment {
             winePosition: RealWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
             truwWinePosition: RealTrueWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
             shop: RealShopWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            favoritesWebRepository: RealFavoritesWebRepository(session: session, baseURL: catalogServiceBaseUrl)
+            favoritesWebRepository: RealFavoritesWebRepository(session: session, baseURL: userServiceBaseUrl, credentials: credentials)
         )
     }
 
@@ -66,7 +68,8 @@ extension AppEnvironment {
     private static func configuredServices(
         appState: Store<AppState>,
         dbRepositories: DIContainer.PersistentRepositories,
-        webRepositories: DIContainer.WebRepositories) -> DIContainer.Services {
+        webRepositories: DIContainer.WebRepositories,
+        credentials: Store<Credentials?>) -> DIContainer.Services {
         let firebaseService = RealFirebaseService()
 
         let catalogService = RealCatalogService(
@@ -77,7 +80,8 @@ extension AppEnvironment {
         let authenticationService = RealAuthenticationService(
             firebaseService: firebaseService,
             authWebRepository: webRepositories.auth,
-            authCredentialsPersistanceRepository: dbRepositories.authCredentials
+            authCredentialsPersistanceRepository: dbRepositories.authCredentials,
+            credentials: credentials
         )
 
         return DIContainer.Services(
