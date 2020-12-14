@@ -43,8 +43,13 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
     }
 
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error> {
-        Fail<[TrueWinePositionJson], Error>(error: WineUpError.notImplemented())
-            .eraseToAnyPublisher()
+        if ids.isEmpty {
+            // Catalog service will return 400 if list if empty
+            return Just<[TrueWinePositionJson]>.withErrorType([], Error.self)
+                .eraseToAnyPublisher()
+        } else {
+            return request(endpoint: .getTrueWinePositions(by: ids))
+        }
     }
 }
 
@@ -53,5 +58,10 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
 private extension APICall {
     static func getAllTrueWinePositions(parameters: QueryParameters) -> APICall {
         APICall(path: "/position/true/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
+    }
+
+    static func getTrueWinePositions(by ids: [String]) -> APICall {
+        let parameters = ids.map { ("favouritePosition", $0) }
+        return APICall(path: "/position/true/favourites/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
     }
 }
