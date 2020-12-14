@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import struct Kingfisher.KFImage
 
 // MARK: - Constants
 
@@ -84,7 +85,7 @@ extension WinePositionDetailsView {
 
                     Spacer()
 
-                    Image(uiImage: winePosition.titleImage)
+                    KFImage.fromUniverseUrl(winePosition.titleImageUrl)
                         .resizable(resizingMode: .stretch)
                         .scaledToFill()
                         .frame(width: .bottleWidth)

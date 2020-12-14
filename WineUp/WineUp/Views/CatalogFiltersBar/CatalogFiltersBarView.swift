@@ -43,7 +43,7 @@ struct CatalogFiltersBarView: View {
         HStack(spacing: .interitemSpacing) {
             ForEach(items) { item in
                 ItemButton(item: item, onTap: { itemDidTap(item) })
-                    .frame(minWidth: .minItemWidth, maxWidth: .infinity)
+                    .frame(minWidth: .minItemWidth)
             }
         }
     }

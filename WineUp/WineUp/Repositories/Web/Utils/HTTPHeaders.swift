@@ -15,7 +15,7 @@ extension HTTPHeaders {
     }
 
     func accessToken(_ accessToken: String) -> HTTPHeaders {
-        updateValueWithCopy(accessToken, forKey: .accessTokenHeader)
+        updateValueWithCopy("Bearer \(accessToken)", forKey: .accessTokenHeader)
     }
 
     func contentType(_ contentType: String) -> HTTPHeaders {
@@ -43,6 +43,6 @@ private extension Dictionary {
 }
 
 private extension String {
-    static let accessTokenHeader = "accessToken"
+    static let accessTokenHeader = "Authorization"
     static let contentType = "Content-Type"
 }
