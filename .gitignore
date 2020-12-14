@@ -1,0 +1,14 @@
+## General
+.DS_Store
+
+## can be excluded because of XcodeGen usage
+**/*.xcodeproj/
+**/*.xcworkspace/
+**/WineUp/Info.plist
+**/*.entitlements
+
+## R.swift generated file
+**/R.generated.swift
+
+## Cocoapods
+**/Pods/
