@@ -13,11 +13,15 @@ struct ProfileView: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
     @State private var showingAlert = false
+    @State private var showLogoutActionSheet = false
 
     var body: some View {
         VStack(spacing: 32) {
             Spacer()
-//            Spacer()
+
+            Image("Logo")
+                .resizable()
+                .frame(width: 220, height: 220)
 
             VStack(spacing: 0) {
                 Text("Иван Иванов")
@@ -50,11 +54,17 @@ struct ProfileView: View {
                     }
                     .padding(.bottom, 48)
 
-                    Button(action: viewModel.logoutButtonDidTap, label: {
+                    Button(action: { showLogoutActionSheet = true }, label: {
                         Text("Выйти из аккаунта")
                     })
                     .defaultStyled(isDisabled: false)
                     .padding(.bottom, 32)
+                    .actionSheet(isPresented: $showLogoutActionSheet, content: {
+                        ActionSheet(title: Text("Вы уверены?"), message: Text("Потом придётся снова авторизовываться"), buttons: [
+                            .destructive(Text("Выйти")) { self.viewModel.logoutButtonDidTap() },
+                            .cancel()
+                        ])
+                    })
 
                     Button(action: {
                         self.showingAlert = true
@@ -77,10 +87,6 @@ struct ProfileView: View {
             .cardStyled()
             .frame(maxHeight: 600)
             .padding()
-
-
-            //
-            //
         }
     }
 }
