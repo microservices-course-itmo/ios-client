@@ -16,12 +16,15 @@ struct ProfileView: View {
     @State private var showLogoutActionSheet = false
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack {
             Spacer()
 
             Image("Logo")
                 .resizable()
-                .frame(width: 220, height: 220)
+                .aspectRatio(contentMode: .fit)
+                .frame(maxHeight: 240)
+
+            Spacer()
 
             VStack(spacing: 0) {
                 Text("Иван Иванов")
@@ -35,7 +38,7 @@ struct ProfileView: View {
 
                         Text("+7 (911) 272-78-57")
                             .frame(width: 260)
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 14)
                             .background(Color(.systemGray6))
                             .cornerRadius(8.0)
                     }
@@ -47,18 +50,18 @@ struct ProfileView: View {
 
                         Text("Москва")
                             .frame(width: 260)
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 14)
                             .background(Color(.systemGray6))
                             .cornerRadius(8.0)
 
                     }
-                    .padding(.bottom, 48)
+                    .padding(.bottom, 32)
 
                     Button(action: { showLogoutActionSheet = true }, label: {
                         Text("Выйти из аккаунта")
                     })
                     .defaultStyled(isDisabled: false)
-                    .padding(.bottom, 32)
+                    .padding(.bottom, 16)
                     .actionSheet(isPresented: $showLogoutActionSheet, content: {
                         ActionSheet(title: Text("Вы уверены?"), message: Text("Потом придётся снова авторизовываться"), buttons: [
                             .destructive(Text("Выйти")) { self.viewModel.logoutButtonDidTap() },
@@ -85,7 +88,7 @@ struct ProfileView: View {
                 .padding()
             }
             .cardStyled()
-            .frame(maxHeight: 600)
+            .frame(maxHeight: 450)
             .padding()
         }
     }

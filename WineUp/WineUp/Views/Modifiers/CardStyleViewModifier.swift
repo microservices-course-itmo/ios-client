@@ -19,7 +19,7 @@ struct CardStyleViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             Rectangle()
-                .fill(Color.white)
+                .fill(Color(.systemBackground))
                 .cornerRadius(cornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: cornerRadius)
@@ -38,8 +38,8 @@ struct CardStyleViewModifier: ViewModifier {
 extension View {
     func cardStyled(
         cornerRadius: CGFloat = 15,
-        borderColor: Color = Color.black.opacity(0.1),
-        shadowColor: Color = Color.black.opacity(0.1),
+        borderColor: Color = Color(.label).opacity(0.1),
+        shadowColor: Color = Color(.label).opacity(0.1),
         shadowRadius: CGFloat = 16
     ) -> some View {
         self
