@@ -15,9 +15,9 @@ private extension CGFloat {
 }
 
 private extension Color {
-    static let enabledTitle = Color(.systemBackground)
+    static let enabledTitle = Color.white
     static let enabledBackground: Color = .blue
-    static let disabledTitle = Color(.label)
+    static let disabledTitle = Color.black
     static let disabledBackground = Color(.systemGray4)
 }
 
