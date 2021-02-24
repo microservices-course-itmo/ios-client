@@ -42,8 +42,8 @@ extension AppEnvironment {
     }
 
     private static func configuredWebRepositories(session: URLSession, credentials: Store<Credentials?>) -> DIContainer.WebRepositories {
-        let userServiceBaseUrl = "http://77.234.215.138:48080/user-service"
-        let catalogServiceBaseUrl = "http://77.234.215.138:48080/catalog-service"
+        let userServiceBaseUrl = "http://77.234.215.138:18080/user-service"
+        let catalogServiceBaseUrl = "http://77.234.215.138:18080/catalog-service"
 
         return DIContainer.WebRepositories(
             wine: RealWineWebRepository(session: session, baseURL: catalogServiceBaseUrl),
