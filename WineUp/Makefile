@@ -8,7 +8,7 @@ clean:
 
 gen:
 	xcodegen generate
-	pod install
+	pod install --repo-update
 
 open:
 	open WineUp.xcworkspace
