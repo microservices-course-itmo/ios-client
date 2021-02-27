@@ -15,14 +15,19 @@ extension ProfileView {
         // MARK: Variables
 
         @Published var logout: Loadable<Void> = .notRequested
+        var user: UserJson? {
+            container.services.authenticationService.user
+        }
 
         private let container: DIContainer
 
-        // MARK: Public
+        // MARK: - Init
 
         init(container: DIContainer) {
             self.container = container
         }
+
+        // MARK: - Public
 
         var hexAPNSId: String? {
             UserDefaults.standard.data(forKey: "APNSID")?.hexString
@@ -30,6 +35,7 @@ extension ProfileView {
 
         func logoutButtonDidTap() {
             let bag = CancelBag()
+
             logout.setIsLoading(cancelBag: bag)
             container.services.authenticationService
                 .clean()
@@ -40,7 +46,6 @@ extension ProfileView {
                     self.logout = $0
                 }
                 .store(in: bag)
-
         }
     }
 }

@@ -8,17 +8,14 @@
 import SwiftUI
 
 extension View {
+
+    @ViewBuilder
     func activity(hasActivity: Bool, disableInteractionIfNeeded disableInteraction: Bool = true) -> some View {
         if hasActivity {
-            return self
-                .overlay(
-                    ActivityIndicator()
-                        .hoverEffect()
-                )
+            self.overlay(ActivityIndicator().hoverEffect())
                 .disabled(disableInteraction)
-                .anyView
         } else {
-            return self.anyView
+            self
         }
     }
 }

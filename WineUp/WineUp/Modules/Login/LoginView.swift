@@ -24,16 +24,18 @@ struct LoginView: View {
     @ObservedObject private(set) var viewModel: ViewModel
     @State private var currentPage: Int = 0
 
+    // В статье описано как можно избавиться от AnyView https://swiftbysundell.com/articles/avoiding-anyview-in-swiftui/
+    @ViewBuilder
     var body: some View {
         switch viewModel.registration {
         case .notRequested:
-            return pagesContent().anyView
+            pagesContent()
         case .isLoading:
-            return pagesContent().activity(hasActivity: true).anyView
+            pagesContent().activity(hasActivity: true)
         case let .failed(error):
-            return Text("Authentication error: \(error.description)").anyView
+            Text("Authentication error: \(error.description)")
         case .loaded:
-            return Text("Success!").anyView
+            Text("Success!")
         }
     }
 

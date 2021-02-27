@@ -61,8 +61,8 @@ extension StubRadioButtonItem {
 
 extension UserJson {
     static let mockedData: [UserJson] = [
-        UserJson(id: "1", role: "USER"),
-        UserJson(id: "2", role: "USER")
+        UserJson(id: "1", birthdate: "12.12.1212", city: .moscow, name: "Alex", phoneNumber: "1234567890", role: "USER"),
+        UserJson(id: "2", birthdate: "12.12.1212", city: .saintPetersburg, name: "Vlad", phoneNumber: "1234567890", role: "USER")
     ]
 }
 
