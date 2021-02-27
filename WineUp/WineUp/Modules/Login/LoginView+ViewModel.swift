@@ -44,7 +44,6 @@ extension LoginView {
         @Published var registration: Loadable<Void> = .notRequested
 
         private let container: DIContainer
-        private let bag = CancelBag()
 
         // MARK: Public
 
@@ -65,6 +64,8 @@ extension LoginView {
         }
 
         func verificationCodeDidSubmit() {
+            let bag = CancelBag()
+
             container.services.authenticationService
                 .login()
                 .sinkToResult { result in
@@ -138,6 +139,8 @@ extension LoginView {
                 assertionFailure()
                 return
             }
+
+            let bag = CancelBag()
 
             registration.setIsLoading(cancelBag: bag)
 

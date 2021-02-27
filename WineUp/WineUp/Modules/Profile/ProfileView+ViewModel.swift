@@ -20,7 +20,6 @@ extension ProfileView {
         }
 
         private let container: DIContainer
-        private let bag = CancelBag()
 
         // MARK: - Init
 
@@ -35,6 +34,8 @@ extension ProfileView {
         }
 
         func logoutButtonDidTap() {
+            let bag = CancelBag()
+
             logout.setIsLoading(cancelBag: bag)
             container.services.authenticationService
                 .clean()
@@ -45,7 +46,6 @@ extension ProfileView {
                     self.logout = $0
                 }
                 .store(in: bag)
-
         }
     }
 }
