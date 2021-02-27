@@ -139,7 +139,6 @@ extension LoginView {
                 return
             }
 
-            let bag = CancelBag()
             registration.setIsLoading(cancelBag: bag)
 
             container.services.firebaseService
