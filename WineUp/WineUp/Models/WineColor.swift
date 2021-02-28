@@ -43,3 +43,18 @@ extension WineJson.Color {
         }
     }
 }
+
+extension WineColor {
+    var json: WineJson.Color {
+        switch self {
+        case .red:
+            return .red
+        case .white:
+            return .white
+        case .rose:
+            return .rose
+        case .orange:
+            return .orange
+        }
+    }
+}

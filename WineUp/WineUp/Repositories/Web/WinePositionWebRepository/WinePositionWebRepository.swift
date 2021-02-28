@@ -18,10 +18,10 @@ protocol WinePositionWebRepository: WebRepository {
     /// Get list of all wine positions
     func getAllWinePositions() -> AnyPublisher<[WinePositionJson], Error>
     /// Get list of all wine positions
-    func getAllWinePositionWithSettings(from: Int,
-                                        to: Int,
+    func getAllWinePositionWithSettings(page: Int,
+                                        amount: Int,
                                         filters: [WinePositionFilters],
-                                        sortBy: [FilterSortBy]) -> AnyPublisher<[WinePositionJson], Error>
+                                        sortBy: FilterSortBy) -> AnyPublisher<[WinePositionJson], Error>
     /// Get list of all wine positions with parameters
     func getAllWinePositionByName(name: String) -> AnyPublisher<[WinePositionJson], Error>
     /// Get wine position by id
@@ -58,11 +58,11 @@ final class RealWinePositionWebRepository: WinePositionWebRepository {
         request(endpoint: .getAllWinePositions())
     }
 
-    func getAllWinePositionWithSettings(from: Int,
-                                        to: Int,
+    func getAllWinePositionWithSettings(page: Int,
+                                        amount: Int,
                                         filters: [WinePositionFilters],
-                                        sortBy: [FilterSortBy]) -> AnyPublisher<[WinePositionJson], Error> {
-        let queryItems = bodyBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
+                                        sortBy: FilterSortBy) -> AnyPublisher<[WinePositionJson], Error> {
+        let queryItems = bodyBuilder.build(page: page, amount: amount, filters: filters, sortBy: sortBy)
         return request(endpoint: .getAllWinePositionWithSettings(parameters: queryItems))
     }
 
@@ -95,7 +95,7 @@ private extension APICall {
     }
 
     static func getAllWinePositionWithSettings(parameters: QueryParameters) -> APICall {
-        APICall(path: "/position/true",
+        APICall(path: "/position/true/trueSettings",
                 method: "GET",
                 headers: HTTPHeaders.empty.mockedAccessToken(),
                 parameters: parameters)

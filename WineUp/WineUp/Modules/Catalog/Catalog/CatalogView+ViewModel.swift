@@ -81,7 +81,16 @@ extension CatalogView {
         // MARK: Public Methods
 
         func loadCatalogItems(colors: [WineColor], sugar: [WineSugar], countries: [Country], sortBy: SortBy) {
-            container.services.catalogService.load(winePositions: loadableSubject(\.catalogItems))
+            // TODO: Calculate page based on lazy loading of catalog list
+            container.services.catalogService.load(
+                winePositions: loadableSubject(\.catalogItems),
+                page: 0,
+                amount: 20,
+                colors: colors,
+                sugars: sugar,
+                countries: countries,
+                sortBy: sortBy
+            )
         }
 
         func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
