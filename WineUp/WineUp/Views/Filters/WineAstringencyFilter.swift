@@ -1,5 +1,5 @@
 //
-//  WineColorFilter.swift
+//  WineSugarFilter.swift
 //  WineUp
 //
 //  Created by Александр Пахомов on 09.10.2020.
@@ -15,42 +15,43 @@ private extension Font {
 
 // MARK: - View
 
-struct WineColorFilter: View {
+struct WineSugarFilter: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    let allCases: [WineSugar] = [.dry, .semiDry, .semiSweet, .sweet]
+    @Binding var selected: [WineSugar]
 
     var body: some View {
         RadioButton(
             spacing: 0,
-            items: viewModel.items,
+            items: allCases,
             maxChecked: nil,
             isScrollable: false,
             isLineHidden: false,
-            checkedItems: $viewModel.checkedItems
+            checkedItems: $selected
         )
         .font(.radioButton)
     }
 }
 
-// MARK: - RadioButtonItem
+// MARK: - WineSugar+RadioButtonItem
 
-extension WineColorFilter.Item: RadioButtonItem {
-    var id: WineColor {
-        wineColor
+extension WineSugar: RadioButtonItem {
+    var id: WineSugar {
+        self
     }
 
     var textRepresentation: LocalizedStringKey {
-        .init(wineColor.name)
+        .init(name)
     }
 }
 
 // MARK: - Preview
 
 #if DEBUG
-struct WineColorFilter_Previews: PreviewProvider {
+struct WineSugarFilter_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            WineColorFilter(viewModel: .init())
+            WineSugarFilter(selected: .constant([.dry]))
         }
         .previewLayout(.fixed(width: 400, height: 250))
     }

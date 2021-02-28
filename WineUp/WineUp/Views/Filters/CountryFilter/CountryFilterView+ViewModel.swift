@@ -13,29 +13,13 @@ import Combine
 extension CountryFilterView {
     final class ViewModel: ObservableObject {
 
-        @Published var countries: [Country] = []
-        @Published var selectedCountries: [Country] = []
-        @Published var searchText: String = "" {
-            didSet {
-                searchTextDidSet()
-            }
-        }
+        private lazy var cachedAllCountries = ViewModel.getAllCountries()
 
-        private static let allCountries = ViewModel.getCountries()
-
-        init() {
-            updateAvailableCountries()
+        func getCountries(with pattern: String) -> [Country] {
+            ViewModel.filter(cachedAllCountries, with: pattern)
         }
 
         // MARK: Helpers
-
-        func searchTextDidSet() {
-            updateAvailableCountries()
-        }
-
-        private func updateAvailableCountries() {
-            countries = ViewModel.filter(ViewModel.allCountries, with: searchText)
-        }
 
         private static func filter(_ countries: [Country], with pattern: String) -> [Country] {
             guard !pattern.isEmpty else {
@@ -47,25 +31,25 @@ extension CountryFilterView {
             }
         }
 
-        private static func getCountries() -> [Country] {
-            var items = [Country]()
-            for code in NSLocale.isoCountryCodes {
-                let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
-                guard let name = NSLocale(localeIdentifier: "en_UK")
-                        .displayName(forKey: NSLocale.Key.identifier, value: id) else { continue }
-                items.append(Country(id: id, name: name))
-            }
-            items.sort(by: { $0.name > $1.name })
-            return items
+        static func getAllCountries() -> [Country] {
+            Country.allCases
         }
     }
 }
 
-// MARK: - CountryFilterView+Country
+struct Country: Equatable {
+    var id: String
+    var name: String
 
-extension CountryFilterView {
-    struct Country: Equatable {
-        var id: String
-        var name: String
+    static var allCases: [Country] {
+        var items = [Country]()
+        for code in NSLocale.isoCountryCodes {
+            let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
+            guard let name = NSLocale(localeIdentifier: "en_UK")
+                    .displayName(forKey: NSLocale.Key.identifier, value: id) else { continue }
+            items.append(Country(id: id, name: name))
+        }
+        items.sort(by: { $0.name > $1.name })
+        return items
     }
 }

@@ -18,27 +18,33 @@ private extension CGFloat {
 
 struct CountryFilterView: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    @Binding var selected: [Country]
+
+    @StateObject private var viewModel = ViewModel()
+    @State private var searchText = ""
 
     var body: some View {
         VStack {
-            SearchBarView(text: $viewModel.searchText)
+            SearchBarView(text: $searchText)
 
             RadioButton(
                 spacing: .countriesSpacing,
-                items: viewModel.countries,
+                items: allCases,
                 isScrollable: true,
-                checkedItems: $viewModel.selectedCountries
+                checkedItems: $selected
             )
             .frame(maxHeight: .maxCountriesListHeight)
         }
+    }
 
+    private var allCases: [Country] {
+        viewModel.getCountries(with: searchText)
     }
 }
 
 // MARK: - RadioButtonItem
 
-extension CountryFilterView.Country: RadioButtonItem {
+extension Country: RadioButtonItem {
     var textRepresentation: LocalizedStringKey {
         LocalizedStringKey(name)
     }
@@ -49,7 +55,7 @@ extension CountryFilterView.Country: RadioButtonItem {
 #if DEBUG
 struct CountryFilterView_Previews: PreviewProvider {
     static var previews: some View {
-        CountryFilterView(viewModel: .init())
+        CountryFilterView(selected: .constant([]))
     }
 }
 #endif
