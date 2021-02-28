@@ -11,7 +11,7 @@ enum SortBy {
     /// Show recommended first
     case recommended
     /// Show most rated first
-    case baseedOnRating
+    case basedOnRating
     /// Show lower price first
     case priceAsc
     /// Show higher price first
