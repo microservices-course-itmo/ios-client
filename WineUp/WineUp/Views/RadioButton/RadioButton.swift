@@ -64,7 +64,7 @@ struct RadioButton<Item: RadioButtonItem>: View {
     // MARK: Displaying Items
 
     private func itemsList() -> some View {
-        VStack(alignment: .leading, spacing: spacing) {
+        LazyVStack(alignment: .leading, spacing: spacing) {
             ForEach(items) { item in
                 ItemButton(
                     onTap: { itemButtonDidTap(item) },
