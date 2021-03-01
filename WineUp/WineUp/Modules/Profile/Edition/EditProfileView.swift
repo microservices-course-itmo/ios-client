@@ -9,15 +9,6 @@ import SwiftUI
 
 // MARK: - View
 
-extension View {
-    func onSuccess<T>(_ loadable: Loadable<T>, perform block: @escaping () -> Void) -> some View {
-        if loadable.value != nil {
-            block()
-        }
-        return self
-    }
-}
-
 struct EditProfileView: View {
 
     @StateObject var viewModel: ViewModel
