@@ -9,6 +9,15 @@ import SwiftUI
 
 // MARK: - View
 
+extension View {
+    func onSuccess<T>(_ loadable: Loadable<T>, perform block: @escaping () -> Void) -> some View {
+        if loadable.value != nil {
+            block()
+        }
+        return self
+    }
+}
+
 struct EditProfileView: View {
 
     @StateObject var viewModel: ViewModel
@@ -51,7 +60,6 @@ struct EditProfileView: View {
 
                 Button(action: {
                     viewModel.updateProfile()
-                    presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Text("Cохранить")
                 })
@@ -63,6 +71,10 @@ struct EditProfileView: View {
         .cardStyled()
         .frame(maxHeight: 450)
         .padding()
+        .activity(triggers: viewModel.updatingProfileSuccess)
+        .onSuccess(viewModel.updatingProfileSuccess) {
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 

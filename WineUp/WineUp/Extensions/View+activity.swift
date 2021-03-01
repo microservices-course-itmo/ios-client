@@ -18,4 +18,26 @@ extension View {
             self
         }
     }
+
+    func activity(triggers: [ActivityTrigger]) -> some View {
+        let activityNeeded = triggers.contains(where: { $0.triggersActivity() })
+        return self.activity(hasActivity: activityNeeded)
+    }
+
+    func activity(triggers: ActivityTrigger...) -> some View {
+        activity(triggers: triggers)
+    }
+}
+
+protocol ActivityTrigger {
+    func triggersActivity() -> Bool
+}
+
+extension Loadable: ActivityTrigger {
+    func triggersActivity() -> Bool {
+        if case .isLoading = self {
+            return true
+        }
+        return false
+    }
 }
