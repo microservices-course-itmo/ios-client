@@ -18,14 +18,17 @@ extension AppEnvironment {
         let appState = Store<AppState>(AppState())
         let session = configuredURLSession()
         let credentials = Store<Credentials?>(nil)
+
         let webRepositories = configuredWebRepositories(session: session, credentials: credentials)
         let dbRepositories = configuredPersistentRepositories(appState: appState)
+
         let services = configuredServices(
             appState: appState,
             dbRepositories: dbRepositories,
             webRepositories: webRepositories,
             credentials: credentials
         )
+
         let diContainer = DIContainer(appState: appState, services: services)
         return AppEnvironment(container: diContainer)
     }
@@ -46,15 +49,15 @@ extension AppEnvironment {
         let catalogServiceBaseUrl = "http://77.234.215.138:18080/catalog-service"
 
         return DIContainer.WebRepositories(
-            wine: RealWineWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            auth: RealAuthenticationWebRepository(session: session, baseURL: userServiceBaseUrl),
-            brands: RealBrandsWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            grape: RealGrapeWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            producer: RealProducerWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            user: RealUserWebRepository(session: session, baseURL: userServiceBaseUrl),
-            winePosition: RealWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            truwWinePosition: RealTrueWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl),
-            shop: RealShopWebRepository(session: session, baseURL: catalogServiceBaseUrl),
+            wine: RealWineWebRepository(session: session, baseURL: catalogServiceBaseUrl, credentials: credentials),
+            auth: RealAuthenticationWebRepository(session: session, baseURL: userServiceBaseUrl, credentials: credentials),
+            brands: RealBrandsWebRepository(session: session, baseURL: catalogServiceBaseUrl, credentials: credentials),
+            grape: RealGrapeWebRepository(session: session, baseURL: catalogServiceBaseUrl, credentials: credentials),
+            producer: RealProducerWebRepository(session: session, baseURL: catalogServiceBaseUrl, credentials: credentials),
+            user: RealUserWebRepository(session: session, baseURL: userServiceBaseUrl, credentials: credentials),
+            winePosition: RealWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl, credentials: credentials),
+            truwWinePosition: RealTrueWinePositionWebRepository(session: session, baseURL: catalogServiceBaseUrl, credentials: credentials),
+            shop: RealShopWebRepository(session: session, baseURL: catalogServiceBaseUrl, credentials: credentials),
             favoritesWebRepository: RealFavoritesWebRepository(session: session, baseURL: userServiceBaseUrl, credentials: credentials)
         )
     }
@@ -80,6 +83,7 @@ extension AppEnvironment {
         let authenticationService = RealAuthenticationService(
             firebaseService: firebaseService,
             authWebRepository: webRepositories.auth,
+            userRepository: webRepositories.user,
             authCredentialsPersistanceRepository: dbRepositories.authCredentials,
             credentials: credentials
         )

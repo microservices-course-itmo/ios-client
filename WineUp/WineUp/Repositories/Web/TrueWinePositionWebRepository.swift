@@ -26,12 +26,14 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
     let session: URLSession
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
+    let credentials: Store<Credentials?>
 
     private let queryParamsBuilder = WinePositionWebRepositoryQueryParametersBuidler()
 
-    init(session: URLSession, baseURL: String) {
+    init(session: URLSession, baseURL: String, credentials: Store<Credentials?>) {
         self.session = session
         self.baseURL = baseURL
+        self.credentials = credentials
     }
 
     func getAllTrueWinePositions(from: Int,

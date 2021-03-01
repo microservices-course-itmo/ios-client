@@ -43,4 +43,9 @@ extension UserJson {
         var fireBaseToken: FirebaseToken
         var name: String
     }
+
+    struct UpdateForm: Encodable {
+        var cityId: Int?
+        var phoneNumber: String?
+    }
 }

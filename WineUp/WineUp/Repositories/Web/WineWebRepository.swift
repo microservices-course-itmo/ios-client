@@ -30,10 +30,12 @@ final class RealWineWebRepository: WineWebRepository {
     let session: URLSession
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
+    let credentials: Store<Credentials?>
 
-    init(session: URLSession, baseURL: String) {
+    init(session: URLSession, baseURL: String, credentials: Store<Credentials?>) {
         self.session = session
         self.baseURL = baseURL
+        self.credentials = credentials
     }
 
     func createWine(from form: WineJson.CreateForm) -> AnyPublisher<Void, Error> {
