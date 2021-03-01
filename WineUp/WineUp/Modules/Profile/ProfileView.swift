@@ -14,6 +14,8 @@ struct ProfileView: View {
     @ObservedObject private(set) var viewModel: ViewModel
     @State private var showingAlert = false
     @State private var showLogoutActionSheet = false
+    @State private var showEditSheet = false
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
@@ -65,6 +67,14 @@ struct ProfileView: View {
 
                 }
                 .padding(.bottom, 32)
+                Button(action: { showEditSheet.toggle() }, label: {
+                    Text("Редактировать")
+                })
+                .defaultStyled(isDisabled: false)
+                .padding(.bottom, 16)
+                .sheet(isPresented: $showEditSheet) {
+                    EditProfileView()
+                }
 
                 Button(action: { showLogoutActionSheet = true }, label: {
                     Text("Выйти из аккаунта")
