@@ -15,16 +15,18 @@ extension ProfileView {
         // MARK: Variables
 
         @Published var logout: Loadable<Void> = .notRequested
-        var user: UserJson? {
-            container.services.authenticationService.user
-        }
+        @Published var user: UserJson?
 
         private let container: DIContainer
+        private let bag = CancelBag()
 
         // MARK: - Init
 
         init(container: DIContainer) {
             self.container = container
+            bag.collect {
+                container.services.authenticationService.user.assign(to: \.user, on: self)
+            }
         }
 
         // MARK: - Public

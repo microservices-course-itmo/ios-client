@@ -31,7 +31,7 @@ extension EditProfileView {
                 $phoneNumber.map { $0.value.count == 18 }.bind(to: self, by: \.isDoneButtonActive)
             }
 
-            let user = container.services.authenticationService.user
+            let user = container.services.authenticationService.user.value
             city = user?.city ?? .saintPetersburg
             phoneNumber.value = user?.phoneNumber ?? ""
         }

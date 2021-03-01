@@ -24,7 +24,7 @@ protocol AuthenticationService: Service {
     /// Currently authenticated user's headers
     var authHeaders: HTTPHeaders? { get }
     /// Currently authenticated user
-    var user: UserJson? { get }
+    var user: Store<UserJson?> { get }
 }
 
 // MARK: - Implementation
@@ -36,6 +36,8 @@ final class RealAuthenticationService: AuthenticationService {
     private let userRepository: UserWebRepository
     private let authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository
     private let credentials: Store<Credentials?>
+
+    var user: Store<UserJson?> = .init(nil)
 
     init(firebaseService: FirebaseService,
          authWebRepository: AuthenticationWebRepository,
@@ -76,7 +78,7 @@ final class RealAuthenticationService: AuthenticationService {
     func closeSession() -> AnyPublisher<Void, Error> {
         authCredentialsPersistanceRepository.credentials = nil
         credentials.value = nil
-        user = nil
+        user.value = nil
         return Just<Void>.withErrorType(Error.self).eraseToAnyPublisher()
     }
 
@@ -99,7 +101,7 @@ final class RealAuthenticationService: AuthenticationService {
         userRepository
             .updateCurrentUser(with: form)
             .pass {
-                self.user = $0
+                self.user.value = $0
             }
     }
 
@@ -107,11 +109,9 @@ final class RealAuthenticationService: AuthenticationService {
         authCredentialsPersistanceRepository.credentials?.authHeaders
     }
 
-    var user: UserJson?
-
     private func handleLoginResponse(_ loginResponse: UserJson.LoginResponse) -> UserJson {
         saveCredentialsFrom(loginResponse: loginResponse)
-        user = loginResponse.user
+        user.value = loginResponse.user
         return loginResponse.user
     }
 
@@ -162,9 +162,7 @@ final class StubAuthenticationService: AuthenticationService {
         HTTPHeaders.empty.mockedAccessToken()
     }
 
-    var user: UserJson? {
-        UserJson.mockedData[0]
-    }
+    var user: Store<UserJson?> = .init(UserJson.mockedData[0])
 
     static var preview: AuthenticationService {
         StubAuthenticationService()
