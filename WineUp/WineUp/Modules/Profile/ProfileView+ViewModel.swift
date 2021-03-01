@@ -47,6 +47,10 @@ extension ProfileView {
                 }
                 .store(in: bag)
         }
+
+        var editProfileViewModel: EditProfileView.ViewModel {
+            .init(container: container)
+        }
     }
 }
 

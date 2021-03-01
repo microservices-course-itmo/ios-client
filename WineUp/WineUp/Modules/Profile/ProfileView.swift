@@ -67,13 +67,13 @@ struct ProfileView: View {
 
                 }
                 .padding(.bottom, 32)
-                Button(action: { showEditSheet.toggle() }, label: {
+                Button(action: { showEditSheet = true }, label: {
                     Text("Редактировать")
                 })
                 .defaultStyled(isDisabled: false)
                 .padding(.bottom, 16)
                 .sheet(isPresented: $showEditSheet) {
-                    EditProfileView()
+                    EditProfileView(viewModel: viewModel.editProfileViewModel)
                 }
 
                 Button(action: { showLogoutActionSheet = true }, label: {
