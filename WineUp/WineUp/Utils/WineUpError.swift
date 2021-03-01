@@ -14,4 +14,6 @@ enum WineUpError: Error {
     case invalidState(_ description: String?)
     /// Method not implemented
     case notImplemented(_ file: String = #file, method: String = #function)
+    /// Trying to use method which needs authentication
+    case notAuthenticated
 }

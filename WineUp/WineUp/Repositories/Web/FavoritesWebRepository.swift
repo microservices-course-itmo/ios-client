@@ -82,16 +82,6 @@ final class RealFavoritesWebRepository: FavoritesWebRepository {
             .switchToLatest()
             .eraseToAnyPublisher()
     }
-
-    private func accessTokenPublisher() -> AnyPublisher<AccessToken, Error> {
-        if let token = credentials.value?.accessToken {
-            return Just<AccessToken>.withErrorType(token, Error.self)
-                .eraseToAnyPublisher()
-        } else {
-            return Fail<AccessToken, Error>(error: WineUpError.invalidState("Unable to get auth credentials"))
-                .eraseToAnyPublisher()
-        }
-    }
 }
 
 // MARK: - Helpers
