@@ -19,6 +19,8 @@ protocol AuthenticationService: Service {
     func clean() -> AnyPublisher<Void, Error>
     /// Register new user and login
     func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error>
+    /// Patch user data
+    func updateCurrentUser(with form: UserJson.UpdateForm) -> AnyPublisher<UserJson, Error>
     /// Currently authenticated user's headers
     var authHeaders: HTTPHeaders? { get }
     /// Currently authenticated user
@@ -31,15 +33,18 @@ final class RealAuthenticationService: AuthenticationService {
 
     private let firebaseService: FirebaseService
     private let authWebRepository: AuthenticationWebRepository
+    private let userRepository: UserWebRepository
     private let authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository
     private let credentials: Store<Credentials?>
 
     init(firebaseService: FirebaseService,
          authWebRepository: AuthenticationWebRepository,
+         userRepository: UserWebRepository,
          authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository,
          credentials: Store<Credentials?>) {
         self.firebaseService = firebaseService
         self.authWebRepository = authWebRepository
+        self.userRepository = userRepository
         self.authCredentialsPersistanceRepository = authCredentialsPersistanceRepository
         self.credentials = credentials
     }
@@ -87,6 +92,15 @@ final class RealAuthenticationService: AuthenticationService {
         authWebRepository.registration(with: form)
             .map(handleLoginResponse(_:))
             .eraseToAnyPublisher()
+    }
+
+    // TODO: Should be moved to another service
+    func updateCurrentUser(with form: UserJson.UpdateForm) -> AnyPublisher<UserJson, Error> {
+        userRepository
+            .updateCurrentUser(with: form)
+            .pass {
+                self.user = $0
+            }
     }
 
     var authHeaders: HTTPHeaders? {
@@ -137,6 +151,10 @@ final class StubAuthenticationService: AuthenticationService {
     }
 
     func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
+    }
+
+    func updateCurrentUser(with form: UserJson.UpdateForm) -> AnyPublisher<UserJson, Error> {
         Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
     }
 
