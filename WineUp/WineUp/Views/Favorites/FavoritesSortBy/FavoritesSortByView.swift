@@ -59,7 +59,7 @@ extension FavoritesSortByView.SortByItem: RadioButtonItem {
         switch sortBy {
         case .recommended:
             return .recommendedOrder
-        case .baseedOnRating:
+        case .basedOnRating:
             return .basedOnRatingOrder
         case .priceAsc:
             return .priceAsc

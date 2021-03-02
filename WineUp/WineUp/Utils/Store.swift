@@ -59,4 +59,20 @@ extension Binding {
             perform(value)
         })
     }
+
+    func map<R>(get: @escaping (Value) -> R, set: @escaping (R) -> Value) -> Binding<R> {
+        Binding<R>(get: {
+            get(wrappedValue)
+        }, set: { newValue in
+            wrappedValue = set(newValue)
+        })
+    }
+
+    func toOptional(defaultValue: Value) -> Binding<Value?> {
+        map { value -> Value? in
+            value
+        } set: { optionalValue -> Value in
+            optionalValue ?? defaultValue
+        }
+    }
 }

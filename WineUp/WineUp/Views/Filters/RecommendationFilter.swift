@@ -18,6 +18,8 @@ private extension CGFloat {
 private extension LocalizedStringKey {
     static let recommendedOrder = LocalizedStringKey("Наиболее вам подходящие")
     static let basedOnRatingOrder = LocalizedStringKey("По рейтингу")
+    static let priceAsc = LocalizedStringKey("По возрастанию цены")
+    static let priceDesc = LocalizedStringKey("По убыванию цены")
 }
 
 private extension Font {
@@ -28,16 +30,17 @@ private extension Font {
 
 struct RecommendationFilter: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    let allCases: [SortBy] = [.recommended, .basedOnRating]
+    @Binding var selected: SortBy
 
     var body: some View {
         VStack {
             SingleCheckedRadioButton(
                 spacing: .radioButtonSpacing,
-                items: viewModel.catalogSortOrderItems,
+                items: allCases,
                 isScrollable: false,
                 isLineHidden: true,
-                checkedItem: $viewModel.checkedCatalogSortOrderItem
+                checkedItem: $selected.toOptional(defaultValue: .basedOnRating)
             )
             .font(.radioButtonText)
             .padding(.leading, .radioButtonLeading)
@@ -48,19 +51,21 @@ struct RecommendationFilter: View {
 
 // MARK: - RadioButtonItem
 
-extension RecommendationFilter.CatalogSortOrderItem: RadioButtonItem {
+extension SortBy: RadioButtonItem {
     var id: SortBy {
-        sortOrder
+        self
     }
 
     var textRepresentation: LocalizedStringKey {
-        switch sortOrder {
+        switch self {
         case .recommended:
             return .recommendedOrder
-        case .baseedOnRating:
+        case .basedOnRating:
             return .basedOnRatingOrder
-        default:
-            fatalError("Unexpected sort order")
+        case .priceAsc:
+            return .priceAsc
+        case .priceDesc:
+            return .priceDesc
         }
     }
 }
@@ -70,7 +75,7 @@ extension RecommendationFilter.CatalogSortOrderItem: RadioButtonItem {
 #if DEBUG
 struct RecommendationFilter_Previews: PreviewProvider {
     static var previews: some View {
-        RecommendationFilter(viewModel: .init())
+        RecommendationFilter(selected: .constant(.basedOnRating))
             .previewLayout(.fixed(width: 420, height: 300))
     }
 }

@@ -43,3 +43,18 @@ extension WineJson.Sugar {
         }
     }
 }
+
+extension WineSugar {
+    var json: WineJson.Sugar {
+        switch self {
+        case .dry:
+            return .dry
+        case .semiDry:
+            return .semiDry
+        case .semiSweet:
+            return .semiSweet
+        case .sweet:
+            return .sweet
+        }
+    }
+}

@@ -16,6 +16,37 @@ extension CatalogView {
     }
 }
 
+// MARK: - CatalogView+FiltersViewModel
+
+extension CatalogView {
+    final class FiltersViewModel: ObservableObject {
+
+        @Published var color: [WineColor] = []
+        @Published var sugar: [WineSugar] = []
+        @Published var sortBy: SortBy = .basedOnRating
+        @Published var countries: [Country] = []
+
+        @Published var colorTemp: [WineColor] = []
+        @Published var sugarTemp: [WineSugar] = []
+        @Published var sortByTemp: SortBy = .basedOnRating
+        @Published var countriesTemp: [Country] = []
+
+        func commitFilters() {
+            color = colorTemp
+            sugar = sugarTemp
+            countries = countriesTemp
+            sortBy = sortByTemp
+        }
+
+        func restoreFilters() {
+            colorTemp = color
+            sugarTemp = sugar
+            countriesTemp = countries
+            sortByTemp = sortBy
+        }
+    }
+}
+
 // MARK: - CatalogView+ViewModel
 
 extension CatalogView {
@@ -49,8 +80,17 @@ extension CatalogView {
 
         // MARK: Public Methods
 
-        func loadCatalogItems() {
-            container.services.catalogService.load(winePositions: loadableSubject(\.catalogItems))
+        func loadCatalogItems(colors: [WineColor], sugar: [WineSugar], countries: [Country], sortBy: SortBy) {
+            // TODO: Calculate page based on lazy loading of catalog list
+            container.services.catalogService.load(
+                winePositions: loadableSubject(\.catalogItems),
+                page: 0,
+                amount: 20,
+                colors: colors,
+                sugars: sugar,
+                countries: countries,
+                sortBy: sortBy
+            )
         }
 
         func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {
@@ -61,26 +101,6 @@ extension CatalogView {
         func dismissFilterDidTap() {
             assert(presentedFiltersBarItem != nil)
             presentedFiltersBarItem = nil
-        }
-
-        var recommendationFilterViewModel: RecommendationFilter.ViewModel {
-            .init()
-        }
-
-        var priceFilterViewModel: PriceFilter.ViewModel {
-            .init()
-        }
-
-        var countryFilterViewModel: CountryFilterView.ViewModel {
-            .init()
-        }
-
-        var wineSugarFilterViewModel: WineSugarFilter.ViewModel {
-            .init()
-        }
-
-        var wineColorFilterViewModel: WineColorFilter.ViewModel {
-            .init()
         }
 
         func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
