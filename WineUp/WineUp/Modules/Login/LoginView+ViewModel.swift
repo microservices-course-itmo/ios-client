@@ -65,6 +65,7 @@ extension LoginView {
 
         func verificationCodeDidSubmit() {
             let bag = CancelBag()
+            container.appState.value.routing.didLogin.setIsLoading(cancelBag: bag)
 
             container.services.authenticationService
                 .login()
@@ -72,9 +73,11 @@ extension LoginView {
                     switch result {
                     case let .failure(error):
                         print("Login error: \(error.description)")
+                        self.container.appState.value.routing.didLogin = .loaded(false)
                         self.nextPage(.name)
                     case .success:
                         self.container.appState.value.routing.didLogin = .loaded(true)
+                        self.container.appState.value.userData.loginForm = .init()
                     }
                 }
                 .store(in: bag)
