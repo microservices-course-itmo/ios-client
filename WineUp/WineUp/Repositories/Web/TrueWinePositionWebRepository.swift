@@ -11,10 +11,10 @@ import Combine
 // MARK: - TrueWinePositionWebRepository
 
 protocol TrueWinePositionWebRepository: WebRepository {
-    func getAllTrueWinePositions(from: Int,
-                                 to: Int,
+    func getAllTrueWinePositions(page: Int,
+                                 amount: Int,
                                  filters: [WinePositionFilters],
-                                 sortBy: [FilterSortBy]) -> AnyPublisher<[TrueWinePositionJson], Error>
+                                 sortBy: FilterSortBy) -> AnyPublisher<[TrueWinePositionJson], Error>
 
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
 }
@@ -26,19 +26,21 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
     let session: URLSession
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
+    let credentials: Store<Credentials?>
 
     private let queryParamsBuilder = WinePositionWebRepositoryQueryParametersBuidler()
 
-    init(session: URLSession, baseURL: String) {
+    init(session: URLSession, baseURL: String, credentials: Store<Credentials?>) {
         self.session = session
         self.baseURL = baseURL
+        self.credentials = credentials
     }
 
-    func getAllTrueWinePositions(from: Int,
-                                 to: Int,
+    func getAllTrueWinePositions(page: Int,
+                                 amount: Int,
                                  filters: [WinePositionFilters],
-                                 sortBy: [FilterSortBy]) -> AnyPublisher<[TrueWinePositionJson], Error> {
-        let parameters = queryParamsBuilder.build(from: from, to: to, filters: filters, sortBy: sortBy)
+                                 sortBy: FilterSortBy) -> AnyPublisher<[TrueWinePositionJson], Error> {
+        let parameters = queryParamsBuilder.build(page: page, amount: amount, filters: filters, sortBy: sortBy)
         return request(endpoint: .getAllTrueWinePositions(parameters: parameters))
     }
 

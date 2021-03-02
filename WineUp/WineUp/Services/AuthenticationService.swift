@@ -19,10 +19,12 @@ protocol AuthenticationService: Service {
     func clean() -> AnyPublisher<Void, Error>
     /// Register new user and login
     func register(with form: UserJson.RegistrationForm) -> AnyPublisher<UserJson, Error>
+    /// Patch user data
+    func updateCurrentUser(with form: UserJson.UpdateForm) -> AnyPublisher<UserJson, Error>
     /// Currently authenticated user's headers
     var authHeaders: HTTPHeaders? { get }
     /// Currently authenticated user
-    var user: UserJson? { get }
+    var user: Store<UserJson?> { get }
 }
 
 // MARK: - Implementation
@@ -31,15 +33,20 @@ final class RealAuthenticationService: AuthenticationService {
 
     private let firebaseService: FirebaseService
     private let authWebRepository: AuthenticationWebRepository
+    private let userRepository: UserWebRepository
     private let authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository
     private let credentials: Store<Credentials?>
 
+    var user: Store<UserJson?> = .init(nil)
+
     init(firebaseService: FirebaseService,
          authWebRepository: AuthenticationWebRepository,
+         userRepository: UserWebRepository,
          authCredentialsPersistanceRepository: AuthCredentialsPersistanceRepository,
          credentials: Store<Credentials?>) {
         self.firebaseService = firebaseService
         self.authWebRepository = authWebRepository
+        self.userRepository = userRepository
         self.authCredentialsPersistanceRepository = authCredentialsPersistanceRepository
         self.credentials = credentials
     }
@@ -71,7 +78,7 @@ final class RealAuthenticationService: AuthenticationService {
     func closeSession() -> AnyPublisher<Void, Error> {
         authCredentialsPersistanceRepository.credentials = nil
         credentials.value = nil
-        user = nil
+        user.value = nil
         return Just<Void>.withErrorType(Error.self).eraseToAnyPublisher()
     }
 
@@ -89,15 +96,22 @@ final class RealAuthenticationService: AuthenticationService {
             .eraseToAnyPublisher()
     }
 
+    // TODO: Should be moved to another service
+    func updateCurrentUser(with form: UserJson.UpdateForm) -> AnyPublisher<UserJson, Error> {
+        userRepository
+            .updateCurrentUser(with: form)
+            .pass {
+                self.user.value = $0
+            }
+    }
+
     var authHeaders: HTTPHeaders? {
         authCredentialsPersistanceRepository.credentials?.authHeaders
     }
 
-    var user: UserJson?
-
     private func handleLoginResponse(_ loginResponse: UserJson.LoginResponse) -> UserJson {
         saveCredentialsFrom(loginResponse: loginResponse)
-        user = loginResponse.user
+        user.value = loginResponse.user
         return loginResponse.user
     }
 
@@ -140,13 +154,15 @@ final class StubAuthenticationService: AuthenticationService {
         Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
     }
 
+    func updateCurrentUser(with form: UserJson.UpdateForm) -> AnyPublisher<UserJson, Error> {
+        Just<UserJson>.withErrorType(UserJson.mockedData[0], Error.self)
+    }
+
     var authHeaders: HTTPHeaders? {
         HTTPHeaders.empty.mockedAccessToken()
     }
 
-    var user: UserJson? {
-        UserJson.mockedData[0]
-    }
+    var user: Store<UserJson?> = .init(UserJson.mockedData[0])
 
     static var preview: AuthenticationService {
         StubAuthenticationService()

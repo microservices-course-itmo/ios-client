@@ -24,10 +24,12 @@ final class RealShopWebRepository: ShopWebRepository {
     let session: URLSession
     let baseURL: String
     let bgQueue = DispatchQueue(label: "bg_parse_queue")
+    let credentials: Store<Credentials?>
 
-    init(session: URLSession, baseURL: String) {
+    init(session: URLSession, baseURL: String, credentials: Store<Credentials?>) {
         self.session = session
         self.baseURL = baseURL
+        self.credentials = credentials
     }
 
     func getAllShops() -> AnyPublisher<[ShopJson], Error> {

@@ -25,7 +25,7 @@ private extension Font {
 }
 
 private extension LocalizedStringKey {
-    static let extraParametersText = LocalizedStringKey("Дополнительные параметры")
+    static let extraParametersText = LocalizedStringKey("Доп. параметры")
 
     static func wineTitleDescription(title: String, year: String) -> LocalizedStringKey {
         return "\(title) \n\(String(year)) г."

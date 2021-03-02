@@ -3,10 +3,12 @@ regen: gen open
 clean:
 	[ -d WineUp.xcodeproj ] && rm -r WineUp.xcodeproj
 	[ -d WineUp.xcworkspace ] && rm -r WineUp.xcworkspace
+	[ -f WineUp/WineUp.entitlements ] && rm WineUp/WineUp.entitlements 
+	[ -f WineUp/Info.plist ] && rm WineUp/Info.plist
 
 gen:
 	xcodegen generate
-	pod install
+	pod install --repo-update
 
 open:
 	open WineUp.xcworkspace

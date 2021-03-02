@@ -11,7 +11,13 @@ import UIKit
 
 protocol CatalogService: Service {
     /// Fetch wine positions from server
-    func load(winePositions: LoadableSubject<[WinePosition]>)
+    func load(winePositions: LoadableSubject<[WinePosition]>,
+              page: Int,
+              amount: Int,
+              colors: [WineColor],
+              sugars: [WineSugar],
+              countries: [Country],
+              sortBy: SortBy)
     /// Fetch favorite wine positions from server
     func load(favoriteWinePositions: LoadableSubject<[WinePosition]>)
 
@@ -37,7 +43,13 @@ final class RealCatalogService: CatalogService {
         self.favoritesWebRepository = favoritesWebRepository
     }
 
-    func load(winePositions: LoadableSubject<[WinePosition]>) {
+    func load(winePositions: LoadableSubject<[WinePosition]>,
+              page: Int,
+              amount: Int,
+              colors: [WineColor],
+              sugars: [WineSugar],
+              countries: [Country],
+              sortBy: SortBy) {
         let bag = CancelBag()
         winePositions.wrappedValue.setIsLoading(cancelBag: bag)
 
@@ -45,12 +57,35 @@ final class RealCatalogService: CatalogService {
             winePositions.wrappedValue = .loaded(cachedWinePositions)
         }
 
-        let filters: [WinePositionFilters] =
-            [.value(.init(criterion: .price, operation: .more, value: "100"))]
+        var filters: [WinePositionFilters] = []
+
+        for (index, color) in colors.enumerated() {
+            let filter = WinePositionFilters.value(.init(criterion: .color, operation: .equal, value: color.json.rawValue))
+            filters.append(filter)
+            if index < colors.count - 1 {
+                filters.append(.separator(.or))
+            }
+        }
+
+        filters.append(.separator(.and))
+
+        for (index, sugar) in sugars.enumerated() {
+            let filter = WinePositionFilters.value(.init(criterion: .sugar, operation: .equal, value: sugar.json.rawValue))
+            filters.append(filter)
+            if index < colors.count - 1 {
+                filters.append(.separator(.or))
+            }
+        }
+
+        // TODO: Country filter not implemented
+//        filters.append(.separator(.and))
+
+        // TODO: real sortBy needed
+        let sortBy = FilterSortBy(attributeName: .actualPrice, order: .asc)
 
         winePositionWebRepository
             // TODO: подставлять параметры выбранные пользователем 
-            .getAllTrueWinePositions(from: 0, to: 5, filters: filters, sortBy: [.init(attributeName: .avg, order: .desc)])
+            .getAllTrueWinePositions(page: page, amount: amount, filters: filters, sortBy: sortBy)
             .map {
                 self.transform(json: $0)
             }
@@ -170,7 +205,13 @@ private extension String {
 
 #if DEBUG
 final class StubCatalogService: CatalogService {
-    func load(winePositions: LoadableSubject<[WinePosition]>) {
+    func load(winePositions: LoadableSubject<[WinePosition]>,
+              page: Int,
+              amount: Int,
+              colors: [WineColor],
+              sugars: [WineSugar],
+              countries: [Country],
+              sortBy: SortBy) {
         winePositions.wrappedValue = .loaded(WinePosition.mockedData)
     }
 

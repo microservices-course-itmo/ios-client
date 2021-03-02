@@ -81,6 +81,7 @@ identifier_name:
     - id
     - to
     - ns
+    - ff
 
 type_body_length:
   - 500 # warning

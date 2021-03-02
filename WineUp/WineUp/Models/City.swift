@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum City: Int, CaseIterable, Identifiable {
+enum City: Int, CaseIterable, Identifiable, Codable {
     case notSelected = -1
     case saintPetersburg = 1
     case moscow = 2

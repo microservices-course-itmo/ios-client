@@ -14,6 +14,8 @@ struct ProfileView: View {
     @ObservedObject private(set) var viewModel: ViewModel
     @State private var showingAlert = false
     @State private var showLogoutActionSheet = false
+    @State private var showEditSheet = false
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
@@ -26,70 +28,92 @@ struct ProfileView: View {
 
             Spacer()
 
-            VStack(spacing: 0) {
-                Text("Иван Иванов")
-                    .font(.title)
-                    .padding()
-
-                VStack(alignment: .center, spacing: 0) {
-                    VStack(alignment: .leading) {
-                        Text("Номер телефона:")
-                            .foregroundColor(.gray)
-
-                        Text("+7 (911) 272-78-57")
-                            .frame(width: 260)
-                            .padding(.vertical, 14)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(8.0)
-                    }
-                    .padding(.bottom)
-
-                    VStack(alignment: .leading) {
-                        Text("Город:")
-                            .foregroundColor(.gray)
-
-                        Text("Москва")
-                            .frame(width: 260)
-                            .padding(.vertical, 14)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(8.0)
-
-                    }
-                    .padding(.bottom, 32)
-
-                    Button(action: { showLogoutActionSheet = true }, label: {
-                        Text("Выйти из аккаунта")
-                    })
-                    .defaultStyled(isDisabled: false)
-                    .padding(.bottom, 16)
-                    .actionSheet(isPresented: $showLogoutActionSheet, content: {
-                        ActionSheet(title: Text("Вы уверены?"), message: Text("Потом придётся снова авторизовываться"), buttons: [
-                            .destructive(Text("Выйти")) { self.viewModel.logoutButtonDidTap() },
-                            .cancel()
-                        ])
-                    })
-
-                    Button(action: {
-                        self.showingAlert = true
-                    }, label: {
-                        Text("Show APNs Token")
-                    })
-                    .alert(isPresented: $showingAlert) {
-                        Alert(
-                            title: Text("APNs Token (hex representation)"),
-                            message: Text("Hex representation: \(viewModel.hexAPNSId ?? "#error")"),
-                            primaryButton: .default(Text("Copy to clipboard"), action: {
-                                UIPasteboard.general.string = viewModel.hexAPNSId
-                            }),
-                            secondaryButton: .default(Text("OK"))
-                        )
-                    }
-                }
-                .padding()
+            if let user = viewModel.user {
+                userInfoView(user: user)
+            } else {
+                Text("").onAppear(perform: viewModel.logoutButtonDidTap)
             }
-            .cardStyled()
-            .frame(maxHeight: 450)
+        }
+    }
+
+    private func userInfoView(user: UserJson) -> some View {
+        VStack(spacing: 0) {
+            Text(user.name)
+                .font(.title)
+                .padding()
+
+            VStack(alignment: .center, spacing: 0) {
+                VStack(alignment: .leading) {
+                    Text("Номер телефона:")
+                        .foregroundColor(.gray)
+
+                    Text(user.phoneNumber)
+                        .frame(width: 260)
+                        .padding(.vertical, 14)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8.0)
+                }
+                .padding(.bottom)
+
+                VStack(alignment: .leading) {
+                    Text("Город:")
+                        .foregroundColor(.gray)
+
+                    Text(user.city.titleName)
+                        .frame(width: 260)
+                        .padding(.vertical, 14)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8.0)
+
+                }
+                .padding(.bottom, 32)
+                Button(action: { showEditSheet = true }, label: {
+                    Text("Редактировать")
+                })
+                .defaultStyled(isDisabled: false)
+                .padding(.bottom, 16)
+                .sheet(isPresented: $showEditSheet) {
+                    EditProfileView(viewModel: viewModel.editProfileViewModel)
+                }
+
+                Button(action: { showLogoutActionSheet = true }, label: {
+                    Text("Выйти из аккаунта")
+                })
+                .defaultStyled(isDisabled: false)
+                .padding(.bottom, 16)
+                .actionSheet(isPresented: $showLogoutActionSheet, content: {
+                    ActionSheet(title: Text("Вы уверены?"),
+                                message: Text("Потом придётся снова авторизовываться"),
+                                buttons: [
+                                    .destructive(Text("Выйти")) { self.viewModel.logoutButtonDidTap() },
+                                    .cancel()
+                                ])
+                })
+
+                showAPNsButton
+            }
             .padding()
+        }
+        .cardStyled()
+        .frame(maxHeight: 450)
+        .padding()
+    }
+
+    private var showAPNsButton: some View {
+        Button(action: {
+            self.showingAlert = true
+        }, label: {
+            Text("Show APNs Token")
+        })
+        .alert(isPresented: $showingAlert) {
+            Alert(
+                title: Text("APNs Token (hex representation)"),
+                message: Text("Hex representation: \(viewModel.hexAPNSId ?? "#error")"),
+                primaryButton: .default(Text("Copy to clipboard"), action: {
+                    UIPasteboard.general.string = viewModel.hexAPNSId
+                }),
+                secondaryButton: .default(Text("OK"))
+            )
         }
     }
 }

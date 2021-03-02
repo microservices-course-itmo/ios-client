@@ -21,7 +21,7 @@ private extension LocalizedStringKey {
 }
 
 private extension Font {
-    static let suggestionsListTitle: Font = .system(size: 25)
+    static let suggestionsListTitle: Font = .system(size: 25, weight: .semibold)
     static let arrow: Font = .system(size: 40)
 }
 

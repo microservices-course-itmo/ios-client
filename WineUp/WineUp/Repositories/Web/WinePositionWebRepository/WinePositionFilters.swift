@@ -51,6 +51,8 @@ enum WinePositionCriteries: String {
     case avg
     /// цвет
     case color
+    /// Сладость
+    case sugar
     /// год производства
     case year
     /// цена

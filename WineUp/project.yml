@@ -55,7 +55,7 @@ targets:
     info:
       path: WineUp/Info.plist
       properties:
-        FirebaseAppDelegateProxyEnabled: NO
+        FirebaseAppDelegateProxyEnabled: YES
         CFBundlePackageType: $(PRODUCT_BUNDLE_PACKAGE_TYPE)
         LSRequiresIPhoneOS: YES
         UIApplicationSceneManifest:
@@ -82,8 +82,8 @@ targets:
     
     entitlements:
       path: WineUp/WineUp.entitlements
-      attributes:
-        - aps-environment: development
+      properties:
+        aps-environment: development
 
     type: application
     platform: iOS

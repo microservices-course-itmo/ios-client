@@ -25,7 +25,7 @@ private extension LocalizedStringKey {
 /// Price filter view
 struct PriceFilter: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: .rootVSpacing) {
@@ -61,6 +61,10 @@ struct PriceFilter: View {
         }
         .padding()
     }
+
+    func commit() {
+
+    }
 }
 
 // MARK: - Preview
@@ -69,7 +73,7 @@ struct PriceFilter: View {
 struct PriceFilter_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PriceFilter(viewModel: .init())
+            PriceFilter()
         }
         .previewLayout(.fixed(width: 414, height: 250))
     }

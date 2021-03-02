@@ -12,11 +12,22 @@ protocol WebRepository: Repository {
     var session: URLSession { get }
     var baseURL: String { get }
     var bgQueue: DispatchQueue { get }
+    var credentials: Store<Credentials?> { get }
 }
 
 extension WebRepository {
     private typealias DataTaskResponse = URLSession.DataTaskPublisher.Output
     private typealias DataTaskFailure = URLSession.DataTaskPublisher.Failure
+
+    func accessTokenPublisher() -> AnyPublisher<AccessToken, Error> {
+        if let token = credentials.value?.accessToken {
+            return Just<AccessToken>.withErrorType(token, Error.self)
+                .eraseToAnyPublisher()
+        } else {
+            return Fail<AccessToken, Error>(error: WineUpError.notAuthenticated)
+                .eraseToAnyPublisher()
+        }
+    }
 
     private func dataTask(to endpoint: APICall, httpCodes: HTTPCodes)
     throws -> AnyPublisher<DataTaskResponse, DataTaskFailure> {

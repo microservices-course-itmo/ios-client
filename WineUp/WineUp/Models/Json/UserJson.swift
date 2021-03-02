@@ -9,7 +9,20 @@ import Foundation
 
 struct UserJson: Decodable {
     var id: String
+    var birthdate: String
+    var city: City
+    var name: String
+    var phoneNumber: String
     var role: String
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case birthdate
+        case city = "cityId"
+        case name
+        case phoneNumber
+        case role
+    }
 }
 
 extension UserJson {
@@ -29,5 +42,10 @@ extension UserJson {
         var cityId: Int
         var fireBaseToken: FirebaseToken
         var name: String
+    }
+
+    struct UpdateForm: Encodable {
+        var cityId: Int?
+        var phoneNumber: String?
     }
 }

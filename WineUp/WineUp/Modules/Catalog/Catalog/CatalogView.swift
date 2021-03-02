@@ -24,6 +24,7 @@ private extension LocalizedStringKey {
 struct CatalogView: View {
 
     @ObservedObject private(set) var viewModel: ViewModel
+    @StateObject private var filtersViewModel = FiltersViewModel()
 
     var body: some View {
         ZStack {
@@ -41,20 +42,20 @@ struct CatalogView: View {
 
     // MARK: Helpers
 
+    @ViewBuilder
     private func content() -> some View {
         switch viewModel.catalogItems {
         case let .failed(error):
-            return Text(error.description).anyView
+            Text(error.description)
         case .isLoading:
-            return Text("Loading").anyView
+            Text("Loading")
         case .notRequested:
-            return Text("Waiting")
+            Text("Waiting")
                 .onAppear {
-                    viewModel.loadCatalogItems()
+                    loadCatalogItems()
                 }
-                .anyView
         case let .loaded(winePositions):
-            return winePositionsContent(winePositions: winePositions).anyView
+            winePositionsContent(winePositions: winePositions)
         }
     }
 
@@ -90,47 +91,65 @@ struct CatalogView: View {
 
     }
 
+    @ViewBuilder
     private func wrappedFilterViewFor(item: CatalogFiltersBarView.Item) -> some View {
         switch item {
         case .recomendation:
-            return wrapFilter(
-                RecommendationFilter(viewModel: viewModel.recommendationFilterViewModel),
+            wrapFilter(
+                RecommendationFilter(selected: $filtersViewModel.sortByTemp),
                 title: "Рекомендации"
             )
         case .price:
-            return wrapFilter(
-                PriceFilter(viewModel: viewModel.priceFilterViewModel),
+            wrapFilter(
+                PriceFilter(),
                 title: "Цена"
             )
         case .country:
-            return wrapFilter(
-                CountryFilterView(viewModel: viewModel.countryFilterViewModel),
+            wrapFilter(
+                CountryFilterView(selected: $filtersViewModel.countriesTemp),
                 title: "Страна"
             )
         case .wineSugar:
-            return wrapFilter(
-                WineSugarFilter(viewModel: viewModel.wineSugarFilterViewModel),
+            wrapFilter(
+                WineSugarFilter(selected: $filtersViewModel.sugarTemp),
                 title: "Сахар"
             )
         case .wineColor:
-            return wrapFilter(
-                WineColorFilter(viewModel: viewModel.wineColorFilterViewModel),
+            wrapFilter(
+                WineColorFilter(selected: $filtersViewModel.colorTemp),
                 title: "Цвет"
             )
         }
     }
 
-    private func wrapFilter<V: View>(_ filter: V, title: String) -> AnyView {
+    private func wrapFilter<V: View>(_ filter: V, title: String) -> some View {
         PopupContainer(onShouldDismiss: {
-            withAnimation(.defaultEaseInOut) {
-                viewModel.dismissFilterDidTap()
-            }
+            filtersViewModel.restoreFilters()
+            dismissFilterAnimated()
         }, label: {
-            SubmitDialog(title: title, onSubmit: {}, label: {
+            SubmitDialog(title: title, onSubmit: {
+                filtersViewModel.commitFilters()
+                loadCatalogItems()
+                dismissFilterAnimated()
+            }, label: {
                 filter
             })
         })
-        .anyView
+    }
+
+    private func dismissFilterAnimated() {
+        withAnimation(.defaultEaseInOut) {
+            viewModel.dismissFilterDidTap()
+        }
+    }
+
+    private func loadCatalogItems() {
+        viewModel.loadCatalogItems(
+            colors: filtersViewModel.color,
+            sugar: filtersViewModel.sugar,
+            countries: filtersViewModel.countries,
+            sortBy: filtersViewModel.sortBy
+        )
     }
 }
 

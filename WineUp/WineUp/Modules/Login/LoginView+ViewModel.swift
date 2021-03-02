@@ -44,7 +44,6 @@ extension LoginView {
         @Published var registration: Loadable<Void> = .notRequested
 
         private let container: DIContainer
-        private let bag = CancelBag()
 
         // MARK: Public
 
@@ -65,15 +64,20 @@ extension LoginView {
         }
 
         func verificationCodeDidSubmit() {
+            let bag = CancelBag()
+            container.appState.value.routing.didLogin.setIsLoading(cancelBag: bag)
+
             container.services.authenticationService
                 .login()
                 .sinkToResult { result in
                     switch result {
                     case let .failure(error):
                         print("Login error: \(error.description)")
+                        self.container.appState.value.routing.didLogin = .loaded(false)
                         self.nextPage(.name)
                     case .success:
                         self.container.appState.value.routing.didLogin = .loaded(true)
+                        self.container.appState.value.userData.loginForm = .init()
                     }
                 }
                 .store(in: bag)
@@ -140,6 +144,7 @@ extension LoginView {
             }
 
             let bag = CancelBag()
+
             registration.setIsLoading(cancelBag: bag)
 
             container.services.firebaseService
