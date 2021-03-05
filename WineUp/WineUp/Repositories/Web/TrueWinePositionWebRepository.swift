@@ -16,6 +16,8 @@ protocol TrueWinePositionWebRepository: WebRepository {
                                  filters: [WinePositionFilters],
                                  sortBy: FilterSortBy) -> AnyPublisher<[TrueWinePositionJson], Error>
 
+    func getFavoriteWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
+
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
 
     func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
