@@ -42,7 +42,7 @@ extension ProfileView {
             container.services.authenticationService
                 .clean()
                 .pass { _ in
-                    self.container.appState.value.routing.didLogin = .loaded(false)
+                    self.container.appState.value.routing.didLogin = false
                 }
                 .sinkToLoadable {
                     self.logout = $0
