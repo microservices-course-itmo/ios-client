@@ -25,7 +25,21 @@ protocol CatalogService: Service {
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
 
+    func likeWinePosition(winePositionId: String, like: Bool) -> AnyPublisher<Void, Error>
+
     func clearFavorites() -> AnyPublisher<Void, Error>
+    /// Allows to subscribe on favorite positions changes
+    var favoritePositionsUpdate: PassthroughSubject<Void, Never> { get }
+}
+
+extension CatalogService {
+    func likeWinePosition(winePositionId: String, like: Bool) -> AnyPublisher<Void, Error> {
+        if like {
+            return addWinePositionToFavorites(winePositionId: winePositionId)
+        } else {
+            return removeWinePositionFromFavorites(winePositionId: winePositionId)
+        }
+    }
 }
 
 // MARK: - Implementation
@@ -35,6 +49,7 @@ final class RealCatalogService: CatalogService {
     private let winePositionWebRepository: TrueWinePositionWebRepository
     private let favoritesWebRepository: FavoritesWebRepository
     private var favoritesId: Set<String>?
+    private(set) var favoritePositionsUpdate = PassthroughSubject<Void, Never>()
 
     init(winePositionWebRepository: TrueWinePositionWebRepository,
          favoritesWebRepository: FavoritesWebRepository) {
@@ -119,6 +134,7 @@ final class RealCatalogService: CatalogService {
             .addWinePositionToFavorites(by: winePositionId)
             .pass {
                 self.favoritesId?.insert(winePositionId)
+                self.favoritePositionsUpdate.send(())
             }
     }
 
@@ -127,11 +143,16 @@ final class RealCatalogService: CatalogService {
             .deleteWinePositionFromFavorites(by: winePositionId)
             .pass {
                 self.favoritesId?.remove(winePositionId)
+                self.favoritePositionsUpdate.send(())
             }
     }
 
     func clearFavorites() -> AnyPublisher<Void, Error> {
         favoritesWebRepository.clearFavorites()
+            .pass {
+                self.favoritePositionsUpdate.send(())
+            }
+            .eraseToAnyPublisher()
     }
 
     // MARK: - Private
@@ -201,6 +222,8 @@ private extension TrueWinePositionJson {
 
 #if DEBUG
 final class StubCatalogService: CatalogService {
+    var favoritePositionsUpdate = PassthroughSubject<Void, Never>()
+
     func load(winePositions: LoadableSubject<[WinePosition]>,
               page: Int,
               amount: Int,
