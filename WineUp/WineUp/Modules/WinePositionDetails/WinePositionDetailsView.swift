@@ -22,14 +22,6 @@ struct WinePositionDetailsView: View {
                 Button("В магазин", action: {})
                     .defaultStyled(isDisabled: false)
 
-                // Temporarily removed DetailsView and ReviewsList for MVP
-
-//                DetailsView(winePosition: viewModel.winePosition, details: viewModel.details)
-//                    .padding(.vertical)
-
-//                ReviewsList(winePosition: viewModel.winePosition, details: viewModel.details)
-//                    .padding(.vertical)
-
                 SuggestionsList(winePosition: viewModel.winePosition, details: viewModel.details)
                     .padding(.vertical)
             }
