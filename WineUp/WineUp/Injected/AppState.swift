@@ -15,7 +15,7 @@ struct AppState: Equatable {
 
 extension AppState {
     struct Routing: Equatable {
-        var didLogin: Loadable<Bool> = .notRequested
+        var didLogin: Bool?
         var selectedTab = ApplicationMenuView.Tab.main
         var catalog = CatalogView.Routing()
         var favorites = FavoritesView.Routing()

@@ -21,7 +21,11 @@ extension WinePositionDetailsView {
         init(container: DIContainer, winePosition: WinePosition) {
             self.container = container
             self.winePosition = winePosition
-            self.details = winePosition.details
+            // TODO: Real data needed
+            self.details = .init(
+                winePositionId: winePosition.id,
+                suggestions: [winePosition, winePosition, winePosition]
+            )
         }
     }
 }

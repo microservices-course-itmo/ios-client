@@ -14,19 +14,15 @@ struct ApplicationRootView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        switch viewModel.didLogin {
-        case .notRequested:
-            Text("").onAppear(perform: viewModel.appDidLoad)
-        case let .loaded(didLogin):
+        if let didLogin = viewModel.didLogin {
             if !didLogin {
                 LoginView(viewModel: viewModel.loginViewModel)
             } else {
                 ApplicationMenuView(viewModel: viewModel.applicationMenuViewModel)
             }
-        case let .failed(error):
-            Text(error.description)
-        case .isLoading:
-            EmptyView()
+        } else {
+            Color.clear
+                .onAppear(perform: viewModel.appDidLoad)
         }
     }
 }
