@@ -16,14 +16,18 @@ struct WinePositionDetailsView: View {
     var body: some View {
         ScrollView {
             VStack {
-                WinePositionView(item: viewModel.winePosition)
+                WinePositionView(item: viewModel.winePosition, onLikeButtonTap: viewModel.toggleLike)
                     .padding()
 
                 Button("В магазин", action: {})
                     .defaultStyled(isDisabled: false)
 
-                SuggestionsList(winePosition: viewModel.winePosition, details: viewModel.details)
-                    .padding(.vertical)
+                SuggestionsList(
+                    winePosition: viewModel.winePosition,
+                    details: viewModel.details,
+                    onLikeButtonTap: viewModel.toggleLike(of:)
+                )
+                .padding(.vertical)
             }
         }
     }

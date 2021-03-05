@@ -34,6 +34,7 @@ extension FavoritesView {
             cancelBag.collect {
                 container.appState.bind(\.routing.favorites.winePositionId, to: self, by: \.selectedFavoriteItemId)
                 $selectedFavoriteItemId.bind(to: container.appState, by: \.value.routing.favorites.winePositionId)
+                container.services.catalogService.favoritePositionsUpdate.sink(receiveValue: self.updateFavoritePositions)
             }
         }
 
@@ -52,6 +53,24 @@ extension FavoritesView {
                 .store(in: cancelBag)
         }
 
+        func dislike(winePosition: WinePosition) {
+            guard var winePositions = favoritesItems.value, winePositions.contains(winePosition) else {
+                assertionFailure()
+                return
+            }
+            winePositions.remove(winePosition)
+
+            let bag = CancelBag()
+            favoritesItems.setIsLoading(cancelBag: bag)
+            container.services.catalogService
+                .likeWinePosition(winePositionId: winePosition.id, like: false)
+                .map { _ in
+                    winePositions
+                }
+                .sinkToLoadable(of: self, by: \.favoritesItems)
+                .store(in: bag)
+        }
+
         func loadItems() {
             container.services.catalogService.load(favoriteWinePositions: loadableSubject(\.favoritesItems))
         }
@@ -62,6 +81,12 @@ extension FavoritesView {
 
         func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
             .init(container: container, winePosition: winePosition)
+        }
+
+        // MARK: - Helpers
+
+        private func updateFavoritePositions() {
+            loadItems()
         }
     }
 }

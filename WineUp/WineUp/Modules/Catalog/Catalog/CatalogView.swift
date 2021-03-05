@@ -77,7 +77,7 @@ struct CatalogView: View {
                                 viewModel: viewModel.winePositionDetailsViewModelFor(item)),
                             tag: item.id,
                             selection: $viewModel.selectedCatalogItemId, label: {
-                                WinePositionView(item: item)
+                                WinePositionView(item: item, onLikeButtonTap: { viewModel.toggleLike(of: item) })
                                     .foregroundColor(.black)
                                     .padding()
                                     .cardStyled()

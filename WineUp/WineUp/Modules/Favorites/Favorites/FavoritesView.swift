@@ -104,7 +104,7 @@ struct FavoritesView: View {
                             viewModel: viewModel.winePositionDetailsViewModelFor(item)),
                         tag: item.id,
                         selection: $viewModel.selectedFavoriteItemId, label: {
-                            WinePositionView(item: item)
+                            WinePositionView(item: item, onLikeButtonTap: { viewModel.dislike(winePosition: item) })
                                 .foregroundColor(.black)
                                 .padding()
                                 .cardStyled()

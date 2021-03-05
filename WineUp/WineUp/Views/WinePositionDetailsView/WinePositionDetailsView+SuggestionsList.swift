@@ -32,6 +32,7 @@ extension WinePositionDetailsView {
 
         let winePosition: WinePosition
         let details: WinePosition.Details
+        let onLikeButtonTap: (WinePosition) -> Void
 
         @State private var currentSuggestionIndex = 0 {
             didSet {
@@ -54,8 +55,11 @@ extension WinePositionDetailsView {
                     currentIndex: $currentSuggestionIndex,
                     content: {
                         ForEach(details.suggestions) { suggestedWinePosition in
-                            WinePositionView(item: suggestedWinePosition)
-                                .cardStyled()
+                            WinePositionView(
+                                item: suggestedWinePosition,
+                                onLikeButtonTap: { onLikeButtonTap(suggestedWinePosition) }
+                            )
+                            .cardStyled()
                         }
                     }
                 )
@@ -104,8 +108,12 @@ struct WinePositionDetailsViewSuggestionsList_Previews: PreviewProvider {
     private static let winePosition = WinePosition.mockedData[0]
 
     static var previews: some View {
-        WinePositionDetailsView.SuggestionsList(winePosition: winePosition, details: winePosition.details)
-            .previewLayout(.fixed(width: 414, height: 900))
+        WinePositionDetailsView.SuggestionsList(
+            winePosition: winePosition,
+            details: winePosition.details,
+            onLikeButtonTap: { _ in }
+        )
+        .previewLayout(.fixed(width: 414, height: 900))
     }
 }
 #endif

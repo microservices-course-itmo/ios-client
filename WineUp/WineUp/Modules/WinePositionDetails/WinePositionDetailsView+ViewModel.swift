@@ -17,6 +17,7 @@ extension WinePositionDetailsView {
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
+        private var togglingLikeSuccess: Loadable<Void> = .notRequested
 
         init(container: DIContainer, winePosition: WinePosition) {
             self.container = container
@@ -26,6 +27,35 @@ extension WinePositionDetailsView {
                 winePositionId: winePosition.id,
                 suggestions: [winePosition, winePosition, winePosition]
             )
+        }
+
+        /// Designed only for current position in details
+        func toggleLike() {
+            let bag = CancelBag()
+            togglingLikeSuccess.setIsLoading(cancelBag: bag)
+            winePosition.isLiked.toggle()
+
+            container.services.catalogService
+                .likeWinePosition(winePositionId: winePosition.id, like: winePosition.isLiked)
+                .sinkToLoadable { self.togglingLikeSuccess = $0 }
+                .store(in: bag)
+        }
+
+        /// Designed only for wine position from suggestions
+        func toggleLike(of winePosition: WinePosition) {
+            guard let index = details.suggestions.firstIndex(of: winePosition) else {
+                assertionFailure()
+                return
+            }
+
+            let bag = CancelBag()
+            togglingLikeSuccess.setIsLoading(cancelBag: bag)
+            details.suggestions[index].isLiked.toggle()
+
+            container.services.catalogService
+                .likeWinePosition(winePositionId: winePosition.id, like: !winePosition.isLiked)
+                .sinkToLoadable { self.togglingLikeSuccess = $0 }
+                .store(in: bag)
         }
     }
 }
