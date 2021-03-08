@@ -134,6 +134,7 @@ final class RealCatalogService: CatalogService {
             .addWinePositionToFavorites(by: winePositionId)
             .pass {
                 self.favoritesId?.insert(winePositionId)
+                // Needed to notify CatalogView and FavoritesView
                 self.favoritePositionsUpdate.send(())
             }
     }
@@ -143,6 +144,7 @@ final class RealCatalogService: CatalogService {
             .deleteWinePositionFromFavorites(by: winePositionId)
             .pass {
                 self.favoritesId?.remove(winePositionId)
+                // Needed to notify CatalogView and FavoritesView
                 self.favoritePositionsUpdate.send(())
             }
     }
