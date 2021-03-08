@@ -111,11 +111,9 @@ final class RealCatalogService: CatalogService {
         let bag = CancelBag()
         favoriteWinePositions.wrappedValue.setIsLoading(cancelBag: bag)
 
-        favoritesIdPublisher()
-            .map { itemsId in
-                self.winePositionWebRepository.getTrueWinePositions(by: Array(itemsId))
-            }
-            .switchToLatest()
+        winePositionWebRepository
+            // TODO: реализуется в рамках https://trello.com/c/kvXh2k7m. Поправить этот код, когда будет реализовано.
+            .getFavoritesTrueWinePositions()
             .map {
                 self.transform(json: $0)
             }
@@ -172,23 +170,6 @@ final class RealCatalogService: CatalogService {
                 discountPercents: (json.price - json.actualPrice) / json.price
             )
         }
-    }
-
-    private func favoritesIdPublisher() -> AnyPublisher<Set<String>, Error> {
-        if let favoritesId = self.favoritesId {
-            return Just(favoritesId)
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
-        return favoritesWebRepository
-            .getAllFavoriteWinePositions()
-            .map { favoriteWinePositionJsons in
-                Set(favoriteWinePositionJsons.map { $0.id })
-            }
-            .pass {
-                self.favoritesId = $0
-            }
-            .eraseToAnyPublisher()
     }
 }
 

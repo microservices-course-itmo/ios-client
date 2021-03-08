@@ -19,6 +19,9 @@ protocol TrueWinePositionWebRepository: WebRepository {
     func getFavoriteWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
 
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
+
+    // TODO: реализуется в рамках https://trello.com/c/kvXh2k7m. Поправить этот код, когда будет реализовано.
+    func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
 }
 
 // MARK: - Implementation
@@ -58,6 +61,13 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
         } else {
             return request(endpoint: .getTrueWinePositions(by: ids))
         }
+    }
+
+    // TODO: реализуется в рамках https://trello.com/c/kvXh2k7m. Поправить этот код, когда будет реализовано.
+    func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
+        Just([])
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 }
 
