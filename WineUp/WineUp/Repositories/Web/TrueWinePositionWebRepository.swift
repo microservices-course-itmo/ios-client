@@ -16,6 +16,8 @@ protocol TrueWinePositionWebRepository: WebRepository {
                                  filters: [WinePositionFilters],
                                  sortBy: FilterSortBy) -> AnyPublisher<[TrueWinePositionJson], Error>
 
+    func getFavoriteWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
+
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
 }
 
@@ -44,6 +46,10 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
         return request(endpoint: .getAllTrueWinePositions(parameters: parameters))
     }
 
+    func getFavoriteWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
+        request(endpoint: .getFavoriteWinePositions())
+    }
+
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error> {
         if ids.isEmpty {
             // Catalog service will return 400 if list if empty
@@ -65,5 +71,9 @@ private extension APICall {
     static func getTrueWinePositions(by ids: [String]) -> APICall {
         let parameters = ids.map { ("favouritePosition", $0) }
         return APICall(path: "/position/true/favourites/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
+    }
+
+    static func getFavoriteWinePositions() -> APICall {
+        APICall(path: "/favorites/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 }
