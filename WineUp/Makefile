@@ -1,4 +1,16 @@
+# $(call assert,condition,message)
+define assert
+   $(if $1,,$(error Assertion failed: $2))
+endef
+# $(call assert-file-exists,wildcard-pattern, message)
+define assert-file-exists
+   $(call assert,$(wildcard $1),$1 does not exist. $2)
+endef
+
 regen: gen open	
+
+validate:
+	$(call assert-file-exists,project.local.yaml,🔥 Copy project.local.example.yaml file and modify your own fields)
 
 clean:
 	[ -d WineUp.xcodeproj ] && rm -r WineUp.xcodeproj
@@ -6,7 +18,7 @@ clean:
 	[ -f WineUp/WineUp.entitlements ] && rm WineUp/WineUp.entitlements 
 	[ -f WineUp/Info.plist ] && rm WineUp/Info.plist
 
-gen:
+gen: validate
 	xcodegen generate
 	pod install --repo-update
 
