@@ -20,8 +20,13 @@ struct LoginBirthdayInput: View {
             isButtonActive: viewModel.isDoneButtonActive,
             buttonTitle: "Далее",
             onButtonTap: onSubmit, label: {
-                DatePicker("День рождения", selection: $viewModel.birthday, displayedComponents: .date)
-                    .padding()
+                DatePicker(
+                    "День рождения",
+                    selection: $viewModel.birthday,
+                    in: viewModel.minDate...viewModel.maxDate,
+                    displayedComponents: .date
+                )
+                .padding()
             }
         )
     }
@@ -37,6 +42,9 @@ extension LoginBirthdayInput {
         @Published var birthday = Date()
         @Published var isDoneButtonActive = false
 
+        let minDate: Date
+        let maxDate: Date
+
         private let container: DIContainer
         private let cancelBag = CancelBag()
 
@@ -44,6 +52,9 @@ extension LoginBirthdayInput {
 
         init(container: DIContainer) {
             self.container = container
+            // Assume that any user of the app must be [18, 100] years old
+            self.minDate = Date().minus(years: 100)
+            self.maxDate = Date().minus(years: 18)
 
             cancelBag.collect {
                 container.appState.bindDisplayValue(\.userData.loginForm.birthday, to: self, by: \.birthday)
@@ -51,6 +62,12 @@ extension LoginBirthdayInput {
                 container.appState.map(\.userData.loginForm.birthday.hadUpdates).bind(to: self, by: \.isDoneButtonActive)
             }
         }
+    }
+}
+
+extension Date {
+    func minus(years: Int) -> Date {
+        Calendar.current.date(byAdding: .year, value: -years, to: self) ?? self
     }
 }
 

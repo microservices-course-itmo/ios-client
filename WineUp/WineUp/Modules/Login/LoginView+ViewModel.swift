@@ -150,7 +150,7 @@ extension LoginView {
                 .getToken()
                 .flatMap { token -> AnyPublisher<UserJson, Error> in
                     let form = UserJson.RegistrationForm(
-                        birthday: birthday,
+                        birthday: birthday.localDate,
                         cityId: city.id,
                         fireBaseToken: token,
                         name: name
