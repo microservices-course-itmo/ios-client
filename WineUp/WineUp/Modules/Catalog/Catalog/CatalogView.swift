@@ -47,15 +47,15 @@ struct CatalogView: View {
         switch viewModel.catalogItems {
         case let .failed(error):
             Text(error.description)
-        case .isLoading:
-            Text("Loading")
         case .notRequested:
             Text("Waiting")
                 .onAppear {
                     loadCatalogItems()
                 }
-        case let .loaded(winePositions):
+        case .loaded, .isLoading:
+            let winePositions = viewModel.catalogItems.value ?? []
             winePositionsContent(winePositions: winePositions)
+                .activity(triggers: viewModel.catalogItems)
         }
     }
 
