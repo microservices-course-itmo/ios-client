@@ -1,0 +1,13 @@
+settings:
+  base:
+    DEVELOPMENT_TEAM: "ASDJASKDN"
+
+configs:
+  options:
+    bundleIdPrefix: "ru.ifmo.wineup"
+
+targets:
+  WineUp:
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: "ru.ifmo.wineup"

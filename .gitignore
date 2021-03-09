@@ -6,7 +6,7 @@
 **/*.xcworkspace/
 **/WineUp/Info.plist
 **/*.entitlements
-
+**/WineUp/project.local.yaml
 ## R.swift generated file
 **/R.generated.swift
 
