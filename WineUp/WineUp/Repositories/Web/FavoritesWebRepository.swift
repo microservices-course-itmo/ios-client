@@ -11,6 +11,8 @@ import Combine
 // MARK: - FavoritesWebRepository
 
 protocol FavoritesWebRepository: WebRepository {
+    /// Get all favorite wine positions of current user
+    func getAllFavoriteWinePositions() -> AnyPublisher<[FavoriteWinePositionJson], Error>
     /// Add corresponding wine position to favorites
     func addWinePositionToFavorites(by winePositionId: String) -> AnyPublisher<Void, Error>
     /// Delete corresponding wine position from favorites
@@ -34,6 +36,15 @@ final class RealFavoritesWebRepository: FavoritesWebRepository {
         self.session = session
         self.baseURL = baseURL
         self.credentials = credentials
+    }
+
+    func getAllFavoriteWinePositions() -> AnyPublisher<[FavoriteWinePositionJson], Error> {
+        accessTokenPublisher()
+            .map { token in
+                self.request(endpoint: .getAllFavoriteWinePositions(accessToken: token))
+            }
+            .switchToLatest()
+            .eraseToAnyPublisher()
     }
 
     func getUsersWithFavorite(by winePositionId: String) -> AnyPublisher<[UserJson], Error> {
