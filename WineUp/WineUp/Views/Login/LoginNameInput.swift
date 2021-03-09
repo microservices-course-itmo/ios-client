@@ -55,8 +55,26 @@ extension LoginNameInput {
             cancelBag.collect {
                 container.appState.bindDisplayValue(\.userData.loginForm.name, to: self, by: \.name)
                 $name.toInputtable(of: container.appState, at: \.value.userData.loginForm.name)
-                container.appState.map { $0.userData.loginForm.name.hasValue }.bind(to: self, by: \.isDoneButtonActive)
+
+                container.appState
+                    .map { ViewModel.validate(name: $0.userData.loginForm.name) }
+                    .bind(to: self, by: \.isDoneButtonActive)
             }
+        }
+
+        // MARK: - Helpers
+
+        private static func validate(name: Inputtable<String>) -> Bool {
+            guard let value = name.value else { return false }
+            return validate(name: value)
+        }
+
+        private static func validate(name: String) -> Bool {
+            let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            let regexPattern = "^[\\p{L}\\h\\.]{0,30}$"
+            let matches = NSPredicate(format: "SELF MATCHES %@", regexPattern).evaluate(with: name)
+
+            return matches
         }
     }
 }
