@@ -11,12 +11,13 @@ extension View {
 
     @ViewBuilder
     func activity(hasActivity: Bool, disableInteractionIfNeeded disableInteraction: Bool = true) -> some View {
-        if hasActivity {
-            self.overlay(ActivityIndicator().hoverEffect())
-                .disabled(disableInteraction)
-        } else {
-            self
-        }
+        self
+            .overlay(
+                ActivityIndicator()
+                    .scaleEffect()
+                    .hidden(!hasActivity)
+            )
+            .disabled(hasActivity && disableInteraction)
     }
 
     func activity(triggers: [ActivityTrigger]) -> some View {

@@ -46,10 +46,6 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
         return request(endpoint: .getAllTrueWinePositions(parameters: parameters))
     }
 
-    func getFavoriteWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
-        request(endpoint: .getFavoriteWinePositions())
-    }
-
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error> {
         if ids.isEmpty {
             // Catalog service will return 400 if list if empty
@@ -60,7 +56,6 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
         }
     }
 
-    // TODO: реализуется в рамках https://trello.com/c/kvXh2k7m. Поправить этот код, когда будет реализовано.
     func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
         request(endpoint: .getFavoriteWinePositions())
     }

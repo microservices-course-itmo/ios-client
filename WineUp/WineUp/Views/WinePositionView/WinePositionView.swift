@@ -22,12 +22,13 @@ private extension CGFloat {
 struct WinePositionView: View {
 
     let item: WinePosition
+    let onLikeButtonTap: () -> Void
 
     var body: some View {
 
         VStack(spacing: .itemsSpacing) {
             HStack {
-                TopInformationView(item: item)
+                TopInformationView(item: item, onLikeButtonTap: onLikeButtonTap)
             }
             .padding(.leading, .CompatibilityOffset)
 
@@ -50,8 +51,8 @@ struct WinePositionView: View {
 #if DEBUG
 struct CatalogRowView_Previews: PreviewProvider {
     static var previews: some View {
-        let item = WinePosition.mockedData[1]
-        return WinePositionView(item: item)
+        var item = WinePosition.mockedData[1]
+        return WinePositionView(item: item, onLikeButtonTap: { item.isLiked.toggle() })
             .previewLayout(.fixed(width: 414, height: 800))
     }
 }
