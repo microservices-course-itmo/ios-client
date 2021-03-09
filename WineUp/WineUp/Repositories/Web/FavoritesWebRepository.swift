@@ -38,19 +38,19 @@ final class RealFavoritesWebRepository: FavoritesWebRepository {
         self.credentials = credentials
     }
 
-    func getUsersWithFavorite(by winePositionId: String) -> AnyPublisher<[UserJson], Error> {
+    func getAllFavoriteWinePositions() -> AnyPublisher<[FavoriteWinePositionJson], Error> {
         accessTokenPublisher()
             .map { token in
-                self.request(endpoint: .getUsersWithFavorite(by: winePositionId, accessToken: token))
+                self.request(endpoint: .getAllFavoriteWinePositions(accessToken: token))
             }
             .switchToLatest()
             .eraseToAnyPublisher()
     }
 
-    func getAllFavoriteWinePositions() -> AnyPublisher<[FavoriteWinePositionJson], Error> {
+    func getUsersWithFavorite(by winePositionId: String) -> AnyPublisher<[UserJson], Error> {
         accessTokenPublisher()
             .map { token in
-                self.request(endpoint: .getAllFavoriteWinePositions(accessToken: token))
+                self.request(endpoint: .getUsersWithFavorite(by: winePositionId, accessToken: token))
             }
             .switchToLatest()
             .eraseToAnyPublisher()

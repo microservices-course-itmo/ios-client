@@ -85,7 +85,7 @@ extension CatalogView {
             container.services.catalogService.load(
                 winePositions: loadableSubject(\.catalogItems),
                 page: 0,
-                amount: 20,
+                amount: 10,
                 colors: colors,
                 sugars: sugar,
                 countries: countries,

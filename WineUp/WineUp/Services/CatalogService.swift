@@ -34,7 +34,6 @@ final class RealCatalogService: CatalogService {
 
     private let winePositionWebRepository: TrueWinePositionWebRepository
     private let favoritesWebRepository: FavoritesWebRepository
-    private var winePositions: [WinePosition]?
     private var favoritesId: Set<String>?
 
     init(winePositionWebRepository: TrueWinePositionWebRepository,
@@ -53,10 +52,6 @@ final class RealCatalogService: CatalogService {
         let bag = CancelBag()
         winePositions.wrappedValue.setIsLoading(cancelBag: bag)
 
-        if let cachedWinePositions = self.winePositions {
-            winePositions.wrappedValue = .loaded(cachedWinePositions)
-        }
-
         var filters: [WinePositionFilters] = []
 
         for (index, color) in colors.enumerated() {
@@ -67,7 +62,10 @@ final class RealCatalogService: CatalogService {
             }
         }
 
-        filters.append(.separator(.and))
+        // TODO: Refactor filters creation using reduce
+        if !colors.isEmpty, !sugars.isEmpty {
+            filters.append(.separator(.and))
+        }
 
         for (index, sugar) in sugars.enumerated() {
             let filter = WinePositionFilters.value(.init(criterion: .sugar, operation: .equal, value: sugar.json.rawValue))
@@ -83,14 +81,14 @@ final class RealCatalogService: CatalogService {
         // TODO: real sortBy needed
         let sortBy = FilterSortBy(attributeName: .actualPrice, order: .asc)
 
-        winePositionWebRepository
-            // TODO: подставлять параметры выбранные пользователем 
-            .getAllTrueWinePositions(page: page, amount: amount, filters: filters, sortBy: sortBy)
+        updateFavoriteIds()
+            .flatMap { _ in
+                self.winePositionWebRepository
+                    // TODO: подставлять параметры выбранные пользователем
+                    .getAllTrueWinePositions(page: page, amount: amount, filters: filters, sortBy: sortBy)
+            }
             .map {
                 self.transform(json: $0)
-            }
-            .pass {
-                self.winePositions = $0
             }
             .sinkToLoadable {
                 if case let .failed(error) = $0 {
@@ -102,28 +100,15 @@ final class RealCatalogService: CatalogService {
     }
 
     func load(favoriteWinePositions: LoadableSubject<[WinePosition]>) {
-        // Ожидаемая реализация:
-        // Сервис должен уметь кэшировать избранные винные позиции
-        // Сервис должен хранить список избранных винных позиций и менять его при добавлении в избранное и удалении оттуда
-        // Сервис должен вычислять `isLiked` поле у винной позиции, исходя из наличия её Id в сохранённом списке избранных
-        // Для скачивания и модицикации списка избранных на сервере можно использовать FavoritesWebRepository
-        // Для скачивания списка винных позиций по их Id можно использовать метод у TrueWinePositionWebRepository
         let bag = CancelBag()
         favoriteWinePositions.wrappedValue.setIsLoading(cancelBag: bag)
 
-        favoritesIdPublisher()
-            .map { itemsId in
-                self.winePositionWebRepository.getTrueWinePositions(by: Array(itemsId))
-            }
-            .switchToLatest()
+        winePositionWebRepository
+            .getFavoritesTrueWinePositions()
             .map {
                 self.transform(json: $0)
             }
             .sinkToLoadable {
-                if case let .failed(error) = $0 {
-                    print("Loading catalog error: \(error.description)")
-                }
-
                 favoriteWinePositions.wrappedValue = $0
             }
             .store(in: bag)
@@ -163,13 +148,13 @@ final class RealCatalogService: CatalogService {
                 year: "\(wine.year)",
                 wineSugar: wine.sugar.sugar,
                 quantityLiters: json.volume,
-                isLiked: isLiked, // TODO: Missing data
+                isLiked: isLiked,
                 chemistry: Float.random(in: 0..<100), // TODO: Missing data
                 titleImageUrl: json.image,
                 retailerName: json.shop.site, // TODO: Missing data
                 rating: Float.random(in: 0..<5), // TODO: Missing data
                 originalPriceRub: json.price,
-                discountPercents: (json.price - json.actualPrice) / json.price
+                discountPercents: json.discountPercents
             )
         }
     }
@@ -180,7 +165,11 @@ final class RealCatalogService: CatalogService {
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
-        return favoritesWebRepository
+        return updateFavoriteIds()
+    }
+
+    private func updateFavoriteIds() -> AnyPublisher<Set<String>, Error> {
+        favoritesWebRepository
             .getAllFavoriteWinePositions()
             .map { favoriteWinePositionJsons in
                 Set(favoriteWinePositionJsons.map { $0.id })
@@ -198,6 +187,13 @@ private extension String {
     var base64Image: UIImage? {
         guard let data = Data(base64Encoded: self) else { return nil }
         return UIImage(data: data)
+    }
+}
+
+private extension TrueWinePositionJson {
+    var discountPercents: Float {
+        guard price > 0 else { return 0 }
+        return (price - actualPrice) / price
     }
 }
 

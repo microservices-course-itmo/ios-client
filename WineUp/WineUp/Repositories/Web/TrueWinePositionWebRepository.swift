@@ -16,9 +16,9 @@ protocol TrueWinePositionWebRepository: WebRepository {
                                  filters: [WinePositionFilters],
                                  sortBy: FilterSortBy) -> AnyPublisher<[TrueWinePositionJson], Error>
 
-    func getFavoriteWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
-
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
+
+    func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
 }
 
 // MARK: - Implementation
@@ -59,13 +59,18 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
             return request(endpoint: .getTrueWinePositions(by: ids))
         }
     }
+
+    // TODO: реализуется в рамках https://trello.com/c/kvXh2k7m. Поправить этот код, когда будет реализовано.
+    func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
+        request(endpoint: .getFavoriteWinePositions())
+    }
 }
 
 // MARK: - Helpers
 
 private extension APICall {
     static func getAllTrueWinePositions(parameters: QueryParameters) -> APICall {
-        APICall(path: "/position/true/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
+        APICall(path: "/position/true/trueSettings/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
     }
 
     static func getTrueWinePositions(by ids: [String]) -> APICall {
