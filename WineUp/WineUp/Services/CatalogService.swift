@@ -83,9 +83,12 @@ final class RealCatalogService: CatalogService {
         // TODO: real sortBy needed
         let sortBy = FilterSortBy(attributeName: .actualPrice, order: .asc)
 
-        winePositionWebRepository
-            // TODO: подставлять параметры выбранные пользователем 
-            .getAllTrueWinePositions(page: page, amount: amount, filters: filters, sortBy: sortBy)
+        updateFavoriteIds()
+            .flatMap { _ in
+                self.winePositionWebRepository
+                    // TODO: подставлять параметры выбранные пользователем
+                    .getAllTrueWinePositions(page: page, amount: amount, filters: filters, sortBy: sortBy)
+            }
             .map {
                 self.transform(json: $0)
             }
@@ -102,26 +105,15 @@ final class RealCatalogService: CatalogService {
     }
 
     func load(favoriteWinePositions: LoadableSubject<[WinePosition]>) {
-        // Ожидаемая реализация:
-        // Сервис должен уметь кэшировать избранные винные позиции
-        // Сервис должен хранить список избранных винных позиций и менять его при добавлении в избранное и удалении оттуда
-        // Сервис должен вычислять `isLiked` поле у винной позиции, исходя из наличия её Id в сохранённом списке избранных
-        // Для скачивания и модицикации списка избранных на сервере можно использовать FavoritesWebRepository
-        // Для скачивания списка винных позиций по их Id можно использовать метод у TrueWinePositionWebRepository
         let bag = CancelBag()
         favoriteWinePositions.wrappedValue.setIsLoading(cancelBag: bag)
 
         winePositionWebRepository
-            // TODO: реализуется в рамках https://trello.com/c/kvXh2k7m. Поправить этот код, когда будет реализовано.
             .getFavoritesTrueWinePositions()
             .map {
                 self.transform(json: $0)
             }
             .sinkToLoadable {
-                if case let .failed(error) = $0 {
-                    print("Loading catalog error: \(error.description)")
-                }
-
                 favoriteWinePositions.wrappedValue = $0
             }
             .store(in: bag)
@@ -161,15 +153,36 @@ final class RealCatalogService: CatalogService {
                 year: "\(wine.year)",
                 wineSugar: wine.sugar.sugar,
                 quantityLiters: json.volume,
-                isLiked: isLiked, // TODO: Missing data
+                isLiked: isLiked,
                 chemistry: Float.random(in: 0..<100), // TODO: Missing data
                 titleImageUrl: json.image,
                 retailerName: json.shop.site, // TODO: Missing data
                 rating: Float.random(in: 0..<5), // TODO: Missing data
                 originalPriceRub: json.price,
-                discountPercents: (json.price - json.actualPrice) / json.price
+                discountPercents: json.discountPercents
             )
         }
+    }
+
+    private func favoritesIdPublisher() -> AnyPublisher<Set<String>, Error> {
+        if let favoritesId = self.favoritesId {
+            return Just(favoritesId)
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        return updateFavoriteIds()
+    }
+
+    private func updateFavoriteIds() -> AnyPublisher<Set<String>, Error> {
+        favoritesWebRepository
+            .getAllFavoriteWinePositions()
+            .map { favoriteWinePositionJsons in
+                Set(favoriteWinePositionJsons.map { $0.id })
+            }
+            .pass {
+                self.favoritesId = $0
+            }
+            .eraseToAnyPublisher()
     }
 }
 
@@ -179,6 +192,13 @@ private extension String {
     var base64Image: UIImage? {
         guard let data = Data(base64Encoded: self) else { return nil }
         return UIImage(data: data)
+    }
+}
+
+private extension TrueWinePositionJson {
+    var discountPercents: Float {
+        guard price > 0 else { return 0 }
+        return (price - actualPrice) / price
     }
 }
 
