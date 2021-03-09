@@ -34,7 +34,6 @@ final class RealCatalogService: CatalogService {
 
     private let winePositionWebRepository: TrueWinePositionWebRepository
     private let favoritesWebRepository: FavoritesWebRepository
-    private var winePositions: [WinePosition]?
     private var favoritesId: Set<String>?
 
     init(winePositionWebRepository: TrueWinePositionWebRepository,
@@ -53,10 +52,6 @@ final class RealCatalogService: CatalogService {
         let bag = CancelBag()
         winePositions.wrappedValue.setIsLoading(cancelBag: bag)
 
-        if let cachedWinePositions = self.winePositions {
-            winePositions.wrappedValue = .loaded(cachedWinePositions)
-        }
-
         var filters: [WinePositionFilters] = []
 
         for (index, color) in colors.enumerated() {
@@ -67,7 +62,10 @@ final class RealCatalogService: CatalogService {
             }
         }
 
-        filters.append(.separator(.and))
+        // TODO: Refactor filters creation using reduce
+        if !colors.isEmpty, !sugars.isEmpty {
+            filters.append(.separator(.and))
+        }
 
         for (index, sugar) in sugars.enumerated() {
             let filter = WinePositionFilters.value(.init(criterion: .sugar, operation: .equal, value: sugar.json.rawValue))
@@ -91,9 +89,6 @@ final class RealCatalogService: CatalogService {
             }
             .map {
                 self.transform(json: $0)
-            }
-            .pass {
-                self.winePositions = $0
             }
             .sinkToLoadable {
                 if case let .failed(error) = $0 {

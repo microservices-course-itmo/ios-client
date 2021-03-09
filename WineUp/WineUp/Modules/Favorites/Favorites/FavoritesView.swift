@@ -23,7 +23,7 @@ private extension LocalizedStringKey {
 /// Stack of filters and list of favorites wine positions
 struct FavoritesView: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
     @State private var showActionSheet = false
     @State private var showSortByView = false
 

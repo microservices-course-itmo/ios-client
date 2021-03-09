@@ -23,7 +23,7 @@ private extension LocalizedStringKey {
 /// Stack of filters and list of catalog offers
 struct CatalogView: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
     @StateObject private var filtersViewModel = FiltersViewModel()
 
     var body: some View {

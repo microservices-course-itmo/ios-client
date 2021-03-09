@@ -13,7 +13,7 @@ final class WinePositionWebRepositoryQueryParametersBuidler {
         [
             ("page", page.description),
             ("amount", amount.description),
-            ("searchParameters", buildSearchParameters(for: filters)),
+            ("filterBy", buildSearchParameters(for: filters)),
             ("sortByPair", buildSortBy(from: sortBy))
         ]
     }
@@ -32,6 +32,6 @@ final class WinePositionWebRepositoryQueryParametersBuidler {
     }
 
     private func buildSortBy(from sortBy: FilterSortBy) -> String {
-        "\(sortBy.attributeName)&\(sortBy.order)"
+        "\(sortBy.attributeName.rawValue)&\(sortBy.order)"
     }
 }
