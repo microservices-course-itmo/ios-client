@@ -44,6 +44,7 @@ extension LoginView {
         @Published var registration: Loadable<Void> = .notRequested
 
         private let container: DIContainer
+        private let bag = CancelBag()
 
         // MARK: Public
 
@@ -64,8 +65,6 @@ extension LoginView {
         }
 
         func verificationCodeDidSubmit() {
-            let bag = CancelBag()
-            container.appState.value.routing.didLogin.setIsLoading(cancelBag: bag)
 
             container.services.authenticationService
                 .login()
@@ -73,10 +72,10 @@ extension LoginView {
                     switch result {
                     case let .failure(error):
                         print("Login error: \(error.description)")
-                        self.container.appState.value.routing.didLogin = .loaded(false)
+                        self.container.appState.value.routing.didLogin = false
                         self.nextPage(.name)
                     case .success:
-                        self.container.appState.value.routing.didLogin = .loaded(true)
+                        self.container.appState.value.routing.didLogin = true
                         self.container.appState.value.userData.loginForm = .init()
                     }
                 }
@@ -151,7 +150,7 @@ extension LoginView {
                 .getToken()
                 .flatMap { token -> AnyPublisher<UserJson, Error> in
                     let form = UserJson.RegistrationForm(
-                        birthday: birthday,
+                        birthday: birthday.localDate,
                         cityId: city.id,
                         fireBaseToken: token,
                         name: name
@@ -166,7 +165,7 @@ extension LoginView {
                         self.registration = .failed(error)
                     case let .success(user):
                         print("Finish login of user \(user)")
-                        self.container.appState.value.routing.didLogin = .loaded(true)
+                        self.container.appState.value.routing.didLogin = true
                         self.registration = .loaded(())
                     }
                 }

@@ -40,14 +40,18 @@ extension WinePositionView {
     struct TopInformationView: View {
 
         let item: WinePosition
+        let onLikeButtonTap: () -> Void
 
         var body: some View {
             HStack(spacing: .itemsSpacing) {
                 Text(compatibilityText)
                     .font(.wineDescription)
-                heartImage
-                    .foregroundColor(Color .heartLiked)
-                    .font(.heart)
+
+                Button(action: onLikeButtonTap, label: {
+                    heartImage
+                        .foregroundColor(Color .heartLiked)
+                        .font(.heart)
+                })
             }
         }
 
@@ -69,7 +73,7 @@ struct CatalogRowViewTopInformationView_Previews: PreviewProvider {
     private static let item = WinePosition.mockedData[0]
 
     static var previews: some View {
-        WinePositionView.TopInformationView(item: item)
+        WinePositionView.TopInformationView(item: item, onLikeButtonTap: {})
             .previewLayout(.fixed(width: 600, height: 30))
     }
 }

@@ -46,12 +46,6 @@ extension WinePosition {
     struct Details: Equatable {
         /// Id of corresponding wine position
         var winePositionId: String
-        /// Description of wine taste
-        var tasteDescription: String
-        /// Text with suggestion which food to combine the wine with
-        var dishSuggestions: String
-        /// List of reviews of the wine
-        var reviews: [Review]
         /// List of suggested wines
         var suggestions: [WinePosition]
     }

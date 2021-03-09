@@ -1,3 +1,6 @@
+include:
+ - project.local.yaml
+
 name: WineUp
 configs:
   Production: release
@@ -7,7 +10,6 @@ options:
   minimumXcodeGenVersion: 2.17.0
   deploymentTarget:
     iOS: 14.0
-  bundleIdPrefix: ru.ifmo.wineup
   usesTabs: false
   indentWidth: 4
   tabWidth: 4
@@ -99,7 +101,6 @@ targets:
         CODE_SIGN_IDENTITY: Apple Development
         DEFINES_MODULE: NO
         INFOPLIST_FILE: WineUp/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: ru.ifmo.wineup
         TARGETED_DEVICE_FAMILY: 1
         XCODEGEN_STATE: YES
     scheme:

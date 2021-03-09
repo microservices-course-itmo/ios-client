@@ -45,6 +45,13 @@ extension Publisher {
         })
     }
 
+    func sinkToLoadable<O: AnyObject>(of object: O,
+                                      by keyPath: ReferenceWritableKeyPath<O, Loadable<Output>>) -> AnyCancellable {
+        sinkToLoadable {
+            object[keyPath: keyPath] = $0
+        }
+    }
+
     func extractUnderlyingError() -> Publishers.MapError<Self, Failure> {
         mapError {
             ($0.underlyingError as? Failure) ?? $0

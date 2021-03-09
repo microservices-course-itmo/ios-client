@@ -85,12 +85,30 @@ extension CatalogView {
             container.services.catalogService.load(
                 winePositions: loadableSubject(\.catalogItems),
                 page: 0,
-                amount: 20,
+                amount: 10,
                 colors: colors,
                 sugars: sugar,
                 countries: countries,
                 sortBy: sortBy
             )
+        }
+
+        func toggleLike(of winePosition: WinePosition) {
+            guard var winePositions = catalogItems.value, let index = catalogItems.value?.firstIndex(of: winePosition) else {
+                assertionFailure()
+                return
+            }
+            winePositions[index].isLiked.toggle()
+
+            let bag = CancelBag()
+            catalogItems.setIsLoading(cancelBag: bag)
+            container.services.catalogService
+                .likeWinePosition(winePositionId: winePosition.id, like: !winePosition.isLiked)
+                .map { _ in
+                    winePositions
+                }
+                .sinkToLoadable(of: self, by: \.catalogItems)
+                .store(in: bag)
         }
 
         func filterItemDidTap(_ item: CatalogFiltersBarView.Item) {

@@ -17,6 +17,8 @@ protocol TrueWinePositionWebRepository: WebRepository {
                                  sortBy: FilterSortBy) -> AnyPublisher<[TrueWinePositionJson], Error>
 
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
+
+    func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
 }
 
 // MARK: - Implementation
@@ -53,17 +55,25 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
             return request(endpoint: .getTrueWinePositions(by: ids))
         }
     }
+
+    func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
+        request(endpoint: .getFavoriteWinePositions())
+    }
 }
 
 // MARK: - Helpers
 
 private extension APICall {
     static func getAllTrueWinePositions(parameters: QueryParameters) -> APICall {
-        APICall(path: "/position/true/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
+        APICall(path: "/position/true/trueSettings/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
     }
 
     static func getTrueWinePositions(by ids: [String]) -> APICall {
         let parameters = ids.map { ("favouritePosition", $0) }
         return APICall(path: "/position/true/favourites/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
+    }
+
+    static func getFavoriteWinePositions() -> APICall {
+        APICall(path: "/favorites/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
     }
 }
