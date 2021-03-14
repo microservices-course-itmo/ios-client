@@ -73,7 +73,7 @@ struct ProfileView: View {
                 .defaultStyled(isDisabled: false)
                 .padding(.bottom, 24)
                 .sheet(isPresented: $showEditSheet) {
-                    EditProfileView(viewModel: viewModel.editProfileViewModel)
+                    EditProfileView(viewModel: viewModel.editProfileViewModel, isActive: $showEditSheet)
                 }
 
                 showAPNsButton

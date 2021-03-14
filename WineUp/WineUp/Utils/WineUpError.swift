@@ -16,4 +16,6 @@ enum WineUpError: Error {
     case notImplemented(_ file: String = #file, method: String = #function)
     /// Trying to use method which needs authentication
     case notAuthenticated
+    /// User did cancel some flow
+    case canceledByUser
 }
