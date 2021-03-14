@@ -81,23 +81,29 @@ struct RadioButton<Item: RadioButtonItem>: View {
     // MARK: Helpers
 
     private func itemButtonDidTap(_ item: Item) {
-        if checkedItems.contains(item) {
-            checkedItems.remove(item)
+        // Some kind of 'transaction' for items list
+        var items = checkedItems
+        defer {
+            checkedItems = items
+        }
+
+        if items.contains(item) {
+            items.remove(item)
         } else {
-            if !canCheckItem {
-                checkedItems.removeFirst()
+            if !canCheckItem(in: items) {
+                items.removeFirst()
             }
-            if canCheckItem {
-                checkedItems.append(item)
+            if canCheckItem(in: items) {
+                items.append(item)
             }
         }
     }
 
-    private var canCheckItem: Bool {
+    private func canCheckItem(in items: [Item]) -> Bool {
         guard let maxChecked = maxChecked else {
             return true
         }
-        return checkedItems.count < maxChecked
+        return items.count < maxChecked
     }
 }
 
