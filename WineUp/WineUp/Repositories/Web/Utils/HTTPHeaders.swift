@@ -14,8 +14,16 @@ extension HTTPHeaders {
         [:]
     }
 
-    func accessToken(_ accessToken: String) -> HTTPHeaders {
+    func accessToken(_ accessToken: AccessToken) -> HTTPHeaders {
         updateValueWithCopy("Bearer \(accessToken)", forKey: .accessTokenHeader)
+    }
+
+    func optionalAccessToken(_ accessToken: AccessToken?) -> HTTPHeaders {
+        if let token = accessToken {
+            return self.accessToken(token)
+        } else {
+            return self
+        }
     }
 
     func contentType(_ contentType: String) -> HTTPHeaders {
