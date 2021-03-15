@@ -16,6 +16,9 @@ private extension Font {
 private extension Color {
     static let itemTitle: Color = .primary
     static let border = Color(.systemGray4)
+    static let backgroundColor: Color = .white
+    static let selectedBackgroundColor = Color(hex: 0x931332)
+    static let selectedItemTitle: Color = .white
 }
 
 private extension CGFloat {
@@ -45,15 +48,21 @@ extension PriceFilter {
     /// Predefined price interval non-interactive view
     struct PredefinedPriceIntervalView: View {
 
+        let isSelected: Bool
         let interval: PredefinedPriceInterval
 
         var body: some View {
             Text(title)
-                .foregroundColor(.itemTitle)
+                .foregroundColor(isSelected ? Color.selectedItemTitle : Color.itemTitle)
                 .font(.itemTitle)
-                .overlay(
+                .overlay(RoundedRectangle(cornerRadius: .borderCornerRadius)
+                            .stroke(Color.border, lineWidth: .borderWidth)
+                            .padding([.leading, .trailing], .borderHPadding)
+                            .padding([.top, .bottom], .borderVPadding)
+                )
+                .background(
                     RoundedRectangle(cornerRadius: .borderCornerRadius)
-                        .stroke(Color.border, lineWidth: .borderWidth)
+                        .fill(isSelected ? Color.selectedBackgroundColor : Color.backgroundColor)
                         .padding([.leading, .trailing], .borderHPadding)
                         .padding([.top, .bottom], .borderVPadding)
                 )
@@ -87,7 +96,7 @@ struct PriceFilterItemView_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            PriceFilter.PredefinedPriceIntervalView(interval: interval)
+            PriceFilter.PredefinedPriceIntervalView(isSelected: true, interval: interval)
         }
         .previewLayout(.fixed(width: 414, height: 250))
     }
