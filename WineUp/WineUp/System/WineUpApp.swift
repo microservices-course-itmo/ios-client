@@ -22,6 +22,7 @@ struct WineUpApp: App {
     var body: some Scene {
         WindowGroup {
             ApplicationRootView(viewModel: .init(container: container))
+                .environment(\.colorScheme, ColorScheme.light)
         }
     }
 }

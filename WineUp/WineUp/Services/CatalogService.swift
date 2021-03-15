@@ -189,8 +189,8 @@ private extension String {
 
 private extension TrueWinePositionJson {
     var discountPercents: Float {
-        guard price > 0 else { return 0 }
-        return (price - actualPrice) / price
+        guard price > 0, actualPrice > 0 else { return 0 }
+        return 100 * (price - actualPrice) / price
     }
 }
 
