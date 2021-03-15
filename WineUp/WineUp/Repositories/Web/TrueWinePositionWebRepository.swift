@@ -43,7 +43,7 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
                                  filters: [WinePositionFilters],
                                  sortBy: FilterSortBy) -> AnyPublisher<[TrueWinePositionJson], Error> {
         let parameters = queryParamsBuilder.build(page: page, amount: amount, filters: filters, sortBy: sortBy)
-        return request(endpoint: .getAllTrueWinePositions(parameters: parameters))
+        return request(endpoint: .getAllTrueWinePositions(parameters: parameters, accessToken: credentials.value?.accessToken))
     }
 
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error> {
@@ -52,28 +52,42 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
             return Just<[TrueWinePositionJson]>.withErrorType([], Error.self)
                 .eraseToAnyPublisher()
         } else {
-            return request(endpoint: .getTrueWinePositions(by: ids))
+            return request(endpoint: .getTrueWinePositions(by: ids, accessToken: credentials.value?.accessToken))
         }
     }
 
     func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error> {
-        request(endpoint: .getFavoriteWinePositions())
+        accessTokenPublisher()
+            .flatMap {
+                self.request(endpoint: .getFavoriteWinePositions(accessToken: $0))
+            }
+            .eraseToAnyPublisher()
     }
 }
 
 // MARK: - Helpers
 
 private extension APICall {
-    static func getAllTrueWinePositions(parameters: QueryParameters) -> APICall {
-        APICall(path: "/position/true/trueSettings/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
+    static func getAllTrueWinePositions(parameters: QueryParameters, accessToken: AccessToken?) -> APICall {
+        APICall(
+            path: "/position/true/settings/",
+            method: "GET",
+            headers: HTTPHeaders.empty.optionalAccessToken(accessToken),
+            parameters: parameters
+        )
     }
 
-    static func getTrueWinePositions(by ids: [String]) -> APICall {
+    static func getTrueWinePositions(by ids: [String], accessToken: AccessToken?) -> APICall {
         let parameters = ids.map { ("favouritePosition", $0) }
-        return APICall(path: "/position/true/favourites/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: parameters)
+        return APICall(
+            path: "/position/true/favourites/",
+            method: "GET",
+            headers: HTTPHeaders.empty.optionalAccessToken(accessToken),
+            parameters: parameters
+        )
     }
 
-    static func getFavoriteWinePositions() -> APICall {
-        APICall(path: "/favorites/", method: "GET", headers: HTTPHeaders.empty.mockedAccessToken())
+    static func getFavoriteWinePositions(accessToken: AccessToken) -> APICall {
+        APICall(path: "/favorites/", method: "GET", headers: HTTPHeaders.empty.accessToken(accessToken))
     }
 }

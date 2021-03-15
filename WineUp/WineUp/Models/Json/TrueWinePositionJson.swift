@@ -19,6 +19,7 @@ struct TrueWinePositionJson: Decodable {
     var shop: ShopJson
     var volume: Float
     var wine: TrueWineJson
+    var isLiked: Bool?
 }
 
 struct TrueWineJson: Decodable {
