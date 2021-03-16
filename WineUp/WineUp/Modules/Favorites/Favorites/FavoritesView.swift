@@ -42,7 +42,7 @@ struct FavoritesView: View {
 
     private func content() -> some View {
         VStack(spacing: 0) {
-            SearchBarView(text: $viewModel.searchText)
+            SearchBarView(placeholder: "Поиск", text: $viewModel.searchText)
 
             HStack {
                 Button(action: sortByButtonDidTap) {
