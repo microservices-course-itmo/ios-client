@@ -14,11 +14,17 @@ extension PriceFilter {
     struct PredefinedPriceIntervalButton: View {
 
         let interval: PredefinedPriceInterval
+        @Binding var selectedInterval: PredefinedPriceInterval?
         let action: () -> Void
+
+        var isSelected: Bool {
+            guard let selected = selectedInterval else { return false }
+            return selected == interval
+        }
 
         var body: some View {
             Button(action: action) {
-                PredefinedPriceIntervalView(interval: interval)
+                PredefinedPriceIntervalView(isSelected: isSelected, interval: interval)
                     .padding()
             }
         }
@@ -33,7 +39,9 @@ struct PriceFilterItemButtonPreview: PreviewProvider {
 
     static var previews: some View {
         Group {
-            PriceFilter.PredefinedPriceIntervalButton(interval: interval, action: {})
+            PriceFilter.PredefinedPriceIntervalButton(interval: interval,
+                                                      selectedInterval: .constant(.lessThan(maxPriceRub: 222)),
+                                                      action: {})
         }
         .previewLayout(.fixed(width: 414, height: 250))
     }

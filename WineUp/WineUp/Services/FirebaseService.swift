@@ -17,6 +17,8 @@ protocol FirebaseService: Service {
     func sendVerificationCode(to phoneNumber: String) -> AnyPublisher<PhoneVerificationId, Error>
     /// Executes Firebase signIn method and returns token in publisher
     func submitVerificationCode(_ code: String, verificationId: PhoneVerificationId) -> AnyPublisher<FirebaseToken, Error>
+    /// Updated phone number of current user
+    func updatePhoneNumber(_ code: String, verificationId: PhoneVerificationId) -> AnyPublisher<Void, Error>
     /// Retrieves the Firebase authentication token, possibly refreshing it if it has expired or if `force` flag is `true`
     func getToken(force: Bool) -> AnyPublisher<FirebaseToken, Error>
     /// Cleans firebase context
@@ -86,6 +88,28 @@ final class RealFirebaseService: FirebaseService {
         }.eraseToAnyPublisher()
     }
 
+    func updatePhoneNumber(_ code: String, verificationId: PhoneVerificationId) -> AnyPublisher<Void, Error> {
+        guard let user = Auth.auth().currentUser else {
+            assertionFailure()
+            let error = WineUpError.invalidAppState("Trying to update phone number when currentUser is nil")
+            return Fail<Void, Error>(error: error)
+                .eraseToAnyPublisher()
+        }
+
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationId, verificationCode: code)
+
+        return Future<Void, Error> { completion in
+            user.updatePhoneNumber(credential) { error in
+                if let error = error {
+                    completion(.failure(error))
+                }
+
+                completion(.success(()))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
     func getToken(force: Bool) -> AnyPublisher<FirebaseToken, Error> {
         return Future<String, Error> { promise in
             guard let user = self.currentUser else {
@@ -132,6 +156,10 @@ final class StubFirebaseService: FirebaseService {
 
     func submitVerificationCode(_ code: String, verificationId: PhoneVerificationId) -> AnyPublisher<FirebaseToken, Error> {
         Just<FirebaseToken>.withErrorType("token", Error.self)
+    }
+
+    func updatePhoneNumber(_ code: String, verificationId: PhoneVerificationId) -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
     }
 
     func signOut() -> AnyPublisher<Void, Error> {

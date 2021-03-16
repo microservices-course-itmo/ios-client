@@ -71,15 +71,18 @@ struct ProfileView: View {
                     Text("Редактировать")
                 })
                 .defaultStyled(isDisabled: false)
-                .padding(.bottom, 16)
+                .padding(.bottom, 24)
                 .sheet(isPresented: $showEditSheet) {
-                    EditProfileView(viewModel: viewModel.editProfileViewModel)
+                    EditProfileView(viewModel: viewModel.editProfileViewModel, isActive: $showEditSheet)
                 }
+
+                showAPNsButton
+                    .padding(.bottom, 16)
 
                 Button(action: { showLogoutActionSheet = true }, label: {
                     Text("Выйти из аккаунта")
                 })
-                .defaultStyled(isDisabled: false)
+                .foregroundColor(.red)
                 .padding(.bottom, 16)
                 .actionSheet(isPresented: $showLogoutActionSheet, content: {
                     ActionSheet(title: Text("Вы уверены?"),
@@ -89,8 +92,6 @@ struct ProfileView: View {
                                     .cancel()
                                 ])
                 })
-
-                showAPNsButton
             }
             .padding()
         }

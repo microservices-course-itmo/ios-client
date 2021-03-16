@@ -10,6 +10,7 @@ import SwiftUI
 /// SwiftUI wrapper of UISerachBar from UIKit
 struct SearchBarView: UIViewRepresentable {
 
+    let placeholder: String
     @Binding var text: String
 
     class Coordinator: NSObject, UISearchBarDelegate {
@@ -23,6 +24,12 @@ struct SearchBarView: UIViewRepresentable {
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
             text = searchText
         }
+
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.resignFirstResponder()
+            searchBar.showsCancelButton = false
+            searchBar.endEditing(true)
+        }
     }
 
     func makeCoordinator() -> SearchBarView.Coordinator {
@@ -33,6 +40,7 @@ struct SearchBarView: UIViewRepresentable {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.delegate = context.coordinator
         searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = placeholder
         return searchBar
     }
 

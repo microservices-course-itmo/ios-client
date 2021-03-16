@@ -12,7 +12,8 @@ import SwiftUI
 struct EditProfileView: View {
 
     @StateObject var viewModel: ViewModel
-    @Environment(\.presentationMode) var presentationMode
+    @Binding var isActive: Bool
+    @State private var showPhoneVerification = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -49,9 +50,7 @@ struct EditProfileView: View {
                 }
                 .padding(.bottom, 32)
 
-                Button(action: {
-                    viewModel.updateProfile()
-                }, label: {
+                Button(action: submit, label: {
                     Text("Cохранить")
                 })
                 .defaultStyled(isDisabled: false)
@@ -62,10 +61,32 @@ struct EditProfileView: View {
         .cardStyled()
         .frame(maxHeight: 450)
         .padding()
-        .activity(triggers: viewModel.updatingProfileSuccess)
-        .onSuccess(viewModel.updatingProfileSuccess) {
-            presentationMode.wrappedValue.dismiss()
+        .activity(triggers: viewModel.updatingProfileSuccess, viewModel.sendingVerificationCodeSuccess)
+        .onError(viewModel.updatingPhoneNumberSuccess, perform: dismiss)
+        .onError(viewModel.updatingProfileSuccess, perform: dismiss)
+        .onSuccess(viewModel.updatingProfileSuccess, perform: dismiss)
+        .onSuccess(viewModel.sendingVerificationCodeSuccess) {
+            showPhoneVerification = true
         }
+        .onSuccess(viewModel.updatingPhoneNumberSuccess) {
+            showPhoneVerification = false
+            viewModel.updateProfile()
+        }
+        .fullScreenCover(isPresented: $showPhoneVerification, content: {
+            PhoneVerificationView(viewModel: viewModel)
+        })
+    }
+
+    private func submit() {
+        if viewModel.phoneNumberUpdateNeeded {
+            viewModel.updatePhoneNumber()
+        } else {
+            viewModel.updateProfile()
+        }
+    }
+
+    private func dismiss() {
+        isActive = false
     }
 }
 
@@ -74,7 +95,7 @@ struct EditProfileView: View {
 #if DEBUG
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfileView(viewModel: .preview)
+        EditProfileView(viewModel: .preview, isActive: .constant(true))
     }
 }
 #endif

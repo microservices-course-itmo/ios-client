@@ -48,7 +48,6 @@ final class RealCatalogService: CatalogService {
 
     private let winePositionWebRepository: TrueWinePositionWebRepository
     private let favoritesWebRepository: FavoritesWebRepository
-    private var favoritesId: Set<String>?
     private(set) var favoritePositionsUpdate = PassthroughSubject<Void, Never>()
 
     init(winePositionWebRepository: TrueWinePositionWebRepository,
@@ -96,14 +95,11 @@ final class RealCatalogService: CatalogService {
         // TODO: real sortBy needed
         let sortBy = FilterSortBy(attributeName: .actualPrice, order: .asc)
 
-        updateFavoriteIds()
-            .flatMap { _ in
-                self.winePositionWebRepository
-                    // TODO: подставлять параметры выбранные пользователем
-                    .getAllTrueWinePositions(page: page, amount: amount, filters: filters, sortBy: sortBy)
-            }
+        self.winePositionWebRepository
+            // TODO: подставлять параметры выбранные пользователем
+            .getAllTrueWinePositions(page: page, amount: amount, filters: filters, sortBy: sortBy)
             .map {
-                self.transform(json: $0)
+                self.transform(json: $0, defaultIsLiked: false)
             }
             .sinkToLoadable {
                 if case let .failed(error) = $0 {
@@ -121,7 +117,7 @@ final class RealCatalogService: CatalogService {
         winePositionWebRepository
             .getFavoritesTrueWinePositions()
             .map {
-                self.transform(json: $0)
+                self.transform(json: $0, defaultIsLiked: true)
             }
             .sinkToLoadable {
                 favoriteWinePositions.wrappedValue = $0
@@ -133,7 +129,6 @@ final class RealCatalogService: CatalogService {
         favoritesWebRepository
             .addWinePositionToFavorites(by: winePositionId)
             .pass {
-                self.favoritesId?.insert(winePositionId)
                 // Needed to notify CatalogView and FavoritesView
                 self.favoritePositionsUpdate.send(())
             }
@@ -143,7 +138,6 @@ final class RealCatalogService: CatalogService {
         favoritesWebRepository
             .deleteWinePositionFromFavorites(by: winePositionId)
             .pass {
-                self.favoritesId?.remove(winePositionId)
                 // Needed to notify CatalogView and FavoritesView
                 self.favoritePositionsUpdate.send(())
             }
@@ -159,10 +153,11 @@ final class RealCatalogService: CatalogService {
 
     // MARK: - Private
 
-    private func transform(json: [TrueWinePositionJson]) -> [WinePosition] {
+    private func transform(json: [TrueWinePositionJson], defaultIsLiked: Bool) -> [WinePosition] {
         json.map { json in
             let wine = json.wine
-            let isLiked = favoritesId?.contains(json.winePositionId) ?? false
+            let isLiked = json.isLiked ?? defaultIsLiked
+
             return WinePosition(
                 id: json.winePositionId,
                 title: json.wine.name,
@@ -181,27 +176,6 @@ final class RealCatalogService: CatalogService {
             )
         }
     }
-
-    private func favoritesIdPublisher() -> AnyPublisher<Set<String>, Error> {
-        if let favoritesId = self.favoritesId {
-            return Just(favoritesId)
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
-        return updateFavoriteIds()
-    }
-
-    private func updateFavoriteIds() -> AnyPublisher<Set<String>, Error> {
-        favoritesWebRepository
-            .getAllFavoriteWinePositions()
-            .map { favoriteWinePositionJsons in
-                Set(favoriteWinePositionJsons.map { $0.id })
-            }
-            .pass {
-                self.favoritesId = $0
-            }
-            .eraseToAnyPublisher()
-    }
 }
 
 // MARK: - Helpers
@@ -215,8 +189,8 @@ private extension String {
 
 private extension TrueWinePositionJson {
     var discountPercents: Float {
-        guard price > 0 else { return 0 }
-        return (price - actualPrice) / price
+        guard price > 0, actualPrice > 0 else { return 0 }
+        return 100 * (price - actualPrice) / price
     }
 }
 

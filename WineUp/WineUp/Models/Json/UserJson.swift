@@ -45,6 +45,5 @@ extension UserJson {
 
     struct UpdateForm: Encodable {
         var cityId: Int?
-        var phoneNumber: String?
     }
 }

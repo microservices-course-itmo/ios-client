@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 // MARK: - EditProfileView+ViewModel
 
@@ -18,9 +19,12 @@ extension EditProfileView {
         @Published var isDoneButtonActive = false
         @Published var phoneNumber = FormattableContainer("", formatter: ViewModel.formatRuPhoneNumber(phone:))
         @Published var updatingProfileSuccess: Loadable<Void> = .notRequested
+        @Published var sendingVerificationCodeSuccess: Loadable<Void> = .notRequested
+        @Published var updatingPhoneNumberSuccess: Loadable<Void> = .notRequested
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
+        private var verificationId: PhoneVerificationId?
 
         // MARK: Public Methods
 
@@ -36,12 +40,60 @@ extension EditProfileView {
             phoneNumber.value = user?.phoneNumber ?? ""
         }
 
+        var phoneNumberUpdateNeeded: Bool {
+            guard let firebasePhoneNumber = Auth.auth().currentUser?.phoneNumber else {
+                assertionFailure()
+                return false
+            }
+            return firebasePhoneNumber != "+" + phoneNumber.value.onlyDigits
+        }
+
+        func updatePhoneNumber() {
+            assert(phoneNumber.value.count == 18)
+            let phoneNumber = "+" + self.phoneNumber.value.onlyDigits
+            let bag = CancelBag()
+            sendingVerificationCodeSuccess.setIsLoading(cancelBag: bag)
+
+            container.services.firebaseService
+                .sendVerificationCode(to: phoneNumber)
+                .map {
+                    self.verificationId = $0
+                    return
+                }
+                .sinkToLoadable {
+                    self.sendingVerificationCodeSuccess = $0
+                }
+                .store(in: bag)
+        }
+
+        func submitVerificationCode(_ code: String) {
+            guard let verificationId = verificationId else {
+                assertionFailure()
+                return
+            }
+
+            let bag = CancelBag()
+            updatingPhoneNumberSuccess.setIsLoading(cancelBag: bag)
+
+            container.services.firebaseService
+                .updatePhoneNumber(code, verificationId: verificationId)
+                .sinkToLoadable {
+                    self.updatingPhoneNumberSuccess = $0
+                }
+                .store(in: bag)
+        }
+
+        func cancelPhoneVerification() {
+            verificationId = nil
+            updatingPhoneNumberSuccess = .failed(WineUpError.canceledByUser)
+        }
+
         func updateProfile() {
             assert(phoneNumber.value.count == 18)
             let bag = CancelBag()
 
             updatingProfileSuccess.setIsLoading(cancelBag: bag)
-            let form = UserJson.UpdateForm(cityId: city.id, phoneNumber: "+" + phoneNumber.value.onlyDigits)
+            let form = UserJson.UpdateForm(cityId: city.id)
 
             container.services
                 .authenticationService
