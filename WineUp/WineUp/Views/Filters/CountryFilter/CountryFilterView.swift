@@ -25,7 +25,7 @@ struct CountryFilterView: View {
 
     var body: some View {
         VStack {
-            SearchBarView(text: $searchText)
+            SearchBarView(placeholder: "Поиск", text: $searchText)
 
             RadioButton(
                 spacing: .countriesSpacing,

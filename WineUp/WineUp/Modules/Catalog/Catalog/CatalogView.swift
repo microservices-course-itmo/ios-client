@@ -61,7 +61,7 @@ struct CatalogView: View {
 
     private func winePositionsContent(winePositions: [WinePosition]) -> some View {
         VStack(spacing: .rootVStackSpacing) {
-            SearchBarView(text: $viewModel.searchText)
+            SearchBarView(placeholder: "Поиск", text: $viewModel.searchText)
 
             CatalogFiltersBarView(items: viewModel.filtersBarItems) { item in
                 withAnimation(.defaultEaseInOut) {
