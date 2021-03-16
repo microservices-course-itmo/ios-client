@@ -45,7 +45,7 @@ extension EditProfileView {
                 assertionFailure()
                 return false
             }
-            return firebasePhoneNumber != phoneNumber.value
+            return firebasePhoneNumber != "+" + phoneNumber.value.onlyDigits
         }
 
         func updatePhoneNumber() {
