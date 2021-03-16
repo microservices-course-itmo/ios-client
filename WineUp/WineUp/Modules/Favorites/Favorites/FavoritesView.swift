@@ -70,27 +70,27 @@ struct FavoritesView: View {
         .navigationBarHidden(false)
     }
 
+    @ViewBuilder
     private func winePositions() -> some View {
         switch viewModel.favoritesItems {
         case .notRequested:
-            return Text("Not requested")
+            Text("Not requested")
                 .onAppear(perform: viewModel.loadItems)
-                .anyView
-        case .isLoading:
-            return Text("Loading")
-                .anyView
         case let .failed(error):
-            return Text(error.description)
-                .anyView
-        case let .loaded(winePositions):
-            if winePositions.isEmpty {
-                return emptyFavoritesLabel()
-                    .anyView
+            Text(error.description)
+        case .loaded, .isLoading:
+            if let winePositions = viewModel.favoritesItems.value {
+                if winePositions.isEmpty {
+                    emptyFavoritesLabel()
+                } else {
+                    VStack(spacing: 0) {
+                        Divider()
+                        favoriteItemsList(winePositions: winePositions)
+                    }
+                    .activity(triggers: viewModel.favoritesItems)
+                }
             } else {
-                return VStack(spacing: 0) {
-                    Divider()
-                    favoriteItemsList(winePositions: winePositions)
-                }.anyView
+                Text("Loading")
             }
         }
     }
