@@ -25,7 +25,7 @@ private extension LocalizedStringKey {
 /// Price filter view
 struct PriceFilter: View {
 
-    @StateObject private var viewModel = ViewModel()
+    @ObservedObject private var viewModel = ViewModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: .rootVSpacing) {
@@ -43,6 +43,7 @@ struct PriceFilter: View {
                     ForEach(viewModel.predefinedPrices) { interval in
                         PredefinedPriceIntervalButton(
                             interval: interval,
+                            selectedInterval: $viewModel.selectedPredefinedPrice,
                             action: {
                                 viewModel.predefinedPriceIntervalDidTap(interval)
                             }

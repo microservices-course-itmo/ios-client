@@ -32,6 +32,8 @@ extension PriceFilter {
                 selectedPredefinedPrice = nil
             } else {
                 selectedPredefinedPrice = interval
+                self.minPriceRub = interval.minPriceRub
+                self.maxPriceRub = interval.maxPriceRub
             }
         }
 
@@ -59,6 +61,24 @@ extension PriceFilter {
 
         var id: Int {
             hashValue
+        }
+
+        var minPriceRub: Float? {
+            switch self {
+            case let .between(minPriceRub, _), let .greaterThan(minPriceRub):
+                return minPriceRub
+            default:
+                return nil
+            }
+        }
+
+        var maxPriceRub: Float? {
+            switch self {
+            case let .between(_, maxPriceRub), let .lessThan(maxPriceRub):
+                return maxPriceRub
+            default:
+                return nil
+            }
         }
     }
 }
