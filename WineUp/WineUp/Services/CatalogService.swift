@@ -10,6 +10,7 @@ import Combine
 import UIKit
 
 protocol CatalogService: Service {
+    func load(with id: String) -> AnyPublisher<WinePosition?, Error>
     /// Fetch wine positions from server
     func load(winePositions: LoadableSubject<[WinePosition]>,
               page: Int,
@@ -54,6 +55,17 @@ final class RealCatalogService: CatalogService {
          favoritesWebRepository: FavoritesWebRepository) {
         self.winePositionWebRepository = winePositionWebRepository
         self.favoritesWebRepository = favoritesWebRepository
+    }
+
+    func load(with id: String) -> AnyPublisher<WinePosition?, Error> {
+        winePositionWebRepository.getTrueWinePositions(by: [id])
+            .map {
+                self.transform(json: $0, defaultIsLiked: false)
+            }
+            .map {
+                $0.first
+            }
+            .eraseToAnyPublisher()
     }
 
     func load(winePositions: LoadableSubject<[WinePosition]>,
@@ -199,6 +211,12 @@ private extension TrueWinePositionJson {
 #if DEBUG
 final class StubCatalogService: CatalogService {
     var favoritePositionsUpdate = PassthroughSubject<Void, Never>()
+
+    func load(with id: String) -> AnyPublisher<WinePosition?, Error> {
+        Just<WinePosition?>(nil)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
 
     func load(winePositions: LoadableSubject<[WinePosition]>,
               page: Int,

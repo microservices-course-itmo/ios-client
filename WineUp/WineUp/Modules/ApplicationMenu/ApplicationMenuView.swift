@@ -31,31 +31,43 @@ struct ApplicationMenuView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        TabView(selection: $viewModel.selectedTab) {
-            Color.red
-                .tabItem {
-                    Image.mainTab
-                    Text(LocalizedStringKey.mainTab)
-                }
-                .tag(Tab.main)
-            CatalogRootView(viewModel: viewModel.catalogRootViewModel)
-                .tabItem {
-                    Image.catalogTab
-                    Text(LocalizedStringKey.catalogTab)
-                }
-                .tag(Tab.catalog)
-            FavoritesRootView(viewModel: viewModel.favoritesRootViewModel)
-                .tabItem {
-                    Image.favoritesTab
-                    Text(LocalizedStringKey.favoritesTab)
-                }
-                .tag(Tab.favorites)
-            ProfileView(viewModel: viewModel.profileViewModel)
-                .tabItem {
-                    Image.profileTab
-                    Text(LocalizedStringKey.profileTab)
-                }
-                .tag(Tab.profile)
+        ZStack {
+            TabView(selection: $viewModel.selectedTab) {
+                Color.red
+                    .tabItem {
+                        Image.mainTab
+                        Text(LocalizedStringKey.mainTab)
+                    }
+                    .tag(Tab.main)
+                CatalogRootView(viewModel: viewModel.catalogRootViewModel)
+                    .tabItem {
+                        Image.catalogTab
+                        Text(LocalizedStringKey.catalogTab)
+                    }
+                    .tag(Tab.catalog)
+                FavoritesRootView(viewModel: viewModel.favoritesRootViewModel)
+                    .tabItem {
+                        Image.favoritesTab
+                        Text(LocalizedStringKey.favoritesTab)
+                    }
+                    .tag(Tab.favorites)
+                ProfileView(viewModel: viewModel.profileViewModel)
+                    .tabItem {
+                        Image.profileTab
+                        Text(LocalizedStringKey.profileTab)
+                    }
+                    .tag(Tab.profile)
+            }
+            if let winePositionViewModel = viewModel.winePositionDetailsViewModel {
+                VStack {
+                    Button("Закрыть") {
+                        self.viewModel.winePosition = nil
+                    }
+                    WinePositionDetailsView(viewModel: winePositionViewModel)
+                }.background(Color.white)
+            } else {
+                EmptyView()
+            }
         }
     }
 }
