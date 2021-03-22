@@ -16,6 +16,8 @@ protocol CatalogService: Service {
               amount: Int,
               colors: [WineColor],
               sugars: [WineSugar],
+              minPrice: Int?,
+              maxPrice: Int?,
               countries: [Country],
               sortBy: SortBy)
     /// Fetch favorite wine positions from server
@@ -61,6 +63,8 @@ final class RealCatalogService: CatalogService {
               amount: Int,
               colors: [WineColor],
               sugars: [WineSugar],
+              minPrice: Int?,
+              maxPrice: Int?,
               countries: [Country],
               sortBy: SortBy) {
         let bag = CancelBag()
@@ -79,10 +83,27 @@ final class RealCatalogService: CatalogService {
         for (index, sugar) in sugars.enumerated() {
             let filter = WinePositionFilters.value(.init(criterion: .sugar, operation: .equal, value: sugar.json.rawValue))
             filters.append(filter)
-            if index < colors.count - 1 {
+            if index < sugars.count - 1 {
                 filters.append(.separator(.or))
             }
         }
+        switch (minPrice != nil, maxPrice != nil) {
+        case (true, false):
+            let filter = WinePositionFilters.value(.init(criterion: .price, operation: .more, value: String(minPrice ?? 0)))
+            filters.append(filter)
+        case (false, true):
+            let filter = WinePositionFilters.value(.init(criterion: .price, operation: .less, value: String(maxPrice ?? 0)))
+            filters.append(filter)
+        case (true, true):
+            let minFilter = WinePositionFilters.value(.init(criterion: .price, operation: .more, value: String(minPrice ?? 0)))
+            filters.append(minFilter)
+            filters.append(.separator(.and))
+            let maxFilter = WinePositionFilters.value(.init(criterion: .price, operation: .less, value: String(maxPrice ?? 0)))
+            filters.append(maxFilter)
+        default:
+            break
+        }
+
 
         // TODO: Country filter not implemented
 //        filters.append(.separator(.and))
@@ -200,6 +221,8 @@ final class StubCatalogService: CatalogService {
               amount: Int,
               colors: [WineColor],
               sugars: [WineSugar],
+              minPrice: Int?,
+              maxPrice: Int?,
               countries: [Country],
               sortBy: SortBy) {
         winePositions.wrappedValue = .loaded(WinePosition.mockedData)
