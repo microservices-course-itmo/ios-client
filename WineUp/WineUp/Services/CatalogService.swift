@@ -76,11 +76,6 @@ final class RealCatalogService: CatalogService {
             }
         }
 
-        // TODO: Refactor filters creation using reduce
-        if !colors.isEmpty, !sugars.isEmpty {
-            filters.append(.separator(.and))
-        }
-
         for (index, sugar) in sugars.enumerated() {
             let filter = WinePositionFilters.value(.init(criterion: .sugar, operation: .equal, value: sugar.json.rawValue))
             filters.append(filter)
