@@ -28,47 +28,51 @@ private extension LocalizedStringKey {
 /// TabView of application main modules like Catalog, Main, Favorites and Profile
 struct ApplicationMenuView: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
 
     var body: some View {
-        ZStack {
-            TabView(selection: $viewModel.selectedTab) {
-                Color.red
-                    .tabItem {
-                        Image.mainTab
-                        Text(LocalizedStringKey.mainTab)
-                    }
-                    .tag(Tab.main)
-                CatalogRootView(viewModel: viewModel.catalogRootViewModel)
-                    .tabItem {
-                        Image.catalogTab
-                        Text(LocalizedStringKey.catalogTab)
-                    }
-                    .tag(Tab.catalog)
-                FavoritesRootView(viewModel: viewModel.favoritesRootViewModel)
-                    .tabItem {
-                        Image.favoritesTab
-                        Text(LocalizedStringKey.favoritesTab)
-                    }
-                    .tag(Tab.favorites)
-                ProfileView(viewModel: viewModel.profileViewModel)
-                    .tabItem {
-                        Image.profileTab
-                        Text(LocalizedStringKey.profileTab)
-                    }
-                    .tag(Tab.profile)
-            }
-            if let winePositionViewModel = viewModel.winePositionDetailsViewModel {
-                VStack {
-                    Button("Закрыть") {
-                        self.viewModel.winePosition = nil
-                    }
-                    WinePositionDetailsView(viewModel: winePositionViewModel)
-                }.background(Color.white)
-            } else {
-                EmptyView()
-            }
+        TabView(selection: $viewModel.selectedTab) {
+            Color.red
+                .tabItem {
+                    Image.mainTab
+                    Text(LocalizedStringKey.mainTab)
+                }
+                .tag(Tab.main)
+            CatalogRootView(viewModel: viewModel.catalogRootViewModel)
+                .tabItem {
+                    Image.catalogTab
+                    Text(LocalizedStringKey.catalogTab)
+                }
+                .tag(Tab.catalog)
+            FavoritesRootView(viewModel: viewModel.favoritesRootViewModel)
+                .tabItem {
+                    Image.favoritesTab
+                    Text(LocalizedStringKey.favoritesTab)
+                }
+                .tag(Tab.favorites)
+            ProfileView(viewModel: viewModel.profileViewModel)
+                .tabItem {
+                    Image.profileTab
+                    Text(LocalizedStringKey.profileTab)
+                }
+                .tag(Tab.profile)
         }
+        .overlay(
+            // Using overlay with Color.clear because of bug with nested fullScreenCovers
+            Color.clear
+                .frame(width: 0, height: 0)
+                .fullScreenCover(item: $viewModel.winePosition) {
+                    WinePositionDetailsView(viewModel: viewModel.winePositionDetailsViewModel(for: $0))
+                        .overlay(
+                            Button("Закрыть") {
+                                self.viewModel.winePosition = nil
+                            }
+                            .padding()
+                            .verticallySpanned(alignment: .top)
+                            .horizontallySpanned(alignment: .leading)
+                        )
+                }
+        )
     }
 }
 
