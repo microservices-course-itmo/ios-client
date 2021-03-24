@@ -31,8 +31,8 @@ extension PriceFilter {
     /// View with fields for manual price interval setting
     struct MinMaxFields: View {
 
-        @Binding var minPriceRub: Float?
-        @Binding var maxPriceRub: Float?
+        @Binding var minPriceRub: Int?
+        @Binding var maxPriceRub: Int?
 
         var body: some View {
             HStack(alignment: .center, spacing: .fieldsHSpacing) {
@@ -68,7 +68,7 @@ private extension PriceFilter.MinMaxFields {
         } set: { text in
             // Limit digits count
             let text = text.prefix(5)
-            minPriceRub = text.isEmpty ? nil : Float(text)
+            minPriceRub = text.isEmpty ? nil : Int(text)
         }
     }
 
@@ -79,7 +79,7 @@ private extension PriceFilter.MinMaxFields {
         } set: { text in
             // Limit digits count
             let text = text.prefix(5)
-            maxPriceRub = text.isEmpty ? nil : Float(text)
+            maxPriceRub = text.isEmpty ? nil : Int(text)
         }
     }
 }
@@ -94,7 +94,7 @@ struct PriceFilterMinMaxFields_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            PriceFilter.MinMaxFields(minPriceRub: $minPriceRub, maxPriceRub: $maxPriceRub)
+            PriceFilter.MinMaxFields(minPriceRub: .constant(nil), maxPriceRub: .constant(23))
         }
         .previewLayout(.fixed(width: 390, height: 80))
     }

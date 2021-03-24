@@ -70,7 +70,7 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
 private extension APICall {
     static func getAllTrueWinePositions(parameters: QueryParameters, accessToken: AccessToken?) -> APICall {
         APICall(
-            path: "/position/true/settings/",
+            path: "/position/true/trueSettings/",
             method: "GET",
             headers: HTTPHeaders.empty.optionalAccessToken(accessToken),
             parameters: parameters

@@ -26,11 +26,13 @@ private extension LocalizedStringKey {
 struct PriceFilter: View {
 
     @ObservedObject private var viewModel = ViewModel()
+    @Binding var minPrice: Int?
+    @Binding var maxPrice: Int?
 
     var body: some View {
         VStack(alignment: .leading, spacing: .rootVSpacing) {
 
-            MinMaxFields(minPriceRub: $viewModel.minPriceRub, maxPriceRub: $viewModel.maxPriceRub)
+            MinMaxFields(minPriceRub: $minPrice, maxPriceRub: $maxPrice)
 
             // Discount offers switch
             Toggle(isOn: $viewModel.showDiscountOffers) {
@@ -46,6 +48,8 @@ struct PriceFilter: View {
                             selectedInterval: $viewModel.selectedPredefinedPrice,
                             action: {
                                 viewModel.predefinedPriceIntervalDidTap(interval)
+                                minPrice = interval.minPriceRub
+                                maxPrice = interval.maxPriceRub
                             }
                         )
                         .frame(minWidth: .predefinedItemMinWidth, maxWidth: .infinity)
@@ -62,10 +66,6 @@ struct PriceFilter: View {
         }
         .padding()
     }
-
-    func commit() {
-
-    }
 }
 
 // MARK: - Preview
@@ -74,7 +74,7 @@ struct PriceFilter: View {
 struct PriceFilter_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PriceFilter()
+            PriceFilter(minPrice: .constant(20), maxPrice: .constant(nil))
         }
         .previewLayout(.fixed(width: 414, height: 250))
     }
