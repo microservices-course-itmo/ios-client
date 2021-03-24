@@ -30,14 +30,18 @@ final class RealTokenWebRepository: TokenWebRepository {
     }
 
     func addAPNS(by tokenID: String) -> AnyPublisher<Void, Error> {
-        call(endpoint: .addAPNS(by: tokenID))
+        accessTokenPublisher()
+            .flatMap {
+                self.call(endpoint: .addAPNS(by: tokenID, token: $0))
+            }
+            .eraseToAnyPublisher()
     }
 }
 
 // MARK: - Helpers
 
 private extension APICall {
-    static func addAPNS(by tokenID: String) -> APICall {
-        APICall(path: "/notification_tokens/", method: "POST", headers: HTTPHeaders.empty.mockedAccessToken(), parameters: [("token", tokenID), ("tokenType", "FCM_TOKEN")])
+    static func addAPNS(by tokenID: String, token: AccessToken) -> APICall {
+        APICall(path: "/notification_tokens/", method: "POST", headers: HTTPHeaders.empty.accessToken(token), parameters: [("token", tokenID), ("tokenType", "FCM_TOKEN")])
     }
 }
