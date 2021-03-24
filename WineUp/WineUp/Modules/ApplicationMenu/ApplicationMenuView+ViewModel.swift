@@ -13,6 +13,7 @@ extension ApplicationMenuView {
     final class ViewModel: ObservableObject {
 
         @Published var selectedTab: Tab = .main
+        @Published var winePosition: WinePosition?
         @Published var apnsSendRequest: Loadable<Void> = .notRequested
 
         private let container: DIContainer
@@ -24,6 +25,9 @@ extension ApplicationMenuView {
             cancelBag.collect {
                 container.appState.bind(\.routing.selectedTab, to: self, by: \.selectedTab)
                 $selectedTab.bind(to: container.appState, by: \.value.routing.selectedTab)
+                NotificationsService.shared.$wineId.sink { [weak self] in
+                    self?.loadWinePosition(with: $0)
+                }
             }
         }
 
@@ -55,6 +59,27 @@ extension ApplicationMenuView {
 
         var profileViewModel: ProfileView.ViewModel {
             .init(container: container)
+        }
+
+        func winePositionDetailsViewModel(for winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {
+            .init(container: container, winePosition: winePosition)
+        }
+
+        // MARK: - Private
+
+        private func loadWinePosition(with id: String?) {
+            guard let id = id else { return }
+            container.services.catalogService
+                .load(with: id)
+                .sinkToResult { result in
+                    switch result {
+                    case .success(let pos):
+                        self.winePosition = pos
+                    case .failure(let error):
+                        print("error:", error.localizedDescription)
+                    }
+                }
+                .store(in: cancelBag)
         }
     }
 }
