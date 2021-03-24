@@ -19,7 +19,7 @@ struct WinePositionFiltersValue: CustomStringConvertible {
 
     var description: String {
         // Don't known why '`' is required before any search params, but it works
-        "~" + criterion.rawValue + operation.rawValue + value
+        criterion.rawValue + operation.rawValue + value + ";"
     }
 }
 
@@ -31,7 +31,7 @@ enum FiltersOperations: String {
 
 enum FiltersSeparators: String {
     // swiftlint:disable identifier_name
-    case or = ";"
+    case or = "~"
     case and = "*"
 }
 

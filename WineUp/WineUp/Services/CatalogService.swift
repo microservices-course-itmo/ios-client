@@ -16,6 +16,8 @@ protocol CatalogService: Service {
               amount: Int,
               colors: [WineColor],
               sugars: [WineSugar],
+              minPrice: Int?,
+              maxPrice: Int?,
               countries: [Country],
               sortBy: SortBy)
     /// Fetch favorite wine positions from server
@@ -61,6 +63,8 @@ final class RealCatalogService: CatalogService {
               amount: Int,
               colors: [WineColor],
               sugars: [WineSugar],
+              minPrice: Int?,
+              maxPrice: Int?,
               countries: [Country],
               sortBy: SortBy) {
         let bag = CancelBag()
@@ -76,20 +80,27 @@ final class RealCatalogService: CatalogService {
             }
         }
 
-        // TODO: Refactor filters creation using reduce
-        if !colors.isEmpty, !sugars.isEmpty {
-            filters.append(.separator(.and))
-        }
-
         for (index, sugar) in sugars.enumerated() {
             let filter = WinePositionFilters.value(.init(criterion: .sugar, operation: .equal, value: sugar.json.rawValue))
             filters.append(filter)
-            if index < colors.count - 1 {
+            if index < sugars.count - 1 {
                 filters.append(.separator(.or))
             }
         }
 
-        // TODO: Country filter not implemented
+        if let minPrice = minPrice {
+            filters.append(.value(.init(criterion: .price, operation: .more, value: String(minPrice))))
+        }
+
+        if minPrice != nil, maxPrice != nil {
+            filters.append(WinePositionFilters.separator(.and))
+        }
+
+        if let maxPrice = maxPrice {
+            filters.append(.value(.init(criterion: .price, operation: .less, value: String(maxPrice))))
+        }
+
+        // TODO: Country filter not implemented on server side
 //        filters.append(.separator(.and))
 
         // TODO: real sortBy needed
@@ -205,6 +216,8 @@ final class StubCatalogService: CatalogService {
               amount: Int,
               colors: [WineColor],
               sugars: [WineSugar],
+              minPrice: Int?,
+              maxPrice: Int?,
               countries: [Country],
               sortBy: SortBy) {
         winePositions.wrappedValue = .loaded(WinePosition.mockedData)

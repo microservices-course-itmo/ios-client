@@ -23,17 +23,23 @@ extension CatalogView {
 
         @Published var color: [WineColor] = []
         @Published var sugar: [WineSugar] = []
+        @Published var minPrice: Int?
+        @Published var maxPrice: Int?
         @Published var sortBy: SortBy = .basedOnRating
         @Published var countries: [Country] = []
 
         @Published var colorTemp: [WineColor] = []
         @Published var sugarTemp: [WineSugar] = []
+        @Published var minPriceTemp: Int?
+        @Published var maxPriceTemp: Int?
         @Published var sortByTemp: SortBy = .basedOnRating
         @Published var countriesTemp: [Country] = []
 
         func commitFilters() {
             color = colorTemp
             sugar = sugarTemp
+            minPrice = minPriceTemp
+            maxPrice = maxPriceTemp
             countries = countriesTemp
             sortBy = sortByTemp
         }
@@ -41,6 +47,8 @@ extension CatalogView {
         func restoreFilters() {
             colorTemp = color
             sugarTemp = sugar
+            minPriceTemp = minPrice
+            maxPriceTemp = maxPrice
             countriesTemp = countries
             sortByTemp = sortBy
         }
@@ -80,7 +88,7 @@ extension CatalogView {
 
         // MARK: Public Methods
 
-        func loadCatalogItems(colors: [WineColor], sugar: [WineSugar], countries: [Country], sortBy: SortBy) {
+        func loadCatalogItems(colors: [WineColor], sugar: [WineSugar], countries: [Country], minPrice: Int?, maxPrice: Int?, sortBy: SortBy) {
             // TODO: Calculate page based on lazy loading of catalog list
             container.services.catalogService.load(
                 winePositions: loadableSubject(\.catalogItems),
@@ -88,6 +96,8 @@ extension CatalogView {
                 amount: 10,
                 colors: colors,
                 sugars: sugar,
+                minPrice: minPrice,
+                maxPrice: maxPrice,
                 countries: countries,
                 sortBy: sortBy
             )
