@@ -57,6 +57,9 @@ struct ApplicationMenuView: View {
                 }
                 .tag(Tab.profile)
         }
+        .onAppear {
+            viewModel.addAPNS()
+        }
     }
 }
 

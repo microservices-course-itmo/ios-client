@@ -28,6 +28,18 @@ extension ApplicationMenuView {
 
         // MARK: - Public Methods
 
+        func addAPNS() {
+            var hexAPNSId: String? {
+                UserDefaults.standard.data(forKey: "APNSID")?.hexString
+            }
+
+            if (hexAPNSId != nil) {
+                container.services.catalogService.addAPNS(tokenId: hexAPNSId!)
+            } else {
+                print("No APNS ID found")
+            }
+        }
+
         var catalogRootViewModel: CatalogRootView.ViewModel {
             .init(container: container)
         }
