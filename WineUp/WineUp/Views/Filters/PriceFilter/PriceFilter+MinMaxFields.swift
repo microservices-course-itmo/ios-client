@@ -66,6 +66,8 @@ private extension PriceFilter.MinMaxFields {
         .init { () -> String in
             minPriceRub.flatMap { "\(Int($0))" } ?? ""
         } set: { text in
+            // Limit digits count
+            let text = text.prefix(5)
             minPriceRub = text.isEmpty ? nil : Int(text)
         }
     }
@@ -75,6 +77,8 @@ private extension PriceFilter.MinMaxFields {
         .init { () -> String in
             maxPriceRub.flatMap { "\(Int($0))" } ?? ""
         } set: { text in
+            // Limit digits count
+            let text = text.prefix(5)
             maxPriceRub = text.isEmpty ? nil : Int(text)
         }
     }
