@@ -73,6 +73,9 @@ struct ApplicationMenuView: View {
                         )
                 }
         )
+        .onAppear {
+            viewModel.addAPNS()
+        }
     }
 }
 

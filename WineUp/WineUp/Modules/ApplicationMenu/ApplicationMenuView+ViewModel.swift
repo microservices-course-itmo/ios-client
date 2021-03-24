@@ -14,6 +14,7 @@ extension ApplicationMenuView {
 
         @Published var selectedTab: Tab = .main
         @Published var winePosition: WinePosition?
+        @Published var apnsSendRequest: Loadable<Void> = .notRequested
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
@@ -31,6 +32,22 @@ extension ApplicationMenuView {
         }
 
         // MARK: - Public Methods
+
+        func addAPNS() {
+            var hexAPNSId: String? {
+                UserDefaults.standard.data(forKey: "APNSID")?.hexString
+            }
+
+            if hexAPNSId != nil {
+                let bag = CancelBag()
+                apnsSendRequest.setIsLoading(cancelBag: bag)
+                container.services.catalogService.addAPNS(tokenId: hexAPNSId!)
+                    .sinkToLoadable { self.apnsSendRequest = $0 }
+                    .store(in: bag)
+            } else {
+                print("No APNS ID found")
+            }
+        }
 
         var catalogRootViewModel: CatalogRootView.ViewModel {
             .init(container: container)
