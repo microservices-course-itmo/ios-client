@@ -10,6 +10,7 @@ import Combine
 import UIKit
 
 protocol CatalogService: Service {
+    func load(with id: String) -> AnyPublisher<WinePosition?, Error>
     /// Fetch wine positions from server
     func load(winePositions: LoadableSubject<[WinePosition]>,
               page: Int,
@@ -26,6 +27,8 @@ protocol CatalogService: Service {
     func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
+
+    func addAPNS(tokenId: String) -> AnyPublisher<Void, Error>
 
     func likeWinePosition(winePositionId: String, like: Bool) -> AnyPublisher<Void, Error>
 
@@ -50,12 +53,26 @@ final class RealCatalogService: CatalogService {
 
     private let winePositionWebRepository: TrueWinePositionWebRepository
     private let favoritesWebRepository: FavoritesWebRepository
+    private let tokenWebRepository: TokenWebRepository
     private(set) var favoritePositionsUpdate = PassthroughSubject<Void, Never>()
 
     init(winePositionWebRepository: TrueWinePositionWebRepository,
-         favoritesWebRepository: FavoritesWebRepository) {
+         favoritesWebRepository: FavoritesWebRepository,
+         tokenWebRepository: TokenWebRepository) {
         self.winePositionWebRepository = winePositionWebRepository
         self.favoritesWebRepository = favoritesWebRepository
+        self.tokenWebRepository = tokenWebRepository
+    }
+
+    func load(with id: String) -> AnyPublisher<WinePosition?, Error> {
+        winePositionWebRepository.getTrueWinePositions(by: [id])
+            .map {
+                self.transform(json: $0, defaultIsLiked: false)
+            }
+            .map {
+                $0.first
+            }
+            .eraseToAnyPublisher()
     }
 
     func load(winePositions: LoadableSubject<[WinePosition]>,
@@ -135,7 +152,10 @@ final class RealCatalogService: CatalogService {
             }
             .store(in: bag)
     }
-
+    func addAPNS(tokenId: String) -> AnyPublisher<Void, Error> {
+         tokenWebRepository
+            .addAPNS(by: tokenId)
+    }
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
         favoritesWebRepository
             .addWinePositionToFavorites(by: winePositionId)
@@ -211,6 +231,12 @@ private extension TrueWinePositionJson {
 final class StubCatalogService: CatalogService {
     var favoritePositionsUpdate = PassthroughSubject<Void, Never>()
 
+    func load(with id: String) -> AnyPublisher<WinePosition?, Error> {
+        Just<WinePosition?>(nil)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+
     func load(winePositions: LoadableSubject<[WinePosition]>,
               page: Int,
               amount: Int,
@@ -236,6 +262,9 @@ final class StubCatalogService: CatalogService {
     }
 
     func clearFavorites() -> AnyPublisher<Void, Error> {
+        Just<Void>.withErrorType(Error.self)
+    }
+    func addAPNS(tokenId: String) -> AnyPublisher<Void, Error> {
         Just<Void>.withErrorType(Error.self)
     }
 

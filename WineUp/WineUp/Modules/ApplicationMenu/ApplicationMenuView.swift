@@ -28,7 +28,7 @@ private extension LocalizedStringKey {
 /// TabView of application main modules like Catalog, Main, Favorites and Profile
 struct ApplicationMenuView: View {
 
-    @ObservedObject private(set) var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
 
     var body: some View {
         TabView(selection: $viewModel.selectedTab) {
@@ -56,6 +56,25 @@ struct ApplicationMenuView: View {
                     Text(LocalizedStringKey.profileTab)
                 }
                 .tag(Tab.profile)
+        }
+        .overlay(
+            // Using overlay with Color.clear because of bug with nested fullScreenCovers
+            Color.clear
+                .frame(width: 0, height: 0)
+                .fullScreenCover(item: $viewModel.winePosition) {
+                    WinePositionDetailsView(viewModel: viewModel.winePositionDetailsViewModel(for: $0))
+                        .overlay(
+                            Button("Закрыть") {
+                                self.viewModel.winePosition = nil
+                            }
+                            .padding()
+                            .verticallySpanned(alignment: .top)
+                            .horizontallySpanned(alignment: .leading)
+                        )
+                }
+        )
+        .onAppear {
+            viewModel.addAPNS()
         }
     }
 }

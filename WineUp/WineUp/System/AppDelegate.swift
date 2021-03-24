@@ -25,13 +25,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             completionHandler(.noData)
             return
         }
-        // This notification is not auth related, developer should handle it.
-        handleNotification(notification)
     }
 
-    private func handleNotification(_ notification: [AnyHashable: Any]) {}
-
     func registerForPushNotifications() {
+        UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
             if let error = error {
                 print("Didnot grant permission: \(error.description)")
@@ -63,5 +60,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // TODO: Implement real wine id setting
+        NotificationsService.shared.wineId = "569ab651-6163-46fc-b81f-65c386a8e2e8"
     }
 }
