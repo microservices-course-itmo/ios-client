@@ -7,7 +7,7 @@
 
 import Combine
 
-final class NotificationsService: ObservableObject {
+public final class NotificationsService: ObservableObject {
 
     // MARK: - Init
 
