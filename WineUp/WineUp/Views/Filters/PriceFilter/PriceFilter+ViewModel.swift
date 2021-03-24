@@ -13,8 +13,6 @@ extension PriceFilter {
     final class ViewModel: ObservableObject {
 
         @Published var predefinedPrices: [PredefinedPriceInterval] = []
-        @Published var minPriceRub: Float?
-        @Published var maxPriceRub: Float?
         @Published var showDiscountOffers: Bool = false
         @Published var selectedPredefinedPrice: PredefinedPriceInterval?
 
@@ -32,8 +30,6 @@ extension PriceFilter {
                 selectedPredefinedPrice = nil
             } else {
                 selectedPredefinedPrice = interval
-                self.minPriceRub = interval.minPriceRub
-                self.maxPriceRub = interval.maxPriceRub
             }
         }
 
@@ -55,15 +51,15 @@ extension PriceFilter {
 
 extension PriceFilter {
     enum PredefinedPriceInterval: Identifiable, Hashable, Equatable {
-        case lessThan(maxPriceRub: Float)
-        case between(minPriceRub: Float, maxPriceRub: Float)
-        case greaterThan(minPriceRub: Float)
+        case lessThan(maxPriceRub: Int)
+        case between(minPriceRub: Int, maxPriceRub: Int)
+        case greaterThan(minPriceRub: Int)
 
         var id: Int {
             hashValue
         }
 
-        var minPriceRub: Float? {
+        var minPriceRub: Int? {
             switch self {
             case let .between(minPriceRub, _), let .greaterThan(minPriceRub):
                 return minPriceRub
@@ -72,7 +68,7 @@ extension PriceFilter {
             }
         }
 
-        var maxPriceRub: Float? {
+        var maxPriceRub: Int? {
             switch self {
             case let .between(_, maxPriceRub), let .lessThan(maxPriceRub):
                 return maxPriceRub

@@ -87,25 +87,20 @@ final class RealCatalogService: CatalogService {
                 filters.append(.separator(.or))
             }
         }
-        switch (minPrice != nil, maxPrice != nil) {
-        case (true, false):
-            let filter = WinePositionFilters.value(.init(criterion: .price, operation: .more, value: String(minPrice ?? 0)))
-            filters.append(filter)
-        case (false, true):
-            let filter = WinePositionFilters.value(.init(criterion: .price, operation: .less, value: String(maxPrice ?? 0)))
-            filters.append(filter)
-        case (true, true):
-            let minFilter = WinePositionFilters.value(.init(criterion: .price, operation: .more, value: String(minPrice ?? 0)))
-            filters.append(minFilter)
-            filters.append(.separator(.and))
-            let maxFilter = WinePositionFilters.value(.init(criterion: .price, operation: .less, value: String(maxPrice ?? 0)))
-            filters.append(maxFilter)
-        default:
-            break
+
+        if let minPrice = minPrice {
+            filters.append(.value(.init(criterion: .price, operation: .more, value: String(minPrice))))
         }
 
+        if minPrice != nil, maxPrice != nil {
+            filters.append(WinePositionFilters.separator(.and))
+        }
 
-        // TODO: Country filter not implemented
+        if let maxPrice = maxPrice {
+            filters.append(.value(.init(criterion: .price, operation: .less, value: String(maxPrice))))
+        }
+
+        // TODO: Country filter not implemented on server side
 //        filters.append(.separator(.and))
 
         // TODO: real sortBy needed

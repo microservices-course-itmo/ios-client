@@ -101,7 +101,7 @@ struct CatalogView: View {
             )
         case .price:
             wrapFilter(
-                PriceFilter(),
+                PriceFilter(minPrice: $filtersViewModel.minPriceTemp, maxPrice: $filtersViewModel.maxPriceTemp),
                 title: "Цена"
             )
         case .country:
@@ -148,6 +148,8 @@ struct CatalogView: View {
             colors: filtersViewModel.color,
             sugar: filtersViewModel.sugar,
             countries: filtersViewModel.countries,
+            minPrice: filtersViewModel.minPrice,
+            maxPrice: filtersViewModel.maxPrice,
             sortBy: filtersViewModel.sortBy
         )
     }
