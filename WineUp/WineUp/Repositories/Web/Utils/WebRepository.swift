@@ -15,6 +15,18 @@ protocol WebRepository: Repository {
     var credentials: Store<Credentials?> { get }
 }
 
+final class WebRepositoryState: ObservableObject {
+
+    // MARK: - Init
+
+    private init() {}
+
+    // Public
+    static let shared = WebRepositoryState()
+
+    @Published var error503: Bool = false
+}
+
 extension WebRepository {
     private typealias DataTaskResponse = URLSession.DataTaskPublisher.Output
     private typealias DataTaskFailure = URLSession.DataTaskPublisher.Failure
@@ -39,6 +51,14 @@ extension WebRepository {
                 let timeEnd = Date()
                 self.log(request: request, response: response, duration: timeEnd.timeIntervalSince(timeStart))
                 return response
+            }
+            .mapError { err -> DataTaskFailure in
+                if err.errorCode == 503 {
+                    DispatchQueue.main.async {
+                        WebRepositoryState.shared.error503 = true
+                    }
+                }
+                return err
             }
             .eraseToAnyPublisher()
     }
