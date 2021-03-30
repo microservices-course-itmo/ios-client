@@ -49,6 +49,10 @@ extension ApplicationMenuView {
             }
         }
 
+        var recomendationsViewModel: RecommendationsRootView.ViewModel {
+            .init(container: container)
+        }
+
         var catalogRootViewModel: CatalogRootView.ViewModel {
             .init(container: container)
         }
