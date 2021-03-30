@@ -15,6 +15,7 @@ struct Error503Screen: View {
                 Text("Ошибка")
                     .font(.system(size: 25))
                     .fontWeight(.medium)
+
                 Text("503")
                     .font(.system(size: 64))
                     .fontWeight(.bold)
@@ -22,10 +23,15 @@ struct Error503Screen: View {
                         Image("errorIcon")
                                 .offset(x: 70, y: -30)
                     )
-                Spacer().frame(width: 0, height: 24)
+
+                Spacer()
+                    .frame(width: 0, height: 24)
+
                 Text("В настоящее время сервер недоступен\nиз-за технического обслуживания")
                     .font(.system(size: 16))
+                    .multilineTextAlignment(.center)
             }
+
             Image("503")
         }
     }
