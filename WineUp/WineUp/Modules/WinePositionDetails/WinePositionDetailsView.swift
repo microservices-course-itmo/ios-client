@@ -30,6 +30,10 @@ struct WinePositionDetailsView: View {
                     )
                     .padding(.vertical)
                     .transition(.opacity)
+                } else if let error = viewModel.details.error {
+                    Text(error.description)
+                        .padding()
+                        .padding(.vertical, 32)
                 } else {
                     Color.clear
                         .frame(height: 300)
