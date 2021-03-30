@@ -19,6 +19,8 @@ protocol TrueWinePositionWebRepository: WebRepository {
     func getTrueWinePositions(by ids: [String]) -> AnyPublisher<[TrueWinePositionJson], Error>
 
     func getFavoritesTrueWinePositions() -> AnyPublisher<[TrueWinePositionJson], Error>
+
+    func getRecommendedTrueWinePositions(by id: String) -> AnyPublisher<TrueWinePositionRecommendationJson, Error>
 }
 
 // MARK: - Implementation
@@ -63,6 +65,14 @@ final class RealTrueWinePositionWebRepository: TrueWinePositionWebRepository {
             }
             .eraseToAnyPublisher()
     }
+
+    func getRecommendedTrueWinePositions(by id: String) -> AnyPublisher<TrueWinePositionRecommendationJson, Error> {
+        accessTokenPublisher()
+            .flatMap {
+                self.request(endpoint: .getRecommendedTruwWinePositions(winePositionId: id, accessToken: $0))
+            }
+            .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Helpers
@@ -89,5 +99,9 @@ private extension APICall {
 
     static func getFavoriteWinePositions(accessToken: AccessToken) -> APICall {
         APICall(path: "/favorites/", method: "GET", headers: HTTPHeaders.empty.accessToken(accessToken))
+    }
+
+    static func getRecommendedTruwWinePositions(winePositionId: String, accessToken: AccessToken) -> APICall {
+        APICall(path: "/rec/true/byId/\(winePositionId)", method: "GET", headers: HTTPHeaders.empty.accessToken(accessToken))
     }
 }
