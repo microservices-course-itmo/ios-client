@@ -13,7 +13,7 @@ extension WinePositionDetailsView {
     final class ViewModel: ObservableObject {
 
         @Published var winePosition: WinePosition
-        @Published var details: WinePosition.Details
+        @Published var details: Loadable<WinePosition.Details> = .notRequested
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
@@ -22,11 +22,11 @@ extension WinePositionDetailsView {
         init(container: DIContainer, winePosition: WinePosition) {
             self.container = container
             self.winePosition = winePosition
-            // TODO: Real data needed
-            self.details = .init(
-                winePositionId: winePosition.id,
-                suggestions: [winePosition, winePosition, winePosition]
-            )
+        }
+
+        func loadDetails() {
+            container.services.catalogService
+                .load(winePositionDetails: loadableSubject(\.details), by: winePosition.id)
         }
 
         /// Designed only for current position in details
@@ -43,14 +43,14 @@ extension WinePositionDetailsView {
 
         /// Designed only for wine position from suggestions
         func toggleLike(of winePosition: WinePosition) {
-            guard let index = details.suggestions.firstIndex(of: winePosition) else {
+            guard let index = details.value?.suggestions.firstIndex(of: winePosition) else {
                 assertionFailure()
                 return
             }
 
             let bag = CancelBag()
             togglingLikeSuccess.setIsLoading(cancelBag: bag)
-            details.suggestions[index].isLiked.toggle()
+            details.value?.suggestions[index].isLiked.toggle()
 
             container.services.catalogService
                 .likeWinePosition(winePositionId: winePosition.id, like: !winePosition.isLiked)

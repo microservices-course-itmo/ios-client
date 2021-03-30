@@ -35,8 +35,8 @@ extension AppEnvironment {
 
     private static func configuredURLSession() -> URLSession {
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 10
-        configuration.timeoutIntervalForResource = 20
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 60
         configuration.waitsForConnectivity = true
         configuration.httpMaximumConnectionsPerHost = 5
         configuration.requestCachePolicy = .returnCacheDataElseLoad

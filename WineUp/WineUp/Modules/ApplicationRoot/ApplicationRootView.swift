@@ -14,6 +14,17 @@ struct ApplicationRootView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
+        loginView
+            .overlay(
+                Color.clear
+                    .frame(width: 0, height: 0)
+                    .fullScreenCover(isPresented: $viewModel.showError503Screen, content: {
+                        Error503Screen()
+                    })
+            )
+    }
+
+    @ViewBuilder var loginView: some View {
         if let didLogin = viewModel.didLogin {
             if !didLogin {
                 LoginView(viewModel: viewModel.loginViewModel)

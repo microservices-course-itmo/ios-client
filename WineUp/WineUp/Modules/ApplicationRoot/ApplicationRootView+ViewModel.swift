@@ -13,6 +13,7 @@ extension ApplicationRootView {
     final class ViewModel: ObservableObject {
 
         @Published var didLogin: Bool?
+        @Published var showError503Screen: Bool = false
 
         private let container: DIContainer
         private let cancelBag = CancelBag()
@@ -22,6 +23,7 @@ extension ApplicationRootView {
 
             cancelBag.collect {
                 container.appState.updates(for: \.routing.didLogin).bind(to: self, by: \.didLogin)
+                WebRepositoryState.shared.$error503.bind(to: self, by: \.showError503Screen)
             }
         }
     }
@@ -30,6 +32,7 @@ extension ApplicationRootView {
 // MARK: - Public Methods
 
 extension ApplicationRootView.ViewModel {
+
     func appDidLoad() {
         container.services.authenticationService
             .refreshSession()

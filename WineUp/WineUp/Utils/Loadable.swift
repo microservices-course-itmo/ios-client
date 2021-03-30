@@ -16,15 +16,32 @@ enum Loadable<T> {
     case failed(Error)
 
     var value: T? {
-        switch self {
-        case let .loaded(value):
-            return value
-        case let .isLoading(last, _):
-            return last
-        default:
-            return nil
+        get {
+            switch self {
+            case let .loaded(value):
+                return value
+            case let .isLoading(last, _):
+                return last
+            default:
+                return nil
+            }
+        }
+        set {
+            switch self {
+            case .loaded:
+                guard let newValue = newValue else {
+                    assertionFailure("Trying to set loaded value to nil")
+                    return
+                }
+                self = .loaded(newValue)
+            case let .isLoading(_, bag):
+                self = .isLoading(last: newValue, cancelBag: bag)
+            default:
+                assertionFailure("Trying to set loadable value in not loaded or isLoading state")
+            }
         }
     }
+
     var error: Error? {
         switch self {
         case .failed(let error):
