@@ -24,6 +24,8 @@ protocol CatalogService: Service {
     /// Fetch favorite wine positions from server
     func load(favoriteWinePositions: LoadableSubject<[WinePosition]>)
 
+    func load(winePositionDetails: LoadableSubject<WinePosition.Details>, by id: String)
+
     func removeWinePositionFromFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error>
@@ -152,10 +154,27 @@ final class RealCatalogService: CatalogService {
             }
             .store(in: bag)
     }
+
+    func load(winePositionDetails: LoadableSubject<WinePosition.Details>, by id: String) {
+        let bag = CancelBag()
+        winePositionDetails.wrappedValue.setIsLoading(cancelBag: bag)
+
+        winePositionWebRepository
+            .getRecommendedTrueWinePositions(by: id)
+            .map {
+                self.transform(json: $0.recommendations, defaultIsLiked: false)
+            }
+            .sinkToLoadable { loadable in
+                winePositionDetails.wrappedValue = loadable.map { WinePosition.Details(winePositionId: id, suggestions: $0) }
+            }
+            .store(in: bag)
+    }
+
     func addAPNS(tokenId: String) -> AnyPublisher<Void, Error> {
          tokenWebRepository
             .addAPNS(by: tokenId)
     }
+
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
         favoritesWebRepository
             .addWinePositionToFavorites(by: winePositionId)
@@ -251,6 +270,10 @@ final class StubCatalogService: CatalogService {
 
     func load(favoriteWinePositions: LoadableSubject<[WinePosition]>) {
         favoriteWinePositions.wrappedValue = .loaded(WinePosition.mockedData)
+    }
+
+    func load(winePositionDetails: LoadableSubject<WinePosition.Details>, by id: String) {
+        winePositionDetails.wrappedValue = .loaded(WinePosition.mockedData[0].details)
     }
 
     func addWinePositionToFavorites(winePositionId: String) -> AnyPublisher<Void, Error> {
