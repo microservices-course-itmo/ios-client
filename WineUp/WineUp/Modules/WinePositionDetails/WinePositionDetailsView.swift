@@ -22,12 +22,20 @@ struct WinePositionDetailsView: View {
                 Button("В магазин", action: {})
                     .defaultStyled(isDisabled: false)
 
-                SuggestionsList(
-                    winePosition: viewModel.winePosition,
-                    details: viewModel.details,
-                    onLikeButtonTap: viewModel.toggleLike(of:)
-                )
-                .padding(.vertical)
+                if let details = viewModel.details.value {
+                    SuggestionsList(
+                        winePosition: viewModel.winePosition,
+                        details: details,
+                        onLikeButtonTap: viewModel.toggleLike(of:)
+                    )
+                    .padding(.vertical)
+                    .transition(.opacity)
+                } else {
+                    Color.clear
+                        .frame(height: 300)
+                        .activity(triggers: viewModel.details)
+                        .onAppear(perform: viewModel.loadDetails)
+                }
             }
         }
     }
