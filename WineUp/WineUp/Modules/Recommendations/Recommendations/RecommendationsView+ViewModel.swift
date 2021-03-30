@@ -59,7 +59,16 @@ extension RecommendationsView {
         }
 
         func loadItems() {
-            container.services.catalogService.load(favoriteWinePositions: loadableSubject(\.recommendationsItems))
+            container.services.catalogService.load(
+                winePositions: loadableSubject(\.recommendationsItems),
+                page: 0, amount: 10,
+                colors: [],
+                sugars: [],
+                minPrice: nil,
+                maxPrice: nil,
+                countries: [],
+                sortBy: .priceDesc
+            )
         }
 
         func winePositionDetailsViewModelFor(_ winePosition: WinePosition) -> WinePositionDetailsView.ViewModel {

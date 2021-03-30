@@ -26,10 +26,8 @@ struct RecommendationsView: View {
     @StateObject var viewModel: ViewModel
 
     var body: some View {
-        ZStack {
-            content()
-                .navigationBarHidden(true)
-        }
+        content()
+            .navigationBarHidden(true)
     }
 
     // MARK: Helpers
@@ -56,6 +54,8 @@ struct RecommendationsView: View {
                     Text(.title)
                         .font(.title)
                         .padding()
+                        .horizontallySpanned(alignment: .leading)
+
                     ForEach(winePositions) { item in
                         NavigationLink(
                             destination: WinePositionDetailsView(
@@ -73,7 +73,6 @@ struct RecommendationsView: View {
                 }
             }
         }
-
     }
 }
 

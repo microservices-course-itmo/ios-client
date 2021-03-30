@@ -17,7 +17,7 @@ private extension Image {
 }
 
 private extension LocalizedStringKey {
-    static let mainTab = LocalizedStringKey("Главная")
+    static let mainTab = LocalizedStringKey("Рекомендуем")
     static let catalogTab = LocalizedStringKey("Каталог")
     static let favoritesTab = LocalizedStringKey("Избранное")
     static let profileTab = LocalizedStringKey("Профиль")
@@ -32,24 +32,27 @@ struct ApplicationMenuView: View {
 
     var body: some View {
         TabView(selection: $viewModel.selectedTab) {
-            Color.red
+            RecommendationsRootView(viewModel: viewModel.recomendationsViewModel)
                 .tabItem {
                     Image.mainTab
                     Text(LocalizedStringKey.mainTab)
                 }
                 .tag(Tab.main)
+
             CatalogRootView(viewModel: viewModel.catalogRootViewModel)
                 .tabItem {
                     Image.catalogTab
                     Text(LocalizedStringKey.catalogTab)
                 }
                 .tag(Tab.catalog)
+
             FavoritesRootView(viewModel: viewModel.favoritesRootViewModel)
                 .tabItem {
                     Image.favoritesTab
                     Text(LocalizedStringKey.favoritesTab)
                 }
                 .tag(Tab.favorites)
+
             ProfileView(viewModel: viewModel.profileViewModel)
                 .tabItem {
                     Image.profileTab
