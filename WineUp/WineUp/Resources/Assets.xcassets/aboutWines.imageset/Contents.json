@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "aboutWines.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
