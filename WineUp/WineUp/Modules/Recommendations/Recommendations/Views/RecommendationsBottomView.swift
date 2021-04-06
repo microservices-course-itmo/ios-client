@@ -16,30 +16,28 @@ private extension LocalizedStringKey {
 
 struct RecommendationsBottomView: View {
     var body: some View {
-        content()
-    }
-
-    // MARK: Displaying Items
-
-    private func content() -> some View {
         VStack(alignment: .center, spacing: 44) {
-            Text(LocalizedStringKey.aboutTitle).multilineTextAlignment(.center)
+            Text(LocalizedStringKey.aboutTitle)
+                .multilineTextAlignment(.center)
                 .font(.title2)
                 .padding(.bottom, -16)
+
             detailsView(imageName: "aboutShops", text: LocalizedStringKey.aboutShops)
             detailsView(imageName: "aboutWines", text: LocalizedStringKey.aboutWines)
             detailsView(imageName: "aboutUsers", text: LocalizedStringKey.aboutUsers)
         }
     }
 
+    // MARK: Displaying Items
+
     private func detailsView(imageName: String, text: LocalizedStringKey) -> some View {
         VStack(alignment: .center, spacing: 3) {
             Image(imageName)
+
             Text(text)
                 .multilineTextAlignment(.center)
                 .frame(height: 48)
                 .font(.callout)
-
         }
     }
 }
@@ -49,7 +47,7 @@ struct RecommendationsBottomView: View {
 #if DEBUG
 struct RecommendationsBottomView_Previews: PreviewProvider {
     static var previews: some View {
-        return RecommendationsBottomView()
+        RecommendationsBottomView()
             .background(Color.red)
     }
 }
