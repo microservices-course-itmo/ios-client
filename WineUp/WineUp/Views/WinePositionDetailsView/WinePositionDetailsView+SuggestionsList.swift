@@ -14,14 +14,12 @@ private extension CGFloat {
 }
 
 private extension LocalizedStringKey {
-    static let suggestionsListTitle = LocalizedStringKey("Мы подобрали для вас\nсхожие вина:")
-
     static let leftArrow = LocalizedStringKey("\u{2190}")
     static let rightArrow = LocalizedStringKey("\u{2192}")
 }
 
 private extension Font {
-    static let suggestionsListTitle: Font = .system(size: 25, weight: .semibold)
+    static let suggestionsListTitle: Font = .title
     static let arrow: Font = .system(size: 40)
 }
 
@@ -30,8 +28,8 @@ private extension Font {
 extension WinePositionDetailsView {
     struct SuggestionsList: View {
 
-        let winePosition: WinePosition
-        let details: WinePosition.Details
+        let title: Text
+        let winePositions: [WinePosition]
         let onLikeButtonTap: (WinePosition) -> Void
 
         @State private var currentSuggestionIndex = 0 {
@@ -44,17 +42,17 @@ extension WinePositionDetailsView {
 
         var body: some View {
             VStack(alignment: .center) {
-                Text(LocalizedStringKey.suggestionsListTitle)
+                title
                     .font(.suggestionsListTitle)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding()
 
                 Pager(
-                    pageCount: details.suggestions.count,
+                    pageCount: winePositions.count,
                     currentIndex: $currentSuggestionIndex,
                     content: {
-                        ForEach(details.suggestions) { suggestedWinePosition in
+                        ForEach(winePositions) { suggestedWinePosition in
                             WinePositionView(
                                 item: suggestedWinePosition,
                                 onLikeButtonTap: { onLikeButtonTap(suggestedWinePosition) }
@@ -96,7 +94,7 @@ extension WinePositionDetailsView {
 
         private func currentSeggestionIndexDidSet(_ index: Int) {
             isLeftArrowEnabled = index > 0
-            isRightArrowEnabled = index < details.suggestions.count - 1
+            isRightArrowEnabled = index < winePositions.count - 1
         }
     }
 }
@@ -105,12 +103,10 @@ extension WinePositionDetailsView {
 
 #if DEBUG
 struct WinePositionDetailsViewSuggestionsList_Previews: PreviewProvider {
-    private static let winePosition = WinePosition.mockedData[0]
-
     static var previews: some View {
         WinePositionDetailsView.SuggestionsList(
-            winePosition: winePosition,
-            details: winePosition.details,
+            title: Text("Заголовок"),
+            winePositions: WinePosition.mockedData,
             onLikeButtonTap: { _ in }
         )
         .previewLayout(.fixed(width: 414, height: 900))

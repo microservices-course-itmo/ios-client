@@ -20,6 +20,7 @@ struct RecommendationsBottomView: View {
             Text(LocalizedStringKey.aboutTitle)
                 .multilineTextAlignment(.center)
                 .font(.title2)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, -16)
 
             detailsView(imageName: "aboutShops", text: LocalizedStringKey.aboutShops)

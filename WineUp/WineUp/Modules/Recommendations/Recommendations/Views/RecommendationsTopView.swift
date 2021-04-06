@@ -18,6 +18,10 @@ struct RecommendationsTopView: View {
             imageView()
         }
         .tabViewStyle(PageTabViewStyle())
+        .cornerRadius(5.0)
+        .padding(12)
+        .background(Color.white)
+        .cornerRadius(8)
         .scaledToFit()
     }
 
@@ -27,10 +31,6 @@ struct RecommendationsTopView: View {
         KFImage.fromUniverseUrl("https://picsum.photos/311/185")
             .resizable()
             .scaledToFill()
-            .cornerRadius(5.0)
-            .padding(12)
-            .background(Color.white)
-            .cornerRadius(8)
     }
 }
 
