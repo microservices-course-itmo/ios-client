@@ -24,55 +24,48 @@ private extension LocalizedStringKey {
 struct RecommendationsView: View {
 
     @StateObject var viewModel: ViewModel
+    @State private var searchText: String = ""
 
     var body: some View {
-        content()
-            .navigationBarHidden(true)
-    }
+        GeometryReader { proxy in
+            ScrollView {
+                VStack {
+                    SearchBarView(placeholder: "Введите название", text: $searchText)
+                        .padding(8)
 
-    // MARK: Helpers
+                    RecommendationsTopView()
+                        .padding(8)
 
-    @ViewBuilder
-    private func content() -> some View {
-        switch viewModel.recommendationsItems {
-        case let .failed(error):
-            Text(error.description)
-        case .notRequested:
-            Text("Not requested")
-                .onAppear(perform: viewModel.loadItems)
-        case .loaded, .isLoading:
-            let winePositions = viewModel.recommendationsItems.value ?? []
-            winePositionsContent(winePositions: winePositions)
-                .activity(triggers: viewModel.recommendationsItems)
-        }
-    }
-
-    private func winePositionsContent(winePositions: [WinePosition]) -> some View {
-        VStack(spacing: .rootVStackSpacing) {
-            ScrollView(.vertical, showsIndicators: true) {
-                VStack(alignment: .leading) {
-                    Text(.title)
-                        .font(.title)
-                        .padding()
-                        .horizontallySpanned(alignment: .leading)
-
-                    ForEach(winePositions) { item in
-                        NavigationLink(
-                            destination: WinePositionDetailsView(
-                                viewModel: viewModel.winePositionDetailsViewModelFor(item)),
-                            tag: item.id,
-                            selection: $viewModel.selectedRecommendationItemId, label: {
-                                WinePositionView(item: item, onLikeButtonTap: { viewModel.toggleLike(of: item) })
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .cardStyled()
-                                    .padding(.wineCardsSpacing)
-                            }
+                    if let recommended = viewModel.recommendedWinePositions.value {
+                        WinePositionDetailsView.SuggestionsList(
+                            title: Text("Рекомендуемое вам"),
+                            winePositions: recommended,
+                            onLikeButtonTap: { _ in }
                         )
+                        .padding(.horizontal, 8)
+                        .padding(.bottom, 32)
                     }
+
+                    if let popular = viewModel.popularWinePositions.value {
+                        WinePositionDetailsView.SuggestionsList(
+                            title: Text("Популярное"),
+                            winePositions: popular,
+                            onLikeButtonTap: { _ in }
+                        )
+                        .padding(.horizontal, 8)
+                        .padding(.bottom, 48)
+                    }
+
+                    RecommendationsBottomView()
                 }
+                .frame(width: proxy.size.width)
+                .padding(.vertical, 8)
             }
         }
+        .background(Color(white: 0.96).ignoresSafeArea())
+        .onAppear(perform: viewModel.loadRecommended)
+        .onAppear(perform: viewModel.loadPopular)
+        .navigationBarHidden(true)
     }
 }
 
@@ -80,7 +73,6 @@ struct RecommendationsView: View {
 
 #if DEBUG
 struct RecommendationsView_Previews: PreviewProvider {
-
     static var previews: some View {
         Group {
             RecommendationsView(viewModel: .preview)

@@ -24,8 +24,8 @@ struct WinePositionDetailsView: View {
 
                 if let details = viewModel.details.value {
                     SuggestionsList(
-                        winePosition: viewModel.winePosition,
-                        details: details,
+                        title: Text("Мы подобрали для вас\nсхожие вина:"),
+                        winePositions: details.suggestions,
                         onLikeButtonTap: viewModel.toggleLike(of:)
                     )
                     .padding(.vertical)
